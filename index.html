@@ -504,6 +504,34 @@
     .qh{font-size:clamp(26px,8vw,36px)}
   }
 </style>
+<!-- ===== Analytics & Google Ads conversion tracking — paste your IDs below; '' = disabled ===== -->
+<script>
+  window.TL_ANALYTICS = {
+    GA4_ID: '',          /* 'G-XXXXXXX'    — GA4 Measurement ID */
+    ADS_ID: '',          /* 'AW-XXXXXXXXX' — Google Ads conversion ID */
+    QUOTE_LABEL: '',     /* Ads label for the "Quote started" conversion */
+    PURCHASE_LABEL: ''   /* Ads label for the "Purchase" conversion */
+  };
+  (function(){
+    var a=window.TL_ANALYTICS, id=a.GA4_ID||a.ADS_ID;
+    window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments);};
+    if(!id) return;   /* tracking stays OFF until you paste an ID above */
+    var s=document.createElement('script'); s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id); document.head.appendChild(s);
+    gtag('js', new Date());
+    if(a.GA4_ID) gtag('config', a.GA4_ID);
+    if(a.ADS_ID) gtag('config', a.ADS_ID);
+  })();
+  /* the site calls this at key moments; safely no-ops until IDs are set */
+  window.tlTrack=function(kind,value){
+    var a=window.TL_ANALYTICS; if(!window.gtag) return;
+    try{
+      if(kind==='quote' && a.ADS_ID && a.QUOTE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.QUOTE_LABEL});
+      if(kind==='purchase' && a.ADS_ID && a.PURCHASE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.PURCHASE_LABEL, value:value||0, currency:'USD'});
+      if(a.GA4_ID) gtag('event', kind==='purchase'?'purchase':'generate_lead', {value:value||0, currency:'USD'});
+    }catch(_){}
+  };
+</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -1273,6 +1301,7 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
       if(lockin){lockin.style.display='';lockin.textContent='Lock in this price →';}
       try{result.scrollIntoView({block:'center'});}catch(e){result.scrollIntoView();}
       sendLead('quote_viewed').catch(function(){});   /* capture the lead even if they don't lock in */
+      try{if(window.tlTrack)tlTrack('quote');}catch(_){}
     });
     priToggle.addEventListener('change',recompute);
     lockin.addEventListener('click',function(e){
@@ -1280,7 +1309,7 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
       var self=this,pri=priToggle.checked,total=totalOf(pri),c=document.getElementById('qr-confirm');
       self.textContent='Taking you to secure checkout…';
       /* remember a little for the post-payment thank-you screen */
-      try{localStorage.setItem('tl_order',JSON.stringify({name:brief.name||'',pref:brief.phonePref?'phone':'email'}));}catch(_){}
+      try{localStorage.setItem('tl_order',JSON.stringify({name:brief.name||'',pref:brief.phonePref?'phone':'email',total:total}));}catch(_){}
       sendLead('locked_in').catch(function(){});   /* email us the brief regardless of the payment path */
       var body={name:brief.name,email:brief.email,company:brief.company,website:brief.website,industry:brief.industry,does:brief.does,notes:brief.notes,phone:brief.phone,phonePref:brief.phonePref,extras:extras,priority:pri};
       fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
@@ -1302,6 +1331,7 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
         try{var o=JSON.parse(localStorage.getItem('tl_order')||'{}');
           if(o.name)document.getElementById('qpaid-total').textContent="You're booked, "+String(o.name).split(' ')[0]+'.';
           if(o.pref==='phone')document.getElementById('qpaid-msg').innerHTML="Payment received — thank you. <b>Next:</b> we'll <b>call you</b> to walk through your script for approval. You sign off before we animate a single frame.";
+          try{if(window.tlTrack)tlTrack('purchase',o.total||0);}catch(_){}
           localStorage.removeItem('tl_order');
         }catch(_){}
         form.hidden=true;result.hidden=true;pv.hidden=false;
