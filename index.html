@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Throughline — B2B Software Explainer Video Studio">
-<meta name="twitter:description" content="Brand-matched ~75-second product explainer animations for B2B software. 500+ explainers shipped. See the gallery.">
+<meta name="twitter:description" content="Brand-matched ~75-second product explainer animations for B2B software. 500+ explainers shipped. Watch real examples.">
 <meta name="twitter:image" content="https://i.ytimg.com/vi/wvp_lGohL8w/maxresdefault.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2307080d'/%3E%3Crect x='7' y='7' width='18' height='18' rx='4' fill='none' stroke='%2300D8FF' stroke-width='2.2'/%3E%3Cline x1='3' y1='16' x2='29' y2='16' stroke='%2300D8FF' stroke-width='2.2' stroke-linecap='round'/%3E%3Ccircle cx='22' cy='16' r='2.6' fill='%23FFE500'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -273,21 +273,11 @@
   .calc .gauge i{position:absolute;inset:0 100% 0 0;background:var(--pick);transition:right .5s var(--ease)}
   .foot-note{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--dim);margin-top:14px;letter-spacing:.04em}
 
-  /* WORK gallery */
-  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
-  .filters button{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--body);background:transparent;border:1px solid var(--line);padding:8px 13px;cursor:pointer;transition:.18s;min-height:38px}
-  .filters button:hover{color:var(--ink);border-color:var(--cyan)}
-  .filters button[aria-pressed=true]{background:var(--cyan);border-color:var(--cyan);color:#04121a}
-  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;list-style:none}
-  .gallery .plate{display:flex;flex-direction:column;gap:11px;transition:transform .45s var(--ease),opacity .35s}
-  .gallery .plate.hide{display:none}
+  /* shared video facade (used by VOICES) */
   .video{position:relative;aspect-ratio:16/9;background:var(--well);border:1px solid var(--line);overflow:hidden;cursor:pointer}
-  .plate .video{border-color:color-mix(in srgb,var(--brand,#00D8FF) 34%,var(--line))}
   .video img{width:100%;height:100%;object-fit:cover;display:block;opacity:.5;filter:saturate(.65);transition:opacity .4s,filter .4s,transform .5s var(--ease)}
-  .plate.in .video img{opacity:.92;filter:saturate(1)}
   .video:hover img{opacity:1;transform:scale(1.03)}
   .video .corner{position:absolute;width:14px;height:14px;border:2px solid var(--brand,#00D8FF);opacity:.0;transition:opacity .4s}
-  .plate.in .video .corner{opacity:.85}
   .video .corner.tl{top:7px;left:7px;border-right:0;border-bottom:0}
   .video .corner.br{bottom:7px;right:7px;border-left:0;border-top:0}
   .video .rec{position:absolute;top:9px;right:10px;display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.14em;color:var(--ink);opacity:.9}
@@ -299,11 +289,6 @@
   .video:hover .play svg{fill:#0a0a05}
   .video .tc{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:6px 9px;font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.1em;color:var(--ink);background:linear-gradient(0deg,rgba(6,7,9,.85),transparent)}
   .video iframe{width:100%;height:100%;border:0;display:block}
-  .plate .meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-  .plate .meta .fig{font-family:'IBM Plex Mono';font-size:10px;color:var(--dim);letter-spacing:.12em}
-  .plate .meta b{font-size:15px;color:var(--ink);font-weight:600}
-  .plate .meta .sw{width:11px;height:11px;background:var(--brand);display:inline-block;margin-left:7px;vertical-align:middle}
-  .plate .cap{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.06em;color:var(--label);text-transform:uppercase}
 
   /* VOICES */
   .voices{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -389,7 +374,7 @@
     .calc{grid-template-columns:1fr}
     .calc .inputs{border-right:0}
     .calc .out{order:-1;border-bottom:1px solid var(--line)}
-    .gallery,.voices{grid-template-columns:repeat(2,1fr)}
+    .voices{grid-template-columns:repeat(2,1fr)}
     .strip{grid-template-columns:repeat(2,1fr)}
     .strip .frm:nth-child(3){border-left:0}
   }
@@ -401,7 +386,7 @@
     .calc .inputs,.calc .out{padding:22px 20px}
     .calc .field{margin-bottom:16px}
     .inputs-cue{margin-bottom:15px}
-    .why4,.offergrid,.gallery,.voices,.strip{grid-template-columns:1fr}
+    .why4,.offergrid,.voices,.strip{grid-template-columns:1fr}
     .why4 .cell{border-bottom:1px solid var(--line)}
     .strip .frm{border-left:0;border-top:1px solid var(--line)}
     .strip .frm:first-child{border-top:0}
@@ -412,7 +397,6 @@
     footer{margin-bottom:64px}
     .frame{top:60px;left:8px;right:8px;bottom:8px}
     #swatches button{width:40px;height:40px}
-    #filters button{min-height:44px;padding:11px 15px}
     .demo input[type=text]{padding:13px 12px}
   }
   @media (hover:none){
@@ -420,8 +404,8 @@
     .video .play span{background:rgba(7,8,13,.62)}
   }
 
-  /* ===== in-page views (instant quote / all work) — disperse out, drop in ===== */
-  #quoteView,#workView{display:none;position:relative;z-index:1;padding:0 0 96px;min-height:62vh}
+  /* ===== in-page views (instant quote) — disperse out, drop in ===== */
+  #quoteView{display:none;position:relative;z-index:1;padding:0 0 96px;min-height:62vh}
   .pageview.pv-leaving{opacity:0;transform:scale(.972) translateY(-16px);filter:blur(4px);transition:opacity .42s var(--ease),transform .42s var(--ease),filter .42s var(--ease);pointer-events:none}
   .pageview.pv-entering{animation:pvDrop .52s var(--ease) both}
   @keyframes pvDrop{0%{opacity:0;transform:translateY(-30px) scale(.99);filter:blur(3px)}100%{opacity:1;transform:none;filter:none}}
@@ -453,7 +437,6 @@
   .qaspects .chk i{color:var(--dim);font-style:normal;font-size:11px;letter-spacing:.04em;margin-left:auto}
   .qsubmit{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
   .qnote{font-size:12px;letter-spacing:.04em;color:var(--dim)}
-  .viewmore{font-size:13px}
   /* instant-quote result */
   .qresult{max-width:560px;margin:10px auto 0;text-align:center}
   .qr-eyebrow{font-size:11px;letter-spacing:.24em;color:var(--label);margin-bottom:8px}
@@ -548,7 +531,6 @@
     <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav" onclick="toggleNav()">≡</button>
     <div class="navlinks" id="nav">
       <a href="#why">Why</a>
-      <a href="#work">Work</a>
       <a href="#voices">Results</a>
       <a href="#process">Process</a>
       <a href="#faq">FAQ</a>
@@ -577,7 +559,7 @@
             <a href="#cost" class="cta ghost">Calculate your losses</a>
             <span class="loss-note" aria-hidden="true"><span class="la">←</span><span class="lt">worse than you'd think</span></span>
           </span>
-          <a href="#work" class="cta ghost only-mobile">Watch examples</a>
+          <a href="#voices" class="cta ghost only-mobile">Watch examples</a>
         </div>
         <p style="margin-top:16px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.05em;color:var(--dim)">No sales call · instant price · a fraction of a studio's cost</p>
       </div>
@@ -742,9 +724,6 @@
       <h2 class="reveal" style="font-size:clamp(26px,3.8vw,46px);margin-bottom:8px">Why founders pick us: it works,<br>and it works fast.</h2>
       <p class="reveal" style="max-width:60ch;margin-bottom:30px">No mock-ups. Each quote below came back from a founder we shipped for — beside the actual film.</p>
       <div class="voices" id="voicesGrid"></div>
-      <div class="reveal" style="margin-top:36px;text-align:center">
-        <a href="#work" class="cta ghost viewmore">View more work →</a>
-      </div>
     </div>
   </section>
 
@@ -802,7 +781,7 @@
         <p class="mono" style="color:var(--label);letter-spacing:.08em;font-size:12.5px;margin-top:-12px">OVERNIGHT TURNAROUND · INSTANT FLAT PRICING · SCRIPT-RIGHT GUARANTEE</p>
         <div class="hero-cta">
           <a class="cta" href="#quote">Get instant quote →</a>
-          <a class="cta ghost" href="#work">See the work first</a>
+          <a class="cta ghost" href="#voices">See the work first</a>
         </div>
         <p class="mono" style="color:var(--dim);letter-spacing:.05em;font-size:11px;margin-top:14px">No sales call · instant price · you approve the script before we animate</p>
       </div>
@@ -867,23 +846,6 @@
   </div>
 </section>
 
-<!-- ===== ALL-WORK VIEW (in-page) ===== -->
-<section id="workView" class="pageview" aria-label="All work">
-  <div class="wrap">
-    <div class="viewbar">
-      <button type="button" class="backbtn" data-back>← Back</button>
-      <span class="vbtag">THE FULL WORK · <span id="figcount">15</span> FILMS</span>
-    </div>
-    <h2 style="font-size:clamp(28px,3.8vw,46px);margin-bottom:8px">A brand-matched explainer<br>for every product.</h2>
-    <p style="max-width:62ch;margin-bottom:24px;color:var(--body)">Every one of the 500+ we've shipped is built on the same system — one unmistakable chrome, re-hued to each client's real brand color. Filter by industry, then press play.</p>
-    <div class="filters" id="filters" role="group" aria-label="Filter examples by industry"></div>
-    <ul class="gallery" id="gallery"></ul>
-    <div style="margin-top:44px;text-align:center">
-      <a href="#quote" class="cta">Get instant quote →</a>
-    </div>
-  </div>
-</section>
-
 <footer
   <div class="wrap">
     <a href="#top" class="brand" aria-label="Throughline">
@@ -911,26 +873,9 @@
 <script>
 /* ============ data ============ */
 var VOICES = [
-  {id:'j6K5qAMdcsc', name:'Voquill', who:'David', role:'Voquill', brand:'#0FB5C9', q:'My website views-to-sales ratio almost doubled within a day.'},
+  {id:'X9rqN8ewiTg', name:'Voquill', who:'David', role:'Voquill', brand:'#0FB5C9', q:'My website views-to-sales ratio almost doubled within a day.'},
   {id:'IBucTidRyx0', name:'Redouble AI', who:'Sarah', role:'Redouble AI', brand:'#336DFF', q:'Wow, this is an absolute game changer.'},
   {id:'wvp_lGohL8w', name:'Ritivel', who:'Alex', role:'Ritivel', brand:'#FF5A00', q:'Worth the price 1000× over. Perfectly themed to my website and it flows so well. Infinitely grateful.'}
-];
-var WORK = [
-  {id:'rmPTWbP0rns', name:'Gojiberry AI', ind:'GTM',        brand:'#470670', file:'GOJIBERRY.MP4'},
-  {id:'BXsRp801t2c', name:'Lunavo',       ind:'Logistics',  brand:'#FF4C28', file:'LUNAVO.MP4'},
-  {id:'Uvo5kZsPazM', name:'Alguna',       ind:'Fintech',    brand:'#06BA61', file:'ALGUNA.MP4'},
-  {id:'nk0z7VgcQBI', name:'Clarum',       ind:'Investing',  brand:'#0008ED', file:'CLARUM.MP4'},
-  {id:'TkFZbvXql6M', name:'PatentWatch',  ind:'Legal/IP',   brand:'#005133', file:'PATENTWATCH.MP4'},
-  {id:'OC1xp3-fHZ4', name:'Arzana',       ind:'Mfg',        brand:'#FF6D2D', file:'ARZANA.MP4'},
-  {id:'r2K-s-zGi44', name:'Datost',       ind:'Data',       brand:'#C8922A', file:'DATOST.MP4'},
-  {id:'4MI_YfdbYVU', name:'Huscarl',      ind:'Risk',       brand:'#5E8C61', file:'HUSCARL.MP4'},
-  {id:'gPGmSIwpCmE', name:'Clado',        ind:'Data',       brand:'#8B6DF0', file:'CLADO.MP4'},
-  {id:'-4koQhxt1dc', name:'RiskCube',     ind:'Insurtech',  brand:'#3382FF', file:'RISKCUBE.MP4'},
-  {id:'Za023mDtVjo', name:'Pavoot',       ind:'GTM',        brand:'#3FAE6B', file:'PAVOOT.MP4'},
-  {id:'cy9BsVIZeok', name:'Autostep',     ind:'Automation', brand:'#568595', file:'AUTOSTEP.MP4'},
-  {id:'u3JXmKeyZoY', name:'Salesgraph',   ind:'Sales',      brand:'#3A7212', file:'SALESGRAPH.MP4'},
-  {id:'rlzQ3BsExv4', name:'Netter',       ind:'Data',       brand:'#2E6BFF', file:'NETTER.MP4'},
-  {id:'bHnWEN6HZSw', name:'Sherpa Labs',  ind:'Data',       brand:'#3B82F6', file:'SHERPALABS.MP4'}
 ];
 var FAQ = [
   {q:"Can't I just film a screen recording with a voiceover?", a:"You can, and it'll look like exactly that. A screen recording shows your UI; it doesn't sell the idea behind it. The job of an explainer isn't to tour the buttons — it's to make someone want the outcome before they ever see a button. That's a script-and-design problem, not a Loom."},
@@ -1008,47 +953,6 @@ function mountFacade(el){
   });
 })();
 
-/* ============ render WORK gallery (+ filters + FLIP) ============ */
-(function(){
-  var g=document.getElementById('gallery');
-  document.getElementById('figcount').textContent=WORK.length;
-  WORK.forEach(function(w,i){
-    var li=document.createElement('li');li.className='plate';li.setAttribute('data-ind',w.ind);li.style.setProperty('--brand',brandTint(w.brand));
-    var fig=String(i+1).padStart(2,'0');
-    li.innerHTML='<div class="video" data-id="'+w.id+'" data-title="'+w.name+'">'
-      +'<i class="corner tl"></i><i class="corner br"></i><span class="rec"><b></b>REC</span>'
-      +'<span class="tc"><span>'+w.file+'</span><span>00:'+ (60+Math.floor(Math.random()*16)) +'</span></span></div>'
-      +'<div class="meta"><span class="fig">FIG '+fig+'</span><b>'+w.name+'<i class="sw" aria-hidden="true"></i></b></div>'
-      +'<div class="cap">'+w.ind+' · '+w.brand+'</div>';
-    g.appendChild(li);
-  });
-  // filters
-  var inds=['All'].concat(WORK.map(function(w){return w.ind}).filter(function(v,i,a){return a.indexOf(v)===i}));
-  var fc=document.getElementById('filters');
-  inds.forEach(function(ind,idx){
-    var b=document.createElement('button');b.textContent=ind;b.setAttribute('aria-pressed',idx===0?'true':'false');
-    b.onclick=function(){
-      [].forEach.call(fc.children,function(x){x.setAttribute('aria-pressed','false')});
-      b.setAttribute('aria-pressed','true');applyFilter(ind);
-    };
-    fc.appendChild(b);
-  });
-  function applyFilter(ind){
-    var plates=[].slice.call(g.children);
-    var first=plates.map(function(p){return p.getBoundingClientRect()});
-    plates.forEach(function(p){var show=ind==='All'||p.getAttribute('data-ind')===ind;p.classList.toggle('hide',!show);p.toggleAttribute('inert',!show)});
-    if(RM)return;
-    var last=plates.map(function(p){return p.getBoundingClientRect()});
-    plates.forEach(function(p,i){
-      if(p.classList.contains('hide'))return;
-      var dx=first[i].left-last[i].left,dy=first[i].top-last[i].top;
-      if(!dx&&!dy)return;
-      p.style.transition='none';p.style.transform='translate('+dx+'px,'+dy+'px)';
-      requestAnimationFrame(function(){p.style.transition='';p.style.transform=''});
-    });
-  }
-})();
-
 /* ============ render FAQ ============ */
 (function(){
   var f=document.getElementById('faqList');
@@ -1061,7 +965,7 @@ function mountFacade(el){
 
 /* ============ VideoObject structured data (video rich-result eligibility) ============ */
 (function(){
-  var all=VOICES.concat(WORK);
+  var all=VOICES;
   var items=all.map(function(v,i){return {"@type":"ListItem","position":i+1,"item":{
     "@type":"VideoObject","name":v.name+" — explainer video by Throughline",
     "description":"A brand-matched 75-second animated product explainer video produced by Throughline for "+v.name+".",
@@ -1173,7 +1077,7 @@ document.querySelectorAll('.video').forEach(mountFacade);
 (function(){
   // section reveals
   var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.reveal,.rule,.strip,.plate').forEach(function(el){ro.observe(el)});
+  document.querySelectorAll('.reveal,.rule,.strip').forEach(function(el){ro.observe(el)});
 
   // stat / counters
   function counter(el){
@@ -1208,13 +1112,12 @@ document.querySelectorAll('.video').forEach(mountFacade);
 function toggleNav(){var n=document.getElementById('nav'),b=document.querySelector('.burger');var open=n.classList.toggle('open');b.setAttribute('aria-expanded',open?'true':'false')}
 document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('nav').classList.remove('open');document.querySelector('.burger').setAttribute('aria-expanded','false')})});
 
-/* ============ in-page views: home / quote / work (disperse + drop) ============ */
+/* ============ in-page views: home / quote (disperse + drop) ============ */
 (function(){
-  var views={home:document.getElementById('main'),quote:document.getElementById('quoteView'),work:document.getElementById('workView')};
-  if(!views.quote||!views.work) return;
+  var views={home:document.getElementById('main'),quote:document.getElementById('quoteView')};
+  if(!views.quote) return;
   var current='home';
   function afterShow(target){
-    if(target==='work'){[].forEach.call(document.querySelectorAll('#workView .plate'),function(p){p.classList.add('in')});}
     var mc=document.querySelector('.mobcta');if(mc)mc.style.display=(target==='home')?'':'none';
     if(target==='quote'){var f=document.getElementById('qf-name');if(f){try{f.focus({preventScroll:true})}catch(e){}}}
   }
@@ -1238,7 +1141,6 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
   function route(){
     var h=location.hash;
     if(h==='#quote')return showView('quote');
-    if(h==='#work')return showView('work');
     var id=(h&&h.length>1)?h.slice(1):null,sec=id&&document.getElementById(id);
     showView('home',sec?function(){var el=document.getElementById(id);if(el){var y=el.getBoundingClientRect().top+window.pageYOffset-70;window.scrollTo(0,y>0?y:0);}}:null);
   }
