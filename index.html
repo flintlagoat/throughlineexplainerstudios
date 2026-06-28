@@ -289,6 +289,13 @@
   .video:hover .play svg{fill:#0a0a05}
   .video .tc{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:6px 9px;font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.1em;color:var(--ink);background:linear-gradient(0deg,rgba(6,7,9,.85),transparent)}
   .video iframe{width:100%;height:100%;border:0;display:block}
+  /* full-window video lightbox — a large player lets YouTube serve HD/1440p/4K (small grid players cap at 360p) */
+  .vlb{position:fixed;inset:0;z-index:2000;display:none;place-items:center;background:rgba(4,5,8,.93);backdrop-filter:blur(6px);padding:max(16px,3vw)}
+  .vlb.open{display:grid}
+  .vlb-frame{position:relative;width:min(94vw,calc(92vh*16/9));aspect-ratio:16/9;background:#000;border:1px solid var(--line);box-shadow:0 30px 90px rgba(0,0,0,.6)}
+  .vlb-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+  .vlb-close{position:absolute;top:16px;right:18px;width:42px;height:42px;border-radius:50%;background:rgba(7,8,13,.7);border:1px solid var(--line);color:#fff;font:400 22px/1 system-ui;cursor:pointer;display:grid;place-items:center;z-index:2}
+  .vlb-close:hover{background:var(--yellow);color:#0a0a05;border-color:var(--yellow)}
 
   /* VOICES */
   .voices{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -931,13 +938,33 @@ function mountFacade(el){
   el.insertAdjacentHTML('beforeend',PLAY);
   el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label','Play '+title+' explainer video');
   el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
-  el.addEventListener('click',function(){
-    var f=document.createElement('iframe');
-    f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1';
-    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=title+' explainer video';
-    el.innerHTML='';el.appendChild(f);el.style.cursor='default';
-  },{once:true});
+  el.addEventListener('click',function(){ openLightbox(id,title); });
 }
+
+/* ============ video lightbox — large player so YouTube can serve HD/1440p/4K ============ */
+var __vlb;
+function vlbEl(){
+  if(__vlb)return __vlb;
+  __vlb=document.createElement('div');__vlb.className='vlb';__vlb.setAttribute('aria-hidden','true');
+  __vlb.innerHTML='<button class="vlb-close" aria-label="Close video">×</button><div class="vlb-frame"></div>';
+  document.body.appendChild(__vlb);
+  __vlb.addEventListener('click',function(e){ if(e.target===__vlb||e.target.classList.contains('vlb-close'))closeLightbox(); });
+  return __vlb;
+}
+function openLightbox(id,title){
+  var lb=vlbEl(),frame=lb.querySelector('.vlb-frame');
+  var f=document.createElement('iframe');
+  f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1&vq=hd1080';
+  f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=(title||'explainer')+' video';
+  frame.innerHTML='';frame.appendChild(f);
+  lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  if(!__vlb)return;
+  __vlb.classList.remove('open');__vlb.setAttribute('aria-hidden','true');document.body.style.overflow='';
+  var frame=__vlb.querySelector('.vlb-frame');if(frame)frame.innerHTML='';   /* removing the iframe stops playback */
+}
+document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeLightbox(); });
 
 /* ============ render VOICES ============ */
 (function(){
