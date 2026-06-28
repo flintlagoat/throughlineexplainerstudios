@@ -874,9 +874,9 @@
 <script>
 /* ============ data ============ */
 var VOICES = [
-  {id:'aHKOwUtAptE', name:'Voquill', who:'David', role:'Voquill', brand:'#0FB5C9', q:'My website views-to-sales ratio almost doubled within a day.'},
   {id:'PxG4jIFrrUE', name:'Redouble AI', who:'Sarah', role:'Redouble AI', brand:'#336DFF', q:'Wow, this is an absolute game changer.'},
-  {id:'wvp_lGohL8w', name:'Ritivel', who:'Alex', role:'Ritivel', brand:'#FF5A00', q:'Worth the price 1000× over. Perfectly themed to my website and it flows so well. Infinitely grateful.'}
+  {id:'gwu_R1VQtlY', name:'Ritivel', who:'Alex', role:'Ritivel', brand:'#FF5A00', q:'Worth the price 1000× over. Perfectly themed to my website and it flows so well. Infinitely grateful.'},
+  {id:'aHKOwUtAptE', name:'Voquill', who:'David', role:'Voquill', brand:'#0FB5C9', q:'My website views-to-sales ratio almost doubled within a day.'}
 ];
 var FAQ = [
   {q:"Can't I just film a screen recording with a voiceover?", a:"You can, and it'll look like exactly that. A screen recording shows your UI; it doesn't sell the idea behind it. The job of an explainer isn't to tour the buttons — it's to make someone want the outcome before they ever see a button. That's a script-and-design problem, not a Loom."},
@@ -1180,9 +1180,9 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
     function payloadFor(stage){
       var pri=priToggle.checked,total=totalOf(pri),formats=['16:9'].concat(extras).join(', ');
       return {access_key:WEB3FORMS_KEY,
-        subject:(stage==='locked_in'?'✅ LOCKED IN — ':'New quote request — ')+(brief.company||brief.name||'lead')+' ('+money(total)+')',
+        subject:(stage==='locked_in'?'🛒 Checkout started — ':'New quote request — ')+(brief.company||brief.name||'lead')+' ('+money(total)+')',
         from_name:'Throughline site',replyto:brief.email||'',botcheck:'',
-        stage:stage==='locked_in'?'LOCKED IN — wants to proceed':'Quote viewed',
+        stage:stage==='locked_in'?'Checkout started — confirm payment in Stripe (or follow up if no charge)':'Quote viewed',
         name:brief.name||'',email:brief.email||'',company:brief.company||'',website:brief.website||'—',
         industry:brief.industry||'',product:brief.does||'—',formats:formats,
         phone:brief.phone||'—',contact_pref:brief.phonePref?'TEXT preferred':'email',
@@ -1214,7 +1214,7 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
       var self=this,pri=priToggle.checked,total=totalOf(pri),c=document.getElementById('qr-confirm');
       self.textContent='Taking you to secure checkout…';
       /* remember a little for the post-payment thank-you screen */
-      try{localStorage.setItem('tl_order',JSON.stringify({name:brief.name||'',pref:brief.phonePref?'text':'email',total:total}));}catch(_){}
+      try{localStorage.setItem('tl_order',JSON.stringify({name:brief.name||'',email:brief.email||'',company:brief.company||'',website:brief.website||'',industry:brief.industry||'',does:brief.does||'',notes:brief.notes||'',phone:brief.phone||'',pref:brief.phonePref?'text':'email',total:total,formats:['16:9'].concat(extras).join(', '),delivery:pri?'Priority / overnight':'Standard / 2–3 business days'}));}catch(_){}
       sendLead('locked_in').catch(function(){});   /* email us the brief regardless of the payment path */
       var body={name:brief.name,email:brief.email,company:brief.company,website:brief.website,industry:brief.industry,does:brief.does,notes:brief.notes,phone:brief.phone,phonePref:brief.phonePref,extras:extras,priority:pri};
       fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
@@ -1237,6 +1237,15 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
           if(o.name)document.getElementById('qpaid-total').textContent="You're booked, "+String(o.name).split(' ')[0]+'.';
           if(o.pref==='text')document.getElementById('qpaid-msg').innerHTML="Payment received — thank you. <b>Next:</b> we'll <b>text you</b> your script to approve. You sign off before we animate a single frame.";
           try{if(window.tlTrack)tlTrack('purchase',o.total||0);}catch(_){}
+          if(o.email||o.name){   /* one PAID alert to our inbox with the full brief — fires once, then tl_order is cleared below */
+            try{fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({
+              access_key:WEB3FORMS_KEY,subject:'✅ PAID — '+(o.company||o.name||'order')+(o.total?' ('+money(o.total)+')':''),
+              from_name:'Throughline site',replyto:o.email||'',botcheck:'',stage:'PAID — payment completed via Stripe',
+              name:o.name||'',email:o.email||'',company:o.company||'',website:o.website||'—',industry:o.industry||'',
+              product:o.does||'—',formats:o.formats||'—',delivery:o.delivery||'—',phone:o.phone||'—',
+              contact_pref:o.pref==='text'?'TEXT preferred':'email',paid_total:o.total?money(o.total):'—',notes:o.notes||'—'
+            })}).catch(function(){});}catch(_){}
+          }
           localStorage.removeItem('tl_order');
         }catch(_){}
         var _qh=document.querySelector('#quoteView .qh'),_qsub=document.querySelector('#quoteView .qsub');
