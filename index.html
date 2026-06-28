@@ -826,8 +826,8 @@
       <div class="qfield"><label for="qf-site">Website <span class="opt">(optional)</span></label><input id="qf-site" name="website" type="url" inputmode="url" placeholder="https://"></div>
       <div class="qfield"><label for="qf-ind">Industry / specialization *</label><input id="qf-ind" name="industry" required placeholder="Fintech, dev tools, healthcare…"></div>
       <div class="qfield qspan"><label for="qf-does">What does it do, in one line? <span class="opt">(optional)</span></label><input id="qf-does" name="does" placeholder="The shortest version of your pitch."></div>
-      <div class="qfield qspan"><label for="qf-phone">Phone <span class="opt">(optional — faster than email)</span></label><input id="qf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1 (555) 123-4567"></div>
-      <label class="qspan" for="qf-phonepref" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.92rem;color:var(--ink);margin:-.2rem 0 .2rem"><input type="checkbox" id="qf-phonepref" name="phonepref" style="width:18px;height:18px;flex:0 0 auto;accent-color:var(--cyan);cursor:pointer"> <span>Prefer a phone call instead of email?</span></label>
+      <div class="qfield qspan"><label for="qf-phone">Phone <span class="opt">(optional — for text updates)</span></label><input id="qf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1 (555) 123-4567"></div>
+      <label class="qspan" for="qf-phonepref" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.92rem;color:var(--ink);margin:-.2rem 0 .2rem"><input type="checkbox" id="qf-phonepref" name="phonepref" style="width:18px;height:18px;flex:0 0 auto;accent-color:var(--cyan);cursor:pointer"> <span>Prefer we text you instead of email?</span></label>
       <fieldset class="qfield qspan qaspects">
         <legend>Formats <span class="opt">— 16:9 included, others +$200 each</span></legend>
         <label class="chk chk-incl"><input type="checkbox" name="aspect" value="16:9" checked> <span>16:9</span><i>homepage</i></label>
@@ -1261,6 +1261,8 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
     var priToggle=document.getElementById('qr-priority-toggle'),lockin=document.getElementById('qr-lockin');
     var lock169=form.querySelector('input[name=aspect][value="16:9"]');   /* 16:9 always on, can't be unchecked */
     if(lock169)lock169.addEventListener('change',function(){if(!this.checked)this.checked=true;});
+    var phonePrefEl=document.getElementById('qf-phonepref'),phoneEl=document.getElementById('qf-phone');
+    if(phonePrefEl&&phoneEl)phonePrefEl.addEventListener('change',function(){phoneEl.required=this.checked;});  /* need a number to text them */
     function g(n){var el=form.elements[n];return el&&el.value?el.value.trim():'';}
     function totalOf(pri){return PRICE.base+extras.length*PRICE.aspect+(pri?PRICE.priority:0);}
     function recompute(){
@@ -1280,7 +1282,7 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
         stage:stage==='locked_in'?'LOCKED IN — wants to proceed':'Quote viewed',
         name:brief.name||'',email:brief.email||'',company:brief.company||'',website:brief.website||'—',
         industry:brief.industry||'',product:brief.does||'—',formats:formats,
-        phone:brief.phone||'—',contact_pref:brief.phonePref?'PHONE preferred':'email',
+        phone:brief.phone||'—',contact_pref:brief.phonePref?'TEXT preferred':'email',
         delivery:pri?'Priority / overnight':'Standard / 2–3 business days',quoted_total:money(total),notes:brief.notes||'—'};
     }
     function sendLead(stage){
@@ -1309,7 +1311,7 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
       var self=this,pri=priToggle.checked,total=totalOf(pri),c=document.getElementById('qr-confirm');
       self.textContent='Taking you to secure checkout…';
       /* remember a little for the post-payment thank-you screen */
-      try{localStorage.setItem('tl_order',JSON.stringify({name:brief.name||'',pref:brief.phonePref?'phone':'email',total:total}));}catch(_){}
+      try{localStorage.setItem('tl_order',JSON.stringify({name:brief.name||'',pref:brief.phonePref?'text':'email',total:total}));}catch(_){}
       sendLead('locked_in').catch(function(){});   /* email us the brief regardless of the payment path */
       var body={name:brief.name,email:brief.email,company:brief.company,website:brief.website,industry:brief.industry,does:brief.does,notes:brief.notes,phone:brief.phone,phonePref:brief.phonePref,extras:extras,priority:pri};
       fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
@@ -1330,12 +1332,15 @@ document.querySelectorAll('#nav a').forEach(function(a){a.addEventListener('clic
       if(pv){
         try{var o=JSON.parse(localStorage.getItem('tl_order')||'{}');
           if(o.name)document.getElementById('qpaid-total').textContent="You're booked, "+String(o.name).split(' ')[0]+'.';
-          if(o.pref==='phone')document.getElementById('qpaid-msg').innerHTML="Payment received — thank you. <b>Next:</b> we'll <b>call you</b> to walk through your script for approval. You sign off before we animate a single frame.";
+          if(o.pref==='text')document.getElementById('qpaid-msg').innerHTML="Payment received — thank you. <b>Next:</b> we'll <b>text you</b> your script to approve. You sign off before we animate a single frame.";
           try{if(window.tlTrack)tlTrack('purchase',o.total||0);}catch(_){}
           localStorage.removeItem('tl_order');
         }catch(_){}
+        var _qh=document.querySelector('#quoteView .qh'),_qsub=document.querySelector('#quoteView .qsub');
+        if(_qh)_qh.hidden=true; if(_qsub)_qsub.hidden=true;   /* hide the form intro on the booked screen */
         form.hidden=true;result.hidden=true;pv.hidden=false;
         if(location.hash!=='#quote')location.hash='#quote';
+        setTimeout(function(){try{pv.scrollIntoView({block:'center'});}catch(_){}},60);   /* bring the booked message into view */
       }
     }
   }

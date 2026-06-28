@@ -62,7 +62,7 @@ module.exports = async function handler(req, res) {
         industry: clean(b.industry, 200),
         product: clean(b.does, 400),
         phone: clean(b.phone, 60),
-        contact_pref: b.phonePref ? 'PHONE' : 'email',
+        contact_pref: b.phonePref ? 'TEXT' : 'email',
         formats: formats,
         delivery: delivery,
         quoted_total: dollars(amount),
