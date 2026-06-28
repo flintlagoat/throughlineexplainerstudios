@@ -4,6 +4,7 @@
   "private": true,
   "description": "Throughline explainer-video marketing site + Stripe checkout (deployed on Vercel).",
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "stripe": "^17.7.0"
   }
 }
