@@ -497,28 +497,51 @@
 <!-- ===== Analytics & Google Ads conversion tracking — paste your IDs below; '' = disabled ===== -->
 <script>
   window.TL_ANALYTICS = {
-    GA4_ID: '',                    /* 'G-XXXXXXX' — GA4 Measurement ID (optional) */
+    GA4_ID: '',                    /* 'G-XXXXXXX' — GA4 Measurement ID (free; GA4 Admin -> Data Streams) */
     ADS_ID: 'AW-18279209155',      /* Google Ads conversion ID */
     QUOTE_LABEL: 'TZqfCMX188YcEMOxmoxE',  /* "Quote started" conversion (fires on price reveal) */
-    PURCHASE_LABEL: ''             /* paste the "Purchase" conversion label here (optional) */
+    PURCHASE_LABEL: '',            /* paste the "Purchase" conversion label here (optional) */
+    META_PIXEL_ID: '',             /* Meta/Facebook Pixel ID — Meta Events Manager (free, no card needed) */
+    REDDIT_PIXEL_ID: ''            /* Reddit Pixel ID e.g. 'a2_xxxxxxxx' — Reddit Ads -> Events Manager (free, no card) */
   };
+  /* ---- Google (GA4 + Ads) ---- */
   (function(){
     var a=window.TL_ANALYTICS, id=a.GA4_ID||a.ADS_ID;
     window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments);};
-    if(!id) return;   /* tracking stays OFF until you paste an ID above */
+    if(!id) return;   /* stays OFF until you paste an ID above */
     var s=document.createElement('script'); s.async=true;
     s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id); document.head.appendChild(s);
     gtag('js', new Date());
     if(a.GA4_ID) gtag('config', a.GA4_ID);
     if(a.ADS_ID) gtag('config', a.ADS_ID);
   })();
+  /* ---- Meta Pixel (retargeting pool builds passively, even before you spend a dime) ---- */
+  (function(){
+    var a=window.TL_ANALYTICS; if(!a.META_PIXEL_ID) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', a.META_PIXEL_ID); fbq('track', 'PageView');
+  })();
+  /* ---- Reddit Pixel (community retargeting pool builds passively) ---- */
+  (function(){
+    var a=window.TL_ANALYTICS; if(!a.REDDIT_PIXEL_ID) return;
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};
+    p.callQueue=[];var t=d.createElement('script');t.src='https://www.redditstatic.com/ads/pixel.js';t.async=!0;
+    var s=d.getElementsByTagName('script')[0];s.parentNode.insertBefore(t,s)}}(window,document);
+    rdt('init', a.REDDIT_PIXEL_ID); rdt('track', 'PageVisit');
+  })();
   /* the site calls this at key moments; safely no-ops until IDs are set */
   window.tlTrack=function(kind,value){
-    var a=window.TL_ANALYTICS; if(!window.gtag) return;
+    var a=window.TL_ANALYTICS;
     try{
-      if(kind==='quote' && a.ADS_ID && a.QUOTE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.QUOTE_LABEL});
-      if(kind==='purchase' && a.ADS_ID && a.PURCHASE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.PURCHASE_LABEL, value:value||0, currency:'USD'});
-      if(a.GA4_ID) gtag('event', kind==='purchase'?'purchase':'generate_lead', {value:value||0, currency:'USD'});
+      if(window.gtag){
+        if(kind==='quote' && a.ADS_ID && a.QUOTE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.QUOTE_LABEL});
+        if(kind==='purchase' && a.ADS_ID && a.PURCHASE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.PURCHASE_LABEL, value:value||0, currency:'USD'});
+        if(a.GA4_ID) gtag('event', kind==='purchase'?'purchase':'generate_lead', {value:value||0, currency:'USD'});
+      }
+      if(window.fbq) fbq('track', kind==='purchase'?'Purchase':'Lead', {value:value||0, currency:'USD'});
+      if(window.rdt) rdt('track', kind==='purchase'?'Purchase':'Lead', {value:value||0, currency:'USD'});
     }catch(_){}
   };
 </script>
