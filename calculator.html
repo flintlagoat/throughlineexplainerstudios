@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Homepage Confusion Cost Calculator — Throughline</title>
+<meta name="description" content="Free 60-second calculator: see what your confusing homepage costs you every month in lost visitors. No signup.">
+<link rel="canonical" href="https://throughlineexplainers.com/calculator">
+<meta name="theme-color" content="#07080d">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Throughline">
+<meta property="og:title" content="Homepage Confusion Cost Calculator — Throughline">
+<meta property="og:description" content="Free 60-second calculator: see what your confusing homepage costs you every month in lost visitors. No signup.">
+<meta property="og:url" content="https://throughlineexplainers.com/calculator">
+<meta property="og:image" content="https://throughlineexplainers.com/icon-512.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Homepage Confusion Cost Calculator — Throughline">
+<meta name="twitter:description" content="Free 60-second calculator: see what your confusing homepage costs you every month in lost visitors. No signup.">
+<meta name="twitter:image" content="https://throughlineexplainers.com/icon-512.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,18..72,400;0,18..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07080d; --band:#0a0c12; --panel:#0a1016; --panel2:#0d141c; --well:#060709;
+    --line:#16323a; --line-soft:rgba(93,203,224,.14);
+    --ink:#F4F6FB; --label:#5DCBE0; --body:#9AA3B2; --dim:#8593a0;
+    --cyan:#00D8FF; --yellow:#FFE500; --red:#FF3B30;
+    --grid:rgba(0,216,255,.05);
+    --pick:#00D8FF; /* drives the calculator gauge + range thumb */
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --mx:50%; --my:0%;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+  body{
+    background:var(--bg); color:var(--body);
+    font-family:'Archivo',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    text-rendering:optimizeLegibility;
+  }
+  body::before{ /* faint blueprint grid + cursor-reactive glow */
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(420px circle at var(--mx) var(--my), rgba(0,216,255,.06), transparent 60%),
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:auto, 34px 34px, 34px 34px;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:0 40px;position:relative;z-index:1}
+  main{position:relative;z-index:1}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--yellow);color:#000}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:2px}
+
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  input.bad{border-color:var(--red)!important}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--label);display:inline-flex;align-items:center;gap:12px}
+  .kicker::before{content:"";width:30px;height:1px;background:var(--cyan);transform-origin:left;display:inline-block}
+  h1,h2,h3{font-family:'Archivo',sans-serif;font-weight:800;line-height:1.02;letter-spacing:-.02em;color:var(--ink);text-transform:uppercase}
+  .punch{color:var(--yellow)}
+
+  /* skip link */
+  .skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--yellow);color:#000;padding:8px 14px;border-radius:4px;font:600 13px 'IBM Plex Mono'}
+  .skip:focus{left:8px}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(7,8,13,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:62px;gap:18px}
+  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+  .brand svg{width:26px;height:26px;flex-shrink:0}
+  .brand b{font-family:'Archivo';font-weight:800;font-size:18px;letter-spacing:.015em;color:var(--ink);text-transform:uppercase;line-height:1}
+  .brand small{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.18em;color:var(--label);text-transform:uppercase;display:block;line-height:1}
+  .navtag{margin-right:auto;padding-left:18px;border-left:1px solid var(--line);font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--label);white-space:nowrap}
+  .cta{display:inline-flex;align-items:center;gap:9px;font-family:'IBM Plex Mono';font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--yellow);color:#0a0a05;padding:12px 20px;border:1px solid var(--yellow);cursor:pointer;transition:.18s var(--ease);min-height:44px}
+  .cta:hover{background:#fff14d;transform:translateY(-1px)}
+  .cta.ghost{background:transparent;color:var(--ink);border-color:var(--line);min-height:44px}
+  .cta.ghost:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,216,255,.05)}
+
+  /* section scaffold */
+  section{padding:64px 0;position:relative}
+  .seclabel{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;flex-wrap:wrap}
+  .seclabel .id{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.2em;color:var(--dim)}
+
+  /* HERO */
+  .pagehero{padding:58px 0 34px;text-align:center}
+  .pagehero .kicker{margin-bottom:20px}
+  .pagehero h1{font-size:clamp(28px,4.4vw,48px);line-height:1.04;max-width:18ch;margin:0 auto}
+  .pagehero p.lead{margin:22px auto 0;font-size:clamp(16px,1.8vw,19px);color:var(--body);max-width:58ch}
+  .pagehero p.lead b{color:var(--ink);font-weight:600}
+
+  /* calculator (copied verbatim from index.html) */
+  .calc{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);background:var(--panel)}
+  .calc .inputs{padding:30px 30px 26px;border-right:1px solid var(--line)}
+  .calc .field{margin-bottom:22px}
+  .calc .field:last-child{margin-bottom:0}
+  .calc .field .top{display:flex;justify-content:space-between;align-items:baseline;font-family:'IBM Plex Mono';font-size:12px;letter-spacing:.08em;color:var(--body);margin-bottom:9px}
+  .calc .field .top b{color:var(--ink);font-size:14px}
+  .inputs-cue{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px}
+  .inputs-cue .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:cuePulse 1.6s ease-in-out infinite}
+  @keyframes cuePulse{0%,100%{opacity:.35}50%{opacity:1}}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--line);outline:none;cursor:pointer}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--pick);border:2px solid var(--bg);cursor:pointer;box-shadow:0 0 0 1px var(--pick)}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--pick);border:2px solid var(--bg);cursor:pointer}
+  .calc .out{padding:30px;background:var(--well);display:flex;flex-direction:column;justify-content:center}
+  .calc .out .ol{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+  .calc .out .big{font-family:'Archivo';font-weight:800;font-size:clamp(38px,5vw,60px);color:var(--yellow);font-variant-numeric:tabular-nums;line-height:1.05;margin:4px 0 2px}
+  .calc .out .sub{font-family:'IBM Plex Mono';font-size:12.5px;color:var(--body);line-height:1.7;margin-top:10px}
+  .calc .out .sub b{color:var(--ink)}
+  .calc .gauge{height:6px;background:var(--line);margin:18px 0 4px;position:relative;overflow:hidden}
+  .calc .gauge i{position:absolute;inset:0 100% 0 0;background:var(--pick);transition:right .5s var(--ease)}
+  .foot-note{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--dim);margin-top:14px;letter-spacing:.04em}
+
+  /* inline email capture under the result */
+  .leadcap{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  .leadcap .ll{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--label);margin-bottom:10px}
+  .leadcap form{display:flex;gap:8px;flex-wrap:wrap}
+  .leadcap input[type=email]{flex:1;min-width:0;background:var(--well);border:1px solid var(--line);color:var(--ink);font-family:'IBM Plex Mono';font-size:13.5px;padding:11px 12px;letter-spacing:.03em}
+  .leadcap input[type=email]:focus{outline:none;border-color:var(--cyan)}
+  .leadcap button{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono';font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--cyan);color:#04121a;border:1px solid var(--cyan);padding:11px 16px;cursor:pointer;transition:.18s var(--ease)}
+  .leadcap button:hover{background:#5ee6ff;border-color:#5ee6ff}
+  .leadcap .lmsg{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--cyan);margin-top:10px;letter-spacing:.03em}
+  .leadcap input.bad{border-color:var(--red)!important}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+  /* CTA block */
+  .ctablock{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--well));padding:48px 36px;text-align:center;position:relative;margin-top:8px}
+  .ctablock .corner{position:absolute;width:18px;height:18px;border:2px solid var(--cyan)}
+  .ctablock .corner.tl{top:12px;left:12px;border-right:0;border-bottom:0}
+  .ctablock .corner.tr{top:12px;right:12px;border-left:0;border-bottom:0}
+  .ctablock .corner.bl{bottom:12px;left:12px;border-right:0;border-top:0}
+  .ctablock .corner.br{bottom:12px;right:12px;border-left:0;border-top:0}
+  .ctablock h2{font-size:clamp(24px,3.6vw,40px)}
+  .ctablock p{max-width:48ch;margin:16px auto 26px;color:var(--body)}
+  .ctablock .cta-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;margin-top:8px}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  footer .mono{font-size:11px;color:var(--dim);letter-spacing:.1em}
+
+  @media (max-width:680px){
+    .wrap{padding:0 20px}
+    .calc{grid-template-columns:1fr}
+    .calc .inputs{border-right:0;border-bottom:1px solid var(--line)}
+    .pagehero{padding:40px 0 26px}
+  }
+</style>
+<!-- ===== Analytics & Google Ads conversion tracking — paste your IDs below; '' = disabled ===== -->
+<script>
+  window.TL_ANALYTICS = {
+    GA4_ID: 'G-FMVYY7B457',        /* GA4 Measurement ID */
+    ADS_ID: 'AW-18279209155',      /* Google Ads conversion ID */
+    QUOTE_LABEL: 'TZqfCMX188YcEMOxmoxE',  /* "Quote started" conversion (fires on price reveal) */
+    PURCHASE_LABEL: '',            /* paste the "Purchase" conversion label here (optional) */
+    META_PIXEL_ID: '1199464176580692',   /* Meta/Facebook Pixel ID */
+    REDDIT_PIXEL_ID: 'a2_j99o8gtcsh6s'   /* Reddit Pixel ID */
+  };
+  /* ---- Google (GA4 + Ads) ---- */
+  (function(){
+    var a=window.TL_ANALYTICS, id=a.GA4_ID||a.ADS_ID;
+    window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments);};
+    if(!id) return;   /* stays OFF until you paste an ID above */
+    var s=document.createElement('script'); s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id); document.head.appendChild(s);
+    gtag('js', new Date());
+    if(a.GA4_ID) gtag('config', a.GA4_ID);
+    if(a.ADS_ID) gtag('config', a.ADS_ID);
+  })();
+  /* ---- Meta Pixel (retargeting pool builds passively, even before you spend a dime) ---- */
+  (function(){
+    var a=window.TL_ANALYTICS; if(!a.META_PIXEL_ID) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', a.META_PIXEL_ID); fbq('track', 'PageView');
+  })();
+  /* ---- Reddit Pixel (community retargeting pool builds passively) ---- */
+  (function(){
+    var a=window.TL_ANALYTICS; if(!a.REDDIT_PIXEL_ID) return;
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};
+    p.callQueue=[];var t=d.createElement('script');t.src='https://www.redditstatic.com/ads/pixel.js';t.async=!0;
+    var s=d.getElementsByTagName('script')[0];s.parentNode.insertBefore(t,s)}}(window,document);
+    rdt('init', a.REDDIT_PIXEL_ID); rdt('track', 'PageVisit');
+  })();
+  /* the site calls this at key moments; safely no-ops until IDs are set */
+  window.tlTrack=function(kind,value){
+    var a=window.TL_ANALYTICS;
+    try{
+      if(window.gtag){
+        if(kind==='quote' && a.ADS_ID && a.QUOTE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.QUOTE_LABEL});
+        if(kind==='purchase' && a.ADS_ID && a.PURCHASE_LABEL) gtag('event','conversion',{send_to:a.ADS_ID+'/'+a.PURCHASE_LABEL, value:value||0, currency:'USD'});
+        if(a.GA4_ID) gtag('event', kind==='purchase'?'purchase':'generate_lead', {value:value||0, currency:'USD'});
+      }
+      if(window.fbq) fbq('track', kind==='purchase'?'Purchase':'Lead', {value:value||0, currency:'USD'});
+      if(window.rdt) rdt('track', kind==='purchase'?'Purchase':'Lead', {value:value||0, currency:'USD'});
+    }catch(_){}
+  };
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <nav class="wrap">
+    <a href="https://throughlineexplainers.com/" class="brand" aria-label="Throughline — home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6.5" y="6.5" width="19" height="19" rx="4.5" fill="none" stroke="#00D8FF" stroke-width="2.4"/><line x1="2" y1="16" x2="30" y2="16" stroke="#00D8FF" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="16" r="3" fill="#FFE500"/></svg>
+      <span><b>THROUGHLINE</b><small>Explainer&nbsp;Studio</small></span>
+    </a>
+    <span class="navtag">Confusion Cost Calculator</span>
+    <a href="https://throughlineexplainers.com/#quote" class="cta">Get instant quote →</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="pagehero" id="hero">
+    <div class="wrap">
+      <span class="kicker">Free · 60 seconds · No signup</span>
+      <h1>What is your confusing homepage costing you?</h1>
+      <p class="lead">A first-time visitor decides whether to stay in about <b>7 seconds</b>. If your homepage can't explain itself in that window, they bounce — drag the sliders and see the yearly bill.</p>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="cost" style="border-top:1px solid var(--line);background:var(--band);padding-top:48px">
+    <div class="wrap">
+      <div class="seclabel"><span class="kicker">The Cost</span><span class="id">// what confusion is worth</span></div>
+      <h2 style="font-size:clamp(24px,3.6vw,40px);margin-bottom:8px">Put a number on the bounce.</h2>
+      <p style="max-width:60ch;margin-bottom:28px">This is roughly what a homepage nobody understands costs you every year — before you've spent a dollar more on traffic.</p>
+      <div class="calc">
+        <div class="inputs" id="calcInputs">
+          <div class="inputs-cue"><span class="dot"></span>Drag to match your numbers</div>
+          <div class="field">
+            <div class="top"><span>Monthly site visitors</span><b id="v_vis">8,000</b></div>
+            <input type="range" id="r_vis" min="500" max="100000" step="500" value="8000" aria-label="Monthly visitors">
+          </div>
+          <div class="field">
+            <div class="top"><span>Visitor → trial / demo rate</span><b id="v_cvr">3%</b></div>
+            <input type="range" id="r_cvr" min="1" max="15" step="1" value="3" aria-label="Conversion rate percent">
+          </div>
+          <div class="field">
+            <div class="top"><span>Average annual contract value</span><b id="v_acv">$6,000</b></div>
+            <input type="range" id="r_acv" min="500" max="60000" step="500" value="6000" aria-label="Average contract value">
+          </div>
+          <div class="field">
+            <div class="top"><span>How clearly does your homepage explain it? <b id="v_clr" style="color:var(--cyan)">2 / 5</b></span></div>
+            <input type="range" id="r_clr" min="1" max="5" step="1" value="2" aria-label="Homepage clarity 1 to 5">
+          </div>
+        </div>
+        <div class="out">
+          <div class="ol">Left on the table / year</div>
+          <div class="big" id="o_year">$0</div>
+          <div class="gauge"><i id="o_gauge"></i></div>
+          <div class="sub"><b id="o_lost">0</b> visitors a month bounce confused → <b id="o_deals">0</b> trials/demos you never get. A clearer 75-second explainer typically lifts activation <b>30–40%</b> — and we can ship it <b>tomorrow</b>.</div>
+
+          <!-- non-blocking inline email capture -->
+          <div class="leadcap">
+            <div class="ll">Want this in your inbox + the fix?</div>
+            <form id="leadForm" novalidate>
+              <input type="text" name="company_website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <input type="email" id="leadEmail" name="email" placeholder="you@company.com" autocomplete="email" aria-label="Your email">
+              <button type="submit">Email me my number + the fix</button>
+            </form>
+            <div class="lmsg" id="leadMsg" hidden></div>
+          </div>
+
+          <div class="foot-note" style="margin-top:16px"><a href="https://throughlineexplainers.com/#quote" class="cta">Get instant quote →</a></div>
+          <div class="foot-note">* Illustrative estimate from your inputs. No data leaves your browser unless you submit it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="fix">
+    <div class="wrap">
+      <div class="ctablock">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h2>See the fix.</h2>
+        <p>Most founders fix this with one 75-second explainer — brand-matched, scripted to the single idea your buyer has to grasp, delivered in every aspect ratio overnight.</p>
+        <div class="cta-row">
+          <a href="https://throughlineexplainers.com/#quote" class="cta">See the fix →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">© <span id="yr">2026</span> THROUGHLINE · Explainer Studio</span>
+    <span class="mono"><a href="https://throughlineexplainers.com/" style="color:var(--label)">throughlineexplainers.com →</a></span>
+  </div>
+</footer>
+
+<script>
+/* ============ helpers ============ */
+var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============ COST CALCULATOR (compute/recompute copied verbatim from index.html) ============ */
+(function(){
+  var vis=document.getElementById('r_vis'),cvr=document.getElementById('r_cvr'),acv=document.getElementById('r_acv'),clr=document.getElementById('r_clr');
+  var oYear=document.getElementById('o_year'),oLost=document.getElementById('o_lost'),oDeals=document.getElementById('o_deals'),gauge=document.getElementById('o_gauge');
+  var fmt=new Intl.NumberFormat('en-US'),cur=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+  var curYear=0;
+  function compute(instant){
+    var V=+vis.value,C=+cvr.value/100,A=+acv.value,CL=+clr.value;
+    document.getElementById('v_vis').textContent=fmt.format(V);
+    document.getElementById('v_cvr').textContent=cvr.value+'%';
+    document.getElementById('v_acv').textContent=cur.format(A);
+    document.getElementById('v_clr').textContent=CL+' / 5';
+    // confusion share: clarity 5 -> ~6% lost to confusion, clarity 1 -> ~45%
+    var confusion=(0.45-(CL-1)*0.0975);
+    var lostVisitors=V*confusion;
+    var recoverable=lostVisitors*0.2;            // a clear explainer recovers ~20% of the confused
+    var missedDeals=recoverable*C;
+    var yearly=missedDeals*12*A;
+    oLost.textContent=fmt.format(Math.round(lostVisitors));
+    oDeals.textContent=fmt.format(Math.round(missedDeals*12));
+    var gp=Math.max(5,Math.min(100,(confusion-0.06)/0.39*100));gauge.style.right=(100-gp)+'%';
+    if(instant){curYear=yearly;oYear.textContent=cur.format(Math.round(yearly));}else countTo(yearly);
+  }
+  function countTo(target){
+    if(RM){curYear=target;oYear.textContent=cur.format(Math.round(target));return}
+    var from=curYear,start=null,dur=480;
+    function step(ts){if(!start)start=ts;var t=Math.min(1,(ts-start)/dur),e=1-Math.pow(1-t,3),val=from+(target-from)*e;oYear.textContent=cur.format(Math.round(val));if(t<1)requestAnimationFrame(step);else curYear=target}
+    requestAnimationFrame(step);
+  }
+  [vis,cvr,acv,clr].forEach(function(s){s.addEventListener('input',function(){compute(false)})});
+  // On first scroll-into-view, slide the sliders up from min to their defaults so it's
+  // obvious they're interactive (and the big number rises with them).
+  var DEF={vis:8000,cvr:3,acv:6000,clr:2},revealed=false;
+  function snap(el,val){var st=+el.step||1,mn=+el.min,mx=+el.max;return Math.min(mx,Math.max(mn,Math.round((val-mn)/st)*st+mn));}
+  function revealSweep(){
+    if(revealed)return;revealed=true;
+    if(RM){vis.value=DEF.vis;cvr.value=DEF.cvr;acv.value=DEF.acv;clr.value=DEF.clr;compute(true);return;}
+    var dur=950,start=null,f={vis:+vis.min,cvr:+cvr.min,acv:+acv.min,clr:+clr.min};
+    function step(ts){
+      if(!start)start=ts;var t=Math.min(1,(ts-start)/dur),e=1-Math.pow(1-t,3);
+      vis.value=snap(vis,f.vis+(DEF.vis-f.vis)*e);
+      cvr.value=snap(cvr,f.cvr+(DEF.cvr-f.cvr)*e);
+      acv.value=snap(acv,f.acv+(DEF.acv-f.acv)*e);
+      clr.value=snap(clr,f.clr+(DEF.clr-f.clr)*e);
+      compute(true);
+      if(t<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  // initial: park sliders low so the reveal can slide them up (defaults if reduced-motion)
+  if(RM){vis.value=DEF.vis;cvr.value=DEF.cvr;acv.value=DEF.acv;clr.value=DEF.clr;}
+  else{vis.value=vis.min;cvr.value=cvr.min;acv.value=acv.min;clr.value=clr.min;}
+  compute(true);curYear=0;oYear.textContent='$0';oLost.textContent='0';oDeals.textContent='0';gauge.style.right='100%';
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){revealSweep();io.disconnect()}})},{threshold:.45});
+  io.observe(document.getElementById('calcInputs'));
+
+  // expose the live yearly loss so the email-capture form can include it
+  window.__tlLoss=function(){return Math.round(curYear);};
+})();
+
+/* ============ non-blocking email capture → Web3Forms ============ */
+(function(){
+  var WEB3FORMS_KEY='13ed5753-64b8-4561-9565-fe5c7b7ae2dd';
+  var form=document.getElementById('leadForm'),emailEl=document.getElementById('leadEmail'),msg=document.getElementById('leadMsg');
+  if(!form||!emailEl) return;
+  function money(n){return '$'+Math.round(n||0).toLocaleString('en-US');}
+  function show(text){if(msg){msg.hidden=false;msg.textContent=text;}}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var email=(emailEl.value||'').trim();
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){emailEl.classList.add('bad');emailEl.focus();return;}
+    emailEl.classList.remove('bad');
+    // honeypot — if filled, silently treat as success without sending
+    var hp=form.elements['company_website'];
+    var loss=0; try{ if(typeof window.__tlLoss==='function') loss=window.__tlLoss(); }catch(_){}
+    show("Got it — check your inbox shortly.");
+    form.reset();
+    try{ if(window.tlTrack) tlTrack('quote'); }catch(_){}
+    if(hp&&hp.value) return;   // bot — UI already says success; don't actually send
+    try{
+      fetch('https://api.web3forms.com/submit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({
+          access_key:WEB3FORMS_KEY,
+          subject:'Calculator lead'+(loss?' ('+money(loss)+'/yr)':''),
+          from_name:'Throughline calculator',
+          replyto:email,
+          botcheck:'',
+          email:email,
+          source:'calculator',
+          estimated_annual_loss:loss?money(loss):'—'
+        })
+      }).catch(function(){});
+    }catch(_){}
+  });
+})();
+
+/* footer year */
+(function(){var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();})();
+</script>
+</body>
+</html>
