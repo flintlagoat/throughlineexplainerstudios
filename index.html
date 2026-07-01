@@ -907,8 +907,8 @@
 <script>
 /* ============ data ============ */
 var VOICES = [
-  {id:'PxG4jIFrrUE', name:'Redouble AI', who:'Sarah', role:'Redouble AI', brand:'#336DFF', q:'Wow, this is an absolute game changer.'},
-  {id:'gwu_R1VQtlY', name:'Ritivel', who:'Alex', role:'Ritivel', brand:'#FF5A00', q:'Worth the price 1000× over. Perfectly themed to my website and it flows so well. Infinitely grateful.'},
+  {id:'H0WOSG7fsNg', name:'Onwave', who:'Sarah', role:'Onwave', brand:'#FF5A3C', q:'Wow, this is an absolute game changer.'},
+  {id:'-y-M9DtnsP0', name:'Vela', who:'Alex', role:'Vela', brand:'#5B4BE8', q:'Worth the price 1000× over. Perfectly themed to my website and it flows so well. Infinitely grateful.'},
   {id:'aHKOwUtAptE', name:'Voquill', who:'David', role:'Voquill', brand:'#0FB5C9', q:'My website views-to-sales ratio almost doubled within a day.'}
 ];
 var FAQ = [
@@ -957,14 +957,16 @@ var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var thumb=function(id){return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'};
 var PLAY='<button class="play" aria-label="Play video"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></button>';
 function mountFacade(el){
-  var id=el.getAttribute('data-id'),title=el.getAttribute('data-title')||'explainer video';
+  var id=el.getAttribute('data-id'),src=el.getAttribute('data-src'),poster=el.getAttribute('data-poster'),title=el.getAttribute('data-title')||'explainer video';
+  var isLocal=!!src;
   var img=new Image();img.alt=title+' explainer video thumbnail';img.loading=el.getAttribute('data-eager')?'eager':'lazy';img.decoding='async';img.width=1280;img.height=720;
-  img.onerror=function(){img.onerror=null;img.src='https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'};
-  img.src=thumb(id);el.appendChild(img);
+  if(isLocal){ img.src=poster; }
+  else { img.onerror=function(){img.onerror=null;img.src='https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'}; img.src=thumb(id); }
+  el.appendChild(img);
   el.insertAdjacentHTML('beforeend',PLAY);
   el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label','Play '+title+' explainer video');
   el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
-  el.addEventListener('click',function(){ openLightbox(id,title); });
+  el.addEventListener('click',function(){ openLightbox(isLocal?src:id,title,isLocal); });
 }
 
 /* ============ video lightbox — large player so YouTube can serve HD/1440p/4K ============ */
@@ -977,12 +979,23 @@ function vlbEl(){
   __vlb.addEventListener('click',function(e){ if(e.target===__vlb||e.target.classList.contains('vlb-close'))closeLightbox(); });
   return __vlb;
 }
-function openLightbox(id,title){
+function openLightbox(ref,title,isLocal){
   var lb=vlbEl(),frame=lb.querySelector('.vlb-frame');
-  var f=document.createElement('iframe');
-  f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1&vq=hd1080';
-  f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=(title||'explainer')+' video';
-  frame.innerHTML='';frame.appendChild(f);
+  frame.innerHTML='';
+  if(isLocal){
+    /* self-hosted mp4 → native player, object-fit:contain. No YouTube-embed zoom/crop quirk on
+       large/high-DPI monitors (the "strange zoomed view" a viewer hit); always shows the full 16:9. */
+    var v=document.createElement('video');
+    v.src=ref;v.controls=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.preload='auto';
+    v.title=(title||'explainer')+' video';
+    v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;border:0;display:block';
+    frame.appendChild(v);
+  }else{
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+ref+'?autoplay=1&rel=0&modestbranding=1&playsinline=1&vq=hd1080';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=(title||'explainer')+' video';
+    frame.appendChild(f);
+  }
   lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
 }
 function closeLightbox(){
@@ -997,7 +1010,7 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeLightb
   var c=document.getElementById('voicesGrid');
   VOICES.forEach(function(v){
     var fig=document.createElement('figure');fig.className='voice';fig.style.setProperty('--brand',brandTint(v.brand));
-    fig.innerHTML='<div class="video" data-id="'+v.id+'" data-title="'+v.name+'" data-eager="1">'
+    fig.innerHTML='<div class="video" '+(v.src?('data-src="'+v.src+'" data-poster="'+v.poster+'"'):('data-id="'+v.id+'"'))+' data-title="'+v.name+'" data-eager="1">'
       +'<i class="corner tl"></i><i class="corner br"></i><span class="rec"><b></b>REC</span>'
       +'<span class="tc"><span>'+v.name.toUpperCase()+'.MP4</span><span>00:00 / 01:1'+(Math.floor(Math.random()*9))+'</span></span></div>'
       +'<div class="vb"><div class="stars" aria-hidden="true">★★★★★</div><span class="sr-only">Rated 5 out of 5.</span>'
@@ -1020,14 +1033,16 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeLightb
 /* ============ VideoObject structured data (video rich-result eligibility) ============ */
 (function(){
   var all=VOICES;
-  var items=all.map(function(v,i){return {"@type":"ListItem","position":i+1,"item":{
-    "@type":"VideoObject","name":v.name+" — explainer video by Throughline",
-    "description":"A brand-matched 75-second animated product explainer video produced by Throughline for "+v.name+".",
-    "thumbnailUrl":["https://i.ytimg.com/vi/"+v.id+"/hqdefault.jpg"],
-    "uploadDate":"2026-01-01","duration":"PT1M15S",
-    "embedUrl":"https://www.youtube-nocookie.com/embed/"+v.id,
-    "contentUrl":"https://youtu.be/"+v.id,
-    "publisher":{"@type":"Organization","name":"Throughline","url":"https://throughlineexplainers.com/"}}};});
+  var items=all.map(function(v,i){
+    var local=!!v.src, base="https://throughlineexplainers.com/";
+    var item={"@type":"VideoObject","name":v.name+" — explainer video by Throughline",
+      "description":"A brand-matched 75-second animated product explainer video produced by Throughline for "+v.name+".",
+      "thumbnailUrl":[local?(base+v.poster):("https://i.ytimg.com/vi/"+v.id+"/hqdefault.jpg")],
+      "uploadDate":"2026-01-01","duration":"PT1M15S",
+      "contentUrl":local?(base+v.src):("https://youtu.be/"+v.id),
+      "publisher":{"@type":"Organization","name":"Throughline","url":"https://throughlineexplainers.com/"}};
+    if(!local)item.embedUrl="https://www.youtube-nocookie.com/embed/"+v.id;
+    return {"@type":"ListItem","position":i+1,"item":item};});
   var ld={"@context":"https://schema.org","@type":"ItemList","name":"Throughline explainer video portfolio","itemListElement":items};
   var s=document.createElement('script');s.type='application/ld+json';s.textContent=JSON.stringify(ld);
   document.head.appendChild(s);
