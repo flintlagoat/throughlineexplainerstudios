@@ -12,6 +12,16 @@ const Stripe = require('stripe');
 const PRICE = { base: 90000, aspect: 20000, priority: 20000 }; // cents — keep in sync with the site's PRICE
 const VALID_EXTRAS = ['1:1', '9:16'];
 
+// fixed-price starter services — one-click checkout; the buyer's site URL is collected on the Stripe page
+const SERVICES = {
+  audit:   { amount: 4900,  name: 'Throughline — Homepage Clarity Audit',
+             desc: 'Scored homepage teardown: 7-second test, headline, CTAs, trust, hierarchy, prioritized fix list. Delivered within 24h. Credits in full toward any other service.' },
+  copy:    { amount: 15000, name: 'Throughline — Homepage Copy Rewrite',
+             desc: 'Hero, headlines and CTAs rewritten line by line with the reasoning behind each change. Paste-ready within 48h.' },
+  landing: { amount: 35000, name: 'Throughline — Landing Page Build',
+             desc: 'Custom-coded, brand-matched landing page with copy included. Live-ready files within 48h.' },
+};
+
 function dollars(cents) { return '$' + Math.round(cents / 100).toLocaleString('en-US'); }
 function clean(v, max) { return String(v == null ? '' : v).slice(0, max || 500); }
 
@@ -35,6 +45,33 @@ module.exports = async function handler(req, res) {
   const origin = (req.headers.origin && /^https?:\/\//.test(req.headers.origin))
     ? req.headers.origin
     : ('https://' + (req.headers.host || 'throughlineexplainers.com'));
+
+  // starter-service branch: fixed server-side price, Stripe collects email + site URL
+  const svc = SERVICES[b.product];
+  if (svc) {
+    try {
+      const stripe = Stripe(key);
+      const session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        payment_method_types: ['card'],
+        line_items: [{
+          quantity: 1,
+          price_data: { currency: 'usd', unit_amount: svc.amount, product_data: { name: svc.name, description: svc.desc } },
+        }],
+        allow_promotion_codes: true,
+        custom_fields: [
+          { key: 'website', label: { type: 'custom', custom: 'Your website URL' }, type: 'text' },
+        ],
+        metadata: { product: clean(b.product, 40), quoted_total: dollars(svc.amount) },
+        success_url: origin + '/?paid=1&svc=' + b.product,
+        cancel_url: origin + '/?canceled=1#starter',
+      });
+      res.status(200).json({ url: session.url });
+    } catch (e) {
+      res.status(500).json({ error: 'stripe_error', message: String((e && e.message) || e) });
+    }
+    return;
+  }
 
   try {
     const stripe = Stripe(key);
