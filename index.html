@@ -550,6 +550,39 @@
 </script>
 </head>
 <body>
+<!-- welcome veil: opaque overlay in the exact page background so the fade reads as the page
+     developing out of the dark. Once per browser session; skipped for reduced-motion. -->
+<div id="tl-welcome" role="status" aria-label="Loading" style="display:none;position:fixed;inset:0;z-index:99999;background:#07080d;align-items:center;justify-content:center;flex-direction:column;gap:18px">
+  <img src="/logo-landscape.svg" alt="Throughline" style="width:min(300px,60vw);animation:tlwPop .7s cubic-bezier(.4,0,.2,1) both" onerror="this.style.display='none'">
+  <div class="mono" style="font-size:11px;letter-spacing:.22em;color:#8a97a5;animation:tlwFade .8s .25s both">B2B SOFTWARE EXPLAINERS</div>
+  <div style="width:220px;height:2px;background:rgba(255,255,255,.08);animation:tlwFade .4s .35s both"><div id="tl-welcome-bar" style="width:0;height:100%;background:linear-gradient(90deg,#00D8FF,#FFE500);transition:width 1.5s cubic-bezier(.4,0,.2,1)"></div></div>
+</div>
+<style>@keyframes tlwPop{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:none}}@keyframes tlwFade{from{opacity:0}to{opacity:1}}</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('tl_welcomed'))return;
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    sessionStorage.setItem('tl_welcomed','1');
+    var ov=document.getElementById('tl-welcome');
+    ov.style.display='flex';
+    requestAnimationFrame(function(){document.getElementById('tl-welcome-bar').style.width='82%';});
+    function hide(){
+      if(!ov||ov.dataset.done)return;
+      ov.dataset.done='1';
+      document.getElementById('tl-welcome-bar').style.width='100%';
+      setTimeout(function(){
+        ov.style.transition='opacity .8s ease';
+        ov.style.opacity='0';
+        ov.style.pointerEvents='none';
+        setTimeout(function(){ov.style.display='none';},820);
+      },180);
+    }
+    addEventListener('load',function(){setTimeout(hide,1400);});
+    setTimeout(hide,2600); /* hard fallback: the veil can never hang */
+  }catch(_){}
+})();
+</script>
 <a class="skip" href="#main">Skip to content</a>
 <div id="scrub"></div>
 <div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
