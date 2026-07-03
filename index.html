@@ -1180,14 +1180,85 @@ document.querySelectorAll('.video').forEach(mountFacade);
   function onScroll(){var h=document.documentElement,max=h.scrollHeight-h.clientHeight;scrub.style.width=(max>0?(h.scrollTop/max*100):0)+'%'}
   document.addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-  // cursor-reactive grid (desktop, motion-ok only)
+  // cursor-reactive grid (desktop, motion-ok only) — double-smoothed "lantern" lag: the light
+  // trails the cursor on a lerp instead of snapping, which reads as a heavier, more physical beam.
   if(!RM && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-    var rafm;document.addEventListener('pointermove',function(ev){
-      cancelAnimationFrame(rafm);rafm=requestAnimationFrame(function(){
-        document.documentElement.style.setProperty('--mx',ev.clientX+'px');
-        document.documentElement.style.setProperty('--my',(ev.clientY)+'px');
-      });
+    var lmx=innerWidth/2,lmy=innerHeight/3,lcx=lmx,lcy=lmy,lightOn=false;
+    document.addEventListener('pointermove',function(ev){lmx=ev.clientX;lmy=ev.clientY;
+      if(!lightOn){lightOn=true;(function lantern(){
+        lcx+=(lmx-lcx)*.12;lcy+=(lmy-lcy)*.12;
+        document.documentElement.style.setProperty('--mx',lcx+'px');
+        document.documentElement.style.setProperty('--my',lcy+'px');
+        requestAnimationFrame(lantern);
+      })();}
     },{passive:true});
+
+    // reactive particle field: slow-rising brand embers that the cursor attracts within 120px
+    (function(){
+      var cv=document.createElement('canvas');
+      cv.id='tl-particles';
+      cv.style.cssText='position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.55';
+      document.body.appendChild(cv);
+      var px=cv.getContext('2d'),W,H,P=[],M={x:-999,y:-999};
+      function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}
+      rs();addEventListener('resize',rs,{passive:true});
+      document.addEventListener('pointermove',function(e){M.x=e.clientX;M.y=e.clientY},{passive:true});
+      var COLS=['rgba(0,216,255,','rgba(255,229,0,','rgba(170,200,235,'];
+      for(var i=0;i<110;i++){P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.7+.4,vx:(Math.random()-.5)*.28,vy:-(Math.random()*.55+.1),a:Math.random()*.5+.15,c:COLS[i%3]});}
+      (function draw(){
+        px.clearRect(0,0,W,H);
+        for(var i=0;i<P.length;i++){var p=P[i];
+          var dx=M.x-p.x,dy=M.y-p.y,d=Math.sqrt(dx*dx+dy*dy);
+          if(d<120&&d>0){p.vx+=dx/d*.04;p.vy+=dy/d*.04;}
+          p.x+=p.vx;p.y+=p.vy;p.vx*=.98;p.vy*=.98;
+          if(p.y<-5){p.y=H+5;p.x=Math.random()*W;}
+          if(p.x<-5)p.x=W+5;if(p.x>W+5)p.x=-5;
+          px.beginPath();px.arc(p.x,p.y,p.r,0,6.2832);px.fillStyle=p.c+p.a+')';px.fill();
+        }
+        requestAnimationFrame(draw);
+      })();
+    })();
+
+    // per-card cursor spotlight: cards carry a soft glow that tracks the pointer inside them
+    (function(){
+      var sel='.ocard,.frm,.why4 .cell';
+      document.addEventListener('pointermove',function(e){
+        var t=e.target&&e.target.closest?e.target.closest(sel):null;
+        if(!t)return;
+        var r=t.getBoundingClientRect();
+        t.style.setProperty('--cmx',((e.clientX-r.left)/r.width*100)+'%');
+        t.style.setProperty('--cmy',((e.clientY-r.top)/r.height*100)+'%');
+      },{passive:true});
+      var st=document.createElement('style');
+      st.textContent='.ocard,.frm,.why4 .cell{position:relative;overflow:hidden}'+
+        '.ocard::after,.frm::after,.why4 .cell::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(200px circle at var(--cmx,50%) var(--cmy,50%),rgba(0,216,255,.08),transparent 65%)}'+
+        '.ocard:hover::after,.frm:hover::after,.why4 .cell:hover::after{opacity:1}';
+      document.head.appendChild(st);
+    })();
+
+    // WebAudio UI blips (zero assets): tiny oscillator taps on CTA hover + click + FAQ toggle
+    (function(){
+      var AC=null;
+      function blip(f1,f2,dur,gain){
+        try{
+          AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+          if(AC.state==='suspended')return;
+          var o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;
+          o.type='sine';o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+          g.gain.setValueAtTime(gain,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+          o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+dur+.02);
+        }catch(_){}
+      }
+      document.addEventListener('pointerdown',function(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(_){}},{once:true,capture:true});
+      document.addEventListener('pointerenter',function(e){
+        if(e.target&&e.target.closest&&e.target.closest('.cta'))blip(820,620,.08,.028);
+      },true);
+      document.addEventListener('click',function(e){
+        if(!e.target||!e.target.closest)return;
+        if(e.target.closest('.cta'))blip(480,260,.16,.05);
+        else if(e.target.closest('details'))blip(220,500,.22,.04);
+      },true);
+    })();
   }
 
   document.getElementById('yr').textContent=new Date().getFullYear();
