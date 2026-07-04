@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Throughline // CEO</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07080d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,18..72,400;0,18..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07080d; --band:#0a0c12; --panel:#0a1016; --panel2:#0d141c; --well:#060709;
+    --line:#16323a; --line-soft:rgba(93,203,224,.14);
+    --ink:#F4F6FB; --label:#5DCBE0; --body:#9AA3B2; --dim:#8593a0;
+    --cyan:#00D8FF; --yellow:#FFE500; --red:#FF3B30; --green:#35D07F;
+    --grid:rgba(0,216,255,.05);
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+  body{
+    background:var(--bg); color:var(--body);
+    font-family:'Archivo',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    text-rendering:optimizeLegibility; min-height:100vh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:34px 34px, 34px 34px;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--yellow);color:#000}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:2px}
+  button{font-family:inherit}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+  h1,h2,h3,h4{font-family:'Archivo',sans-serif;font-weight:800;line-height:1.05;letter-spacing:-.01em;color:var(--ink);text-transform:uppercase}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  input.bad{border-color:var(--red)!important}
+
+  /* ---------- registration brackets ---------- */
+  .brk{position:relative}
+  .brk::before,.brk::after,.brk>.bk1,.brk>.bk2{content:"";position:absolute;width:12px;height:12px;border:1.5px solid var(--cyan);opacity:.4;pointer-events:none;z-index:2}
+  .brk::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .brk::after{top:-1px;right:-1px;border-left:0;border-bottom:0}
+  .brk>.bk1{bottom:-1px;left:-1px;border-right:0;border-top:0}
+  .brk>.bk2{bottom:-1px;right:-1px;border-left:0;border-top:0}
+
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--label);display:inline-flex;align-items:center;gap:10px}
+  .kicker::before{content:"";width:26px;height:1px;background:var(--cyan);display:inline-block}
+
+  /* =================== AUTH GATE =================== */
+  #gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:radial-gradient(680px circle at 50% 30%,rgba(0,216,255,.06),transparent 60%),var(--bg)}
+  .gatebox{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);padding:34px 30px 30px;position:relative}
+  .gatelogo{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:26px;text-align:center}
+  .gatelogo svg{width:52px;height:52px}
+  .gatelogo b{font-family:'Archivo';font-weight:800;font-size:19px;letter-spacing:.02em;color:var(--ink);text-transform:uppercase}
+  .gatelogo small{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.26em;color:var(--label);text-transform:uppercase}
+  #gate label{display:block;font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
+  #gate .row{display:flex;gap:8px}
+  #gpw{flex:1;min-width:0;background:var(--well);border:1px solid var(--line);color:var(--ink);font-family:'IBM Plex Mono';font-size:15px;padding:13px 14px;letter-spacing:.06em}
+  #gpw:focus{outline:none;border-color:var(--cyan)}
+  #gate button.enter{background:var(--yellow);color:#0a0a05;border:1px solid var(--yellow);font-family:'IBM Plex Mono';font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:0 18px;cursor:pointer;transition:.18s var(--ease)}
+  #gate button.enter:hover{background:#fff14d}
+  #gerr{margin-top:14px;font-family:'IBM Plex Mono';font-size:12px;letter-spacing:.06em;color:var(--red);min-height:16px}
+  #goffline{margin-top:12px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.05em;color:var(--dim)}
+  @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+  .shake{animation:shake .5s}
+
+  /* =================== APP SHELL =================== */
+  #app{display:none;position:relative;z-index:1}
+  #app.live{display:block}
+
+  /* top bar */
+  header{position:sticky;top:0;z-index:80;background:rgba(7,8,13,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar{display:flex;align-items:center;gap:16px;padding:11px 20px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .brand svg{width:26px;height:26px;flex-shrink:0}
+  .brand b{font-family:'Archivo';font-weight:800;font-size:16px;letter-spacing:.02em;color:var(--ink);text-transform:uppercase;line-height:1}
+  .brand span{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.18em;color:var(--label);text-transform:uppercase}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:6px}
+  .chip{display:inline-flex;align-items:baseline;gap:7px;background:var(--well);border:1px solid var(--line);padding:6px 11px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+  .chip b{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:0}
+  .chip.hot b{color:var(--red)} .chip.act b{color:var(--yellow)} .chip.won b{color:var(--green)} .chip.dol b{color:var(--cyan)}
+  .topright{margin-left:auto;display:flex;gap:8px;align-items:center}
+  .tbtn{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--line);color:var(--body);font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:8px 13px;cursor:pointer;transition:.16s var(--ease);min-height:36px}
+  .tbtn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,216,255,.05)}
+
+  main{max-width:1440px;margin:0 auto;padding:22px 20px 80px;position:relative;z-index:1}
+  .layout{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start}
+  .col-main{min-width:0;display:flex;flex-direction:column;gap:26px}
+  .rail{position:sticky;top:78px;display:flex;flex-direction:column;gap:16px}
+
+  .seclabel{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .seclabel h2{font-size:16px;letter-spacing:.02em}
+  .seclabel .id{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+  .seclabel .count{margin-left:auto;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.1em;color:var(--label)}
+
+  /* ---------- DO NEXT queue ---------- */
+  .queue{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+  .qcard{background:var(--panel);border:1px solid var(--line);padding:14px;cursor:pointer;transition:.16s var(--ease);position:relative;display:flex;flex-direction:column;gap:9px}
+  .qcard:hover{border-color:var(--line-soft);background:var(--panel2);transform:translateY(-1px)}
+  .qhead{display:flex;align-items:center;gap:9px}
+  .tdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .tdot.hot{background:var(--red);box-shadow:0 0 7px var(--red)} .tdot.warm{background:var(--yellow);box-shadow:0 0 7px rgba(255,229,0,.5)} .tdot.cold{background:var(--dim)}
+  .qname{font-family:'Archivo';font-weight:700;font-size:14px;color:var(--ink);line-height:1.15}
+  .qhandle{font-family:'IBM Plex Mono';font-size:11px;color:var(--label);letter-spacing:.04em}
+  .qaction{font-family:'Archivo';font-weight:600;font-size:13.5px;color:var(--ink);line-height:1.35}
+  .qmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .qlinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+  .lbtn{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--body);border:1px solid var(--line);background:var(--well);padding:5px 9px;cursor:pointer;transition:.15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+  .lbtn:hover{border-color:var(--cyan);color:var(--cyan)}
+  .lbtn.copy{border-color:rgba(0,216,255,.35);color:var(--cyan)}
+  .empty{font-family:'IBM Plex Mono';font-size:12px;color:var(--dim);letter-spacing:.06em;padding:16px;border:1px dashed var(--line);text-align:center}
+
+  /* status badges */
+  .badge{display:inline-flex;align-items:center;font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--line);color:var(--dim);white-space:nowrap;line-height:1.3}
+  .badge.b-new{color:var(--yellow);border-color:rgba(255,229,0,.4)}
+  .badge.b-read_ready,.badge.b-comment_ready,.badge.b-dm_ready{color:var(--yellow);border-color:rgba(255,229,0,.4)}
+  .badge.b-dm_sent{color:var(--cyan);border-color:rgba(0,216,255,.4)}
+  .badge.b-replied{color:var(--cyan);border-color:rgba(0,216,255,.4)}
+  .badge.b-negotiating{color:var(--cyan);border-color:rgba(0,216,255,.4)}
+  .badge.b-in_progress{color:var(--cyan);border-color:rgba(0,216,255,.55);background:rgba(0,216,255,.06)}
+  .badge.b-won{color:var(--green);border-color:rgba(53,208,127,.5);background:rgba(53,208,127,.08)}
+  .badge.b-lost{color:var(--dim);border-color:var(--line)}
+  .badge.b-cold{color:var(--dim)}
+
+  /* ---------- LEADS ---------- */
+  .panel{background:var(--panel);border:1px solid var(--line)}
+  .searchrow{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+  .search{flex:1;min-width:200px;position:relative}
+  .search input{width:100%;background:var(--well);border:1px solid var(--line);color:var(--ink);font-family:'IBM Plex Mono';font-size:13px;padding:11px 12px 11px 34px;letter-spacing:.03em}
+  .search input:focus{outline:none;border-color:var(--cyan)}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;opacity:.5}
+  .fchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .fchip{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);background:var(--well);padding:6px 11px;cursor:pointer;transition:.15s}
+  .fchip:hover{color:var(--body);border-color:var(--line-soft)}
+  .fchip.on{color:#0a0a05;background:var(--cyan);border-color:var(--cyan)}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);background:var(--well)}
+  table.leads{width:100%;border-collapse:collapse;min-width:720px}
+  table.leads th{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel)}
+  table.leads td{padding:11px 12px;border-bottom:1px solid rgba(22,50,58,.5);vertical-align:middle;font-size:13px}
+  table.leads tr{cursor:pointer;transition:background .12s}
+  table.leads tbody tr:hover{background:rgba(0,216,255,.04)}
+  .lname{font-family:'Archivo';font-weight:600;color:var(--ink);font-size:13.5px;line-height:1.2}
+  .lsub{font-family:'IBM Plex Mono';font-size:11px;color:var(--label);letter-spacing:.03em}
+  .lplat{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);letter-spacing:.05em;text-transform:uppercase}
+  .laction{color:var(--body);font-size:12.5px;max-width:260px}
+  .rowlinks{display:flex;gap:5px;flex-wrap:wrap}
+
+  /* ---------- INTAKE ---------- */
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .fld{display:flex;flex-direction:column;gap:6px}
+  .fld.full{grid-column:1/-1}
+  .fld label{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+  .fld input,.fld select,.fld textarea{background:var(--well);border:1px solid var(--line);color:var(--ink);font-family:'IBM Plex Mono';font-size:13px;padding:10px 11px;letter-spacing:.02em;width:100%}
+  .fld textarea{font-family:'Archivo';font-size:14px;resize:vertical;min-height:92px;line-height:1.5}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--cyan)}
+  .fld input[type=file]{padding:8px;font-size:11px;color:var(--body)}
+  .formfoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono';font-weight:600;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:11px 18px;border:1px solid var(--line);cursor:pointer;transition:.18s var(--ease);min-height:42px;background:transparent;color:var(--ink)}
+  .btn.primary{background:var(--yellow);color:#0a0a05;border-color:var(--yellow)}
+  .btn.primary:hover{background:#fff14d}
+  .btn.ghost:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,216,255,.05)}
+  .formmsg{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:.04em;color:var(--green);min-height:16px}
+  .formmsg.err{color:var(--yellow)}
+  .hp{position:absolute!important;left:-9999px!important;opacity:0;height:0;width:0}
+  .hint{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);letter-spacing:.03em;margin-bottom:12px;line-height:1.6}
+  .hint code{color:var(--label);background:var(--well);padding:1px 5px;border:1px solid var(--line)}
+
+  /* ---------- PLAYBOOK ---------- */
+  .pb-wrap{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start}
+  .pb-nav{position:sticky;top:78px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 100px);overflow-y:auto}
+  .pb-nav a{display:flex;align-items:center;gap:9px;font-family:'IBM Plex Mono';font-size:11.5px;letter-spacing:.03em;color:var(--body);padding:8px 10px;border-left:2px solid transparent;transition:.14s;text-transform:none}
+  .pb-nav a:hover{color:var(--ink);border-left-color:var(--line-soft);background:rgba(0,216,255,.03)}
+  .pb-nav a.on{color:var(--cyan);border-left-color:var(--cyan);background:rgba(0,216,255,.05)}
+  .pb-nav a .ic{font-size:14px;width:18px;text-align:center}
+  .pb-list{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .pb-sec{border:1px solid var(--line);background:var(--panel)}
+  .pb-sec.hl{border-color:var(--line-soft)}
+  .pb-sec.hidden{display:none}
+  .pb-sec>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:11px;padding:13px 15px;font-family:'Archivo';font-weight:700;font-size:14px;color:var(--ink);text-transform:uppercase;letter-spacing:.01em;user-select:none}
+  .pb-sec>summary::-webkit-details-marker{display:none}
+  .pb-sec>summary .ic{font-size:17px}
+  .pb-sec>summary .arw{margin-left:auto;font-family:'IBM Plex Mono';font-size:12px;color:var(--label);transition:transform .2s}
+  .pb-sec[open]>summary .arw{transform:rotate(90deg)}
+  .pb-body{padding:2px 18px 18px;font-size:14px;line-height:1.65;color:var(--body)}
+  .pb-body h4{font-size:12.5px;letter-spacing:.04em;color:var(--label);margin:16px 0 7px;text-transform:uppercase}
+  .pb-body p{margin:0 0 10px}
+  .pb-body ul,.pb-body ol{margin:0 0 12px;padding-left:20px}
+  .pb-body li{margin:4px 0}
+  .pb-body strong{color:var(--ink);font-weight:600}
+  .pb-body code{font-family:'IBM Plex Mono';font-size:12.5px;color:var(--label);background:var(--well);padding:1px 6px;border:1px solid var(--line)}
+  .pb-body a{color:var(--cyan);border-bottom:1px solid rgba(0,216,255,.35)}
+  .pb-body table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;display:block;overflow-x:auto}
+  .pb-body th,.pb-body td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+  .pb-body th{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--label);background:var(--well)}
+  mark{background:rgba(255,229,0,.25);color:var(--ink);padding:0 2px}
+
+  /* ---------- RAIL (cheat sheet + links) ---------- */
+  .card{background:var(--panel);border:1px solid var(--line);padding:15px 16px}
+  .card h3{font-size:12px;letter-spacing:.14em;color:var(--label);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+  .card h3::before{content:"";width:16px;height:1px;background:var(--cyan)}
+  .ladder{display:flex;flex-direction:column;gap:6px}
+  .ladder .lr{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding-bottom:6px;border-bottom:1px solid rgba(22,50,58,.5)}
+  .ladder .lr:last-child{border-bottom:0;padding-bottom:0}
+  .ladder .lr .lt{color:var(--body)} .ladder .lr .lp{font-family:'IBM Plex Mono';color:var(--ink);font-weight:600}
+  .ladder .lr.found{margin-top:3px;padding-top:8px;border-top:1px dashed var(--line)}
+  .ladder .lr.found .lt,.ladder .lr.found .lp{color:var(--yellow)}
+  .vlist{list-style:none;display:flex;flex-direction:column;gap:7px;counter-reset:v}
+  .vlist li{position:relative;padding-left:26px;font-size:13px;line-height:1.4;color:var(--body);counter-increment:v}
+  .vlist li::before{content:counter(v);position:absolute;left:0;top:0;font-family:'IBM Plex Mono';font-size:11px;color:var(--cyan);border:1px solid var(--line);width:18px;height:18px;display:flex;align-items:center;justify-content:center;background:var(--well)}
+  .vlist li b{color:var(--ink);font-weight:600}
+  .voice{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .voice li{font-size:12.5px;color:var(--body);padding-left:16px;position:relative;line-height:1.4}
+  .voice li::before{content:"—";position:absolute;left:0;color:var(--dim)}
+  .voice li b{color:var(--ink)}
+  .links{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .links a{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);background:var(--well);padding:9px 10px;transition:.15s}
+  .links a:hover{border-color:var(--cyan);background:rgba(0,216,255,.05)}
+  .links a b{font-family:'Archivo';font-weight:600;font-size:12.5px;color:var(--ink);text-transform:uppercase;letter-spacing:.02em}
+  .links a span{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+
+  footer{text-align:center;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.1em;color:var(--dim);padding:28px 20px 10px;text-transform:uppercase}
+
+  /* ---------- DRAWER ---------- */
+  #scrim{position:fixed;inset:0;z-index:110;background:rgba(3,4,7,.72);opacity:0;visibility:hidden;transition:.24s var(--ease)}
+  #scrim.open{opacity:1;visibility:visible}
+  #drawer{position:fixed;top:0;right:0;height:100%;width:min(560px,100%);z-index:120;background:var(--bg);border-left:1px solid var(--line);
+    transform:translateX(100%);transition:transform .28s var(--ease);display:flex;flex-direction:column;overflow:hidden}
+  #drawer.open{transform:none}
+  .dr-head{display:flex;align-items:flex-start;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+  .dr-head .dr-x{margin-left:auto;background:transparent;border:1px solid var(--line);color:var(--body);width:36px;height:36px;cursor:pointer;font-size:16px;flex-shrink:0;transition:.15s}
+  .dr-head .dr-x:hover{border-color:var(--red);color:var(--red)}
+  .dr-title{font-family:'Archivo';font-weight:800;font-size:19px;color:var(--ink);text-transform:uppercase;line-height:1.1}
+  .dr-sub{font-family:'IBM Plex Mono';font-size:12px;color:var(--label);letter-spacing:.04em;margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .dr-body{overflow-y:auto;padding:18px 20px 40px;flex:1;display:flex;flex-direction:column;gap:18px}
+  .dr-fields{display:grid;grid-template-columns:1fr 1fr;gap:2px;border:1px solid var(--line);background:var(--line)}
+  .dr-fields .f{background:var(--panel);padding:9px 12px;min-width:0}
+  .dr-fields .f.wide{grid-column:1/-1}
+  .dr-fields .f .k{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+  .dr-fields .f .v{font-size:13px;color:var(--ink);word-break:break-word}
+  .dr-fields .f .v a{color:var(--cyan);border-bottom:1px solid rgba(0,216,255,.3)}
+  .dr-sec h4{font-size:11.5px;letter-spacing:.14em;color:var(--label);margin-bottom:9px;display:flex;align-items:center;gap:8px}
+  .dr-sec h4::before{content:"";width:16px;height:1px;background:var(--cyan)}
+  .dr-links{display:flex;gap:7px;flex-wrap:wrap}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.06em;color:var(--label);border:1px solid var(--line);background:var(--well);padding:4px 9px;text-transform:lowercase}
+  .notes{font-size:13.5px;color:var(--body);line-height:1.6;white-space:pre-wrap;background:var(--well);border:1px solid var(--line);padding:12px 14px}
+  .thread{display:flex;flex-direction:column;gap:10px}
+  .bub{max-width:82%;padding:10px 13px;border:1px solid var(--line);font-size:13.5px;line-height:1.5;color:var(--body);position:relative}
+  .bub .bmeta{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;display:flex;gap:8px}
+  .bub .btxt{white-space:pre-wrap;color:var(--ink)}
+  .bub.out{align-self:flex-end;background:rgba(0,216,255,.07);border-color:rgba(0,216,255,.28)}
+  .bub.out .bmeta{color:var(--label)}
+  .bub.in{align-self:flex-start;background:var(--panel)}
+  .bub .drcopy{margin-top:8px}
+  .dr-hint{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);letter-spacing:.03em;line-height:1.6;border:1px dashed var(--line);padding:11px 13px}
+  .dr-hint b{color:var(--label)}
+
+  /* ---------- TOAST ---------- */
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);z-index:300;
+    background:var(--panel2);border:1px solid var(--cyan);color:var(--ink);font-family:'IBM Plex Mono';font-size:12.5px;letter-spacing:.06em;
+    padding:11px 20px;opacity:0;pointer-events:none;transition:.22s var(--ease);box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1080px){
+    .layout{grid-template-columns:1fr}
+    .rail{position:static}
+    .pb-wrap{grid-template-columns:1fr}
+    .pb-nav{position:static;flex-direction:row;flex-wrap:wrap;max-height:none}
+    .pb-nav a{border-left:0;border:1px solid var(--line)}
+    .pb-nav a.on{border-color:var(--cyan)}
+  }
+  @media (max-width:640px){
+    main{padding:16px 14px 70px}
+    .topbar{padding:10px 14px}
+    #drawer{width:100%;border-left:0}
+    .dr-fields{grid-template-columns:1fr}
+    .links{grid-template-columns:1fr}
+    .queue{grid-template-columns:1fr}
+    .chip{font-size:10px;padding:5px 9px}
+    .brand span{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- =================== AUTH GATE =================== -->
+<div id="gate">
+  <div class="gatebox brk"><i class="bk1"></i><i class="bk2"></i>
+    <div class="gatelogo">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6.5" y="6.5" width="19" height="19" rx="4.5" fill="none" stroke="#00D8FF" stroke-width="2.4"/><line x1="2" y1="16" x2="30" y2="16" stroke="#00D8FF" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="16" r="3" fill="#FFE500"/></svg>
+      <div><b>Throughline</b><br><small>CEO // Command</small></div>
+    </div>
+    <form id="gform" autocomplete="off">
+      <label for="gpw">Access Key</label>
+      <div class="row">
+        <input id="gpw" type="password" autocomplete="current-password" spellcheck="false" aria-label="Password">
+        <button type="submit" class="enter">Enter</button>
+      </div>
+      <div id="gerr" role="alert"></div>
+      <div id="goffline" hidden>(API offline — deploy to view live data)</div>
+    </form>
+  </div>
+</div>
+
+<!-- =================== APP =================== -->
+<div id="app">
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6.5" y="6.5" width="19" height="19" rx="4.5" fill="none" stroke="#00D8FF" stroke-width="2.4"/><line x1="2" y1="16" x2="30" y2="16" stroke="#00D8FF" stroke-width="2.4" stroke-linecap="round"/><circle cx="22.5" cy="16" r="3" fill="#FFE500"/></svg>
+        <div><b>Throughline</b> <span>// CEO</span></div>
+      </div>
+      <div class="chips" id="statchips"></div>
+      <div class="topright">
+        <a class="tbtn" href="https://throughlineexplainers.com" target="_blank" rel="noopener">◈ Site</a>
+        <button class="tbtn" id="lockbtn" title="Lock &amp; clear session">🔒 Lock</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <div class="col-main">
+
+        <!-- 02) DO NEXT -->
+        <section aria-labelledby="dn">
+          <div class="seclabel"><span class="id">01</span><h2 id="dn">Do Next</h2><span class="count" id="dncount"></span></div>
+          <div class="queue" id="queue"></div>
+        </section>
+
+        <!-- 03) LEADS -->
+        <section aria-labelledby="ld">
+          <div class="seclabel"><span class="id">02</span><h2 id="ld">Leads</h2><span class="count" id="ldcount"></span></div>
+          <div class="searchrow">
+            <div class="search">
+              <svg viewBox="0 0 20 20" fill="none" stroke="#5DCBE0" stroke-width="2" aria-hidden="true"><circle cx="9" cy="9" r="6"/><line x1="14" y1="14" x2="18" y2="18" stroke-linecap="round"/></svg>
+              <input id="leadsearch" type="search" placeholder="Search handle, name, status, action, origin, product, tags…" aria-label="Search leads">
+            </div>
+          </div>
+          <div class="fchips" id="fchips"></div>
+          <div class="tablewrap">
+            <table class="leads">
+              <thead><tr>
+                <th>Lead</th><th>Platform</th><th>Origin</th><th>Status</th><th>Temp</th><th>Next action</th><th>Links</th>
+              </tr></thead>
+              <tbody id="leadrows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 05) INTAKE -->
+        <section aria-labelledby="ik">
+          <div class="seclabel"><span class="id">03</span><h2 id="ik">Intake / Staging</h2></div>
+          <div class="panel brk" style="padding:18px"><i class="bk1"></i><i class="bk2"></i>
+            <div class="hint">Add a new lead or dump raw info about an existing one. This files it to you by email — <code>Claude</code> reads it in and updates the board next time you mention it in chat. Screenshots welcome.</div>
+            <form id="intake">
+              <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <div class="form-grid">
+                <div class="fld">
+                  <label for="i_platform">Platform</label>
+                  <select id="i_platform" name="platform">
+                    <option value="">— select —</option>
+                    <option>Reddit</option><option>X / Twitter</option><option>LinkedIn</option>
+                    <option>Indie Hackers</option><option>Discord</option><option>Email</option>
+                    <option>Product Hunt</option><option>Hacker News</option><option>Bluesky</option><option>Other</option>
+                  </select>
+                </div>
+                <div class="fld">
+                  <label for="i_handle">Handle / username</label>
+                  <input id="i_handle" name="handle" placeholder="@name">
+                </div>
+                <div class="fld">
+                  <label for="i_product">Product URL</label>
+                  <input id="i_product" name="product_url" placeholder="https://">
+                </div>
+                <div class="fld">
+                  <label for="i_post">Post URL</label>
+                  <input id="i_post" name="post_url" placeholder="https://">
+                </div>
+                <div class="fld">
+                  <label for="i_status">Status</label>
+                  <select id="i_status" name="status">
+                    <option value="">— select —</option>
+                    <option value="new">new</option>
+                    <option value="read_ready">read_ready</option>
+                    <option value="comment_ready">comment_ready</option>
+                    <option value="dm_ready">dm_ready</option>
+                    <option value="dm_sent">dm_sent</option>
+                    <option value="replied">replied</option>
+                    <option value="negotiating">negotiating</option>
+                    <option value="in_progress">in_progress</option>
+                    <option value="won">won</option>
+                    <option value="lost">lost</option>
+                  </select>
+                </div>
+                <div class="fld">
+                  <label for="i_temp">Temp</label>
+                  <select id="i_temp" name="temp">
+                    <option value="">— select —</option>
+                    <option value="hot">hot</option><option value="warm">warm</option><option value="cold">cold</option>
+                  </select>
+                </div>
+                <div class="fld full">
+                  <label for="i_notes">What is going on / raw notes</label>
+                  <textarea id="i_notes" name="notes" placeholder="Paste the thread, the context, what you noticed, what to do next…"></textarea>
+                </div>
+                <div class="fld full">
+                  <label for="i_file">Screenshot (optional)</label>
+                  <input id="i_file" name="attachment" type="file" accept="image/*">
+                </div>
+              </div>
+              <div class="formfoot">
+                <button type="submit" class="btn primary" id="intakesubmit">▲ File it</button>
+                <button type="button" class="btn ghost" id="copyblock">⧉ Copy structured block</button>
+                <span class="formmsg" id="intakemsg"></span>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- 06) PLAYBOOK -->
+        <section aria-labelledby="pb">
+          <div class="seclabel"><span class="id">04</span><h2 id="pb">Playbook</h2><span class="count" id="pbcount"></span></div>
+          <div class="searchrow">
+            <div class="search">
+              <svg viewBox="0 0 20 20" fill="none" stroke="#5DCBE0" stroke-width="2" aria-hidden="true"><circle cx="9" cy="9" r="6"/><line x1="14" y1="14" x2="18" y2="18" stroke-linecap="round"/></svg>
+              <input id="pbsearch" type="search" placeholder="Search the playbook…" aria-label="Search playbook">
+            </div>
+          </div>
+          <div class="pb-wrap">
+            <nav class="pb-nav" id="pbnav" aria-label="Playbook sections"></nav>
+            <div class="pb-list" id="pblist"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- RAIL -->
+      <aside class="rail">
+        <div class="card brk"><i class="bk1"></i><i class="bk2"></i>
+          <h3>Pricing Ladder</h3>
+          <div class="ladder">
+            <div class="lr"><span class="lt">Audit <span style="color:var(--dim)">(credited)</span></span><span class="lp">$49</span></div>
+            <div class="lr"><span class="lt">Rewrite</span><span class="lp">$150</span></div>
+            <div class="lr"><span class="lt">Page</span><span class="lp">$350</span></div>
+            <div class="lr"><span class="lt">Video</span><span class="lp">$900</span></div>
+            <div class="lr found"><span class="lt">Founding · preview-first</span><span class="lp">$250</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>DM Value Order</h3>
+          <ol class="vlist">
+            <li><b>Proof you looked</b> — a real detail</li>
+            <li><b>Genuine compliment</b></li>
+            <li><b>One real non-video fix</b></li>
+            <li><b>The angle</b></li>
+            <li><b>Soft offer</b> — happy to show examples</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>Voice Rules</h3>
+          <ul class="voice">
+            <li><b>Human-loose case</b>, not corporate</li>
+            <li><b>No em dashes.</b> Ever.</li>
+            <li><b>Never name a vendor</b></li>
+            <li><b>One clever line max</b></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Links Hub</h3>
+          <div class="links">
+            <a href="https://throughlineexplainers.com" target="_blank" rel="noopener"><b>Site</b><span>Live</span></a>
+            <a href="https://f5bot.com" target="_blank" rel="noopener"><b>F5Bot</b><span>Alerts</span></a>
+            <a href="https://github.com/flintlagoat/throughlineexplainerstudios" target="_blank" rel="noopener"><b>GitHub</b><span>Repo</span></a>
+            <a href="https://web3forms.com" target="_blank" rel="noopener"><b>Web3Forms</b><span>Intake</span></a>
+            <a href="https://dashboard.stripe.com" target="_blank" rel="noopener"><b>Stripe</b><span>Money</span></a>
+            <a href="https://studio.youtube.com" target="_blank" rel="noopener"><b>YouTube</b><span>Studio</span></a>
+            <a href="https://mail.zoho.com" target="_blank" rel="noopener"><b>Zoho</b><span>Mail</span></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Password-gated · Data lives server-side · Ask Claude to update leads</footer>
+  </main>
+</div>
+
+<!-- DRAWER -->
+<div id="scrim"></div>
+<aside id="drawer" role="dialog" aria-modal="true" aria-label="Lead detail">
+  <div class="dr-head">
+    <div>
+      <div class="dr-title" id="dr-title"></div>
+      <div class="dr-sub" id="dr-sub"></div>
+    </div>
+    <button class="dr-x" id="dr-x" aria-label="Close">✕</button>
+  </div>
+  <div class="dr-body" id="dr-body"></div>
+</aside>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var WEB3="13ed5753-64b8-4561-9565-fe5c7b7ae2dd";
+  var STATUS_ACTION=["new","read_ready","comment_ready","dm_ready","replied","negotiating","in_progress"];
+  var STATUS_TOACTION=["new","read_ready","comment_ready","dm_ready","replied"];
+  var TEMP_RANK={hot:0,warm:1,cold:2};
+  var DATA=null;
+
+  /* ---------- helpers ---------- */
+  function escapeHtml(s){
+    if(s==null) return "";
+    return String(s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+  }
+  function $(id){return document.getElementById(id);}
+  function el(tag,cls,txt){var e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e;}
+  function nonEmpty(v){return v!=null && String(v).trim()!=="";}
+  function money(n){ var v=Number(n)||0; return "$"+v.toLocaleString("en-US"); }
+  var _toastT;
+  function toast(msg){
+    var t=$("toast"); t.textContent=msg; t.classList.add("show");
+    clearTimeout(_toastT); _toastT=setTimeout(function(){t.classList.remove("show");},1900);
+  }
+  function copyText(txt,note){
+    var done=function(){toast(note||"Copied");};
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(done,function(){fallbackCopy(txt);done();});
+    }else{fallbackCopy(txt);done();}
+  }
+  function fallbackCopy(txt){
+    var ta=document.createElement("textarea"); ta.value=txt;
+    ta.style.position="fixed"; ta.style.left="-9999px"; document.body.appendChild(ta);
+    ta.select(); try{document.execCommand("copy");}catch(e){} document.body.removeChild(ta);
+  }
+  function draftText(t){ return String(t||"").replace(/^\s*\[DRAFT\]\s*/i,""); }
+  function isDraft(t){ return /^\s*\[DRAFT\]/i.test(String(t||"")); }
+  function statusLabel(s){ return String(s||"").replace(/_/g," "); }
+  function tempClass(t){ t=String(t||"").toLowerCase(); return TEMP_RANK.hasOwnProperty(t)?t:"cold"; }
+
+  /* ---------- lead field accessors (tolerant of shape) ---------- */
+  function LName(l){ return l.name||l.company||l.handle||l.username||"(unnamed)"; }
+  function LHandle(l){ var h=l.handle||l.username||""; if(h && h.charAt(0)!=="@") h="@"+h; return h; }
+  function LStatus(l){ return String(l.status||"new").toLowerCase(); }
+  function LTemp(l){ return tempClass(l.temp||l.temperature); }
+  function LAction(l){ return l.nextAction||l.next_action||l.action||""; }
+  function LPost(l){ return l.postUrl||l.post_url||""; }
+  function LProfile(l){ return l.profileUrl||l.profile_url||""; }
+  function LProduct(l){ return l.productUrl||l.product_url||l.siteUrl||l.site_url||""; }
+  function LOrigin(l){ return l.origin||l.source||""; }
+  function LPlatform(l){ return l.platform||""; }
+  function LValue(l){ return Number(l.value||l.dealValue||l.deal_value||0)||0; }
+  function LTags(l){
+    var t=l.tags; if(!t) return [];
+    if(Array.isArray(t)) return t;
+    return String(t).split(",").map(function(x){return x.trim();}).filter(Boolean);
+  }
+  function LNotes(l){ return l.notes||l.note||""; }
+  function LThread(l){ return Array.isArray(l.thread)?l.thread:(Array.isArray(l.messages)?l.messages:[]); }
+  function MsgDir(m){ var d=(m.dir||m.direction||m.from||"").toLowerCase(); return (d==="out"||d==="sent"||d==="us"||d==="me")?"out":"in"; }
+  function MsgText(m){ return m.text||m.body||m.message||""; }
+  function MsgChan(m){ return m.channel||m.chan||m.platform||""; }
+  function MsgDate(m){ return m.date||m.at||m.time||m.ts||""; }
+  function firstDraftInThread(l){
+    var th=LThread(l);
+    for(var i=th.length-1;i>=0;i--){ if(MsgDir(th[i])==="out" && isDraft(MsgText(th[i]))) return MsgText(th[i]); }
+    for(var j=th.length-1;j>=0;j--){ if(isDraft(MsgText(th[j]))) return MsgText(th[j]); }
+    return null;
+  }
+  function leadSearchBlob(l){
+    var parts=[LName(l),LHandle(l),LStatus(l),LAction(l),LOrigin(l),LProduct(l),LPlatform(l),LTemp(l)];
+    parts=parts.concat(LTags(l));
+    return parts.join("  ").toLowerCase();
+  }
+
+  /* ============ STAT CHIPS ============ */
+  function renderChips(leads,meta){
+    var wrap=$("statchips"); wrap.textContent="";
+    var hot=0,toact=0,dms=0,won=0,dollars=0;
+    leads.forEach(function(l){
+      if(LTemp(l)==="hot") hot++;
+      if(STATUS_TOACTION.indexOf(LStatus(l))>=0) toact++;
+      if(LStatus(l)==="dm_sent") dms++;
+      if(LStatus(l)==="won") won++;
+      dollars+=LValue(l);
+    });
+    function chip(cls,label,val){
+      var c=el("div","chip"+(cls?" "+cls:""));
+      c.appendChild(el("b",null,String(val)));
+      c.appendChild(document.createTextNode(label));
+      wrap.appendChild(c);
+    }
+    chip("","Leads",leads.length);
+    chip("hot","Hot",hot);
+    chip("act","To Action",toact);
+    chip("","DM Sent",dms);
+    chip("won","Won",won);
+    chip("dol","Pipeline",money(dollars));
+    if(meta && meta.goal){
+      var g=el("div","chip");
+      g.appendChild(el("b",null,String(meta.leadCount!=null?meta.leadCount:leads.length)+"/"+meta.goal));
+      g.appendChild(document.createTextNode("Goal"));
+      wrap.appendChild(g);
+    }
+  }
+
+  /* ============ SHARED PIECES ============ */
+  function badge(status){ return el("span","badge b-"+String(status||"new"),statusLabel(status)); }
+  function linkBtn(label,url,cls){
+    var a=document.createElement("a");
+    a.className="lbtn"+(cls?" "+cls:"");
+    a.textContent=label; a.href=url; a.target="_blank"; a.rel="noopener";
+    a.addEventListener("click",function(ev){ev.stopPropagation();});
+    return a;
+  }
+  function copyBtn(label,txt,cls){
+    var b=el("button","lbtn "+(cls||"copy"),label);
+    b.type="button";
+    b.addEventListener("click",function(ev){ev.stopPropagation();copyText(txt,"DM copied");});
+    return b;
+  }
+
+  /* ============ DO NEXT QUEUE ============ */
+  function renderQueue(leads){
+    var q=$("queue"); q.textContent="";
+    var actionable=leads.filter(function(l){return STATUS_ACTION.indexOf(LStatus(l))>=0;});
+    actionable.sort(function(a,b){
+      var ra=TEMP_RANK[LTemp(a)], rb=TEMP_RANK[LTemp(b)];
+      if(ra!==rb) return ra-rb;
+      return LName(a).localeCompare(LName(b));
+    });
+    $("dncount").textContent=actionable.length+" queued";
+    if(!actionable.length){ q.appendChild(el("div","empty","Queue clear — nothing waiting on you.")); return; }
+    actionable.forEach(function(l){
+      var card=el("div","qcard"); card.tabIndex=0; card.setAttribute("role","button");
+      var head=el("div","qhead");
+      head.appendChild(el("span","tdot "+LTemp(l)));
+      var nm=el("div"); nm.style.minWidth="0";
+      nm.appendChild(el("div","qname",LName(l)));
+      if(nonEmpty(LHandle(l))) nm.appendChild(el("div","qhandle",LHandle(l)));
+      head.appendChild(nm);
+      card.appendChild(head);
+
+      var act=LAction(l);
+      if(nonEmpty(act)) card.appendChild(el("div","qaction",act));
+
+      var meta=el("div","qmeta");
+      meta.appendChild(badge(LStatus(l)));
+      if(nonEmpty(LPlatform(l))) meta.appendChild(el("span","lplat",LPlatform(l)));
+      card.appendChild(meta);
+
+      var links=el("div","qlinks");
+      if(nonEmpty(LPost(l))) links.appendChild(linkBtn("Post",LPost(l)));
+      if(nonEmpty(LProfile(l))) links.appendChild(linkBtn("Profile",LProfile(l)));
+      if(nonEmpty(LProduct(l))) links.appendChild(linkBtn("Site",LProduct(l)));
+      var d=firstDraftInThread(l);
+      if(d) links.appendChild(copyBtn("Copy DM",draftText(d)));
+      if(links.children.length) card.appendChild(links);
+
+      card.addEventListener("click",function(){openDrawer(l);});
+      card.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();openDrawer(l);}});
+      q.appendChild(card);
+    });
+  }
+
+  /* ============ LEADS TABLE ============ */
+  var LEAD_SEARCH="", LEAD_FILTER="all";
+  function presentStatuses(leads){
+    var seen={},order=[];
+    leads.forEach(function(l){var s=LStatus(l); if(!seen[s]){seen[s]=1;order.push(s);}});
+    return order.sort();
+  }
+  function renderFilterChips(leads){
+    var wrap=$("fchips"); wrap.textContent="";
+    var statuses=["all"].concat(presentStatuses(leads));
+    statuses.forEach(function(s){
+      var c=el("button","fchip"+(LEAD_FILTER===s?" on":""), s==="all"?"All":statusLabel(s));
+      c.type="button";
+      c.addEventListener("click",function(){LEAD_FILTER=s; renderFilterChips(DATA.leads); renderLeadRows(DATA.leads);});
+      wrap.appendChild(c);
+    });
+  }
+  function leadMatches(l){
+    if(LEAD_FILTER!=="all" && LStatus(l)!==LEAD_FILTER) return false;
+    if(LEAD_SEARCH && leadSearchBlob(l).indexOf(LEAD_SEARCH)<0) return false;
+    return true;
+  }
+  function renderLeadRows(leads){
+    var tb=$("leadrows"); tb.textContent="";
+    var rows=leads.filter(leadMatches);
+    rows.sort(function(a,b){
+      var ra=TEMP_RANK[LTemp(a)], rb=TEMP_RANK[LTemp(b)];
+      if(ra!==rb) return ra-rb;
+      return LName(a).localeCompare(LName(b));
+    });
+    $("ldcount").textContent=rows.length+" / "+leads.length+" shown";
+    if(!rows.length){
+      var tr=el("tr"); var td=el("td"); td.colSpan=7; td.style.padding="0";
+      td.appendChild(el("div","empty","No leads match."));
+      tr.appendChild(td); tb.appendChild(tr); return;
+    }
+    rows.forEach(function(l){
+      var tr=el("tr");
+      var td1=el("td");
+      var nmw=el("div"); nmw.style.display="flex"; nmw.style.alignItems="center"; nmw.style.gap="8px";
+      nmw.appendChild(el("span","tdot "+LTemp(l)));
+      var box=el("div"); box.style.minWidth="0";
+      box.appendChild(el("div","lname",LName(l)));
+      if(nonEmpty(LHandle(l))) box.appendChild(el("div","lsub",LHandle(l)));
+      nmw.appendChild(box); td1.appendChild(nmw); tr.appendChild(td1);
+
+      tr.appendChild((function(){var td=el("td"); td.appendChild(el("span","lplat",LPlatform(l)||"—")); return td;})());
+      tr.appendChild(el("td","",LOrigin(l)||"—"));
+      tr.appendChild((function(){var td=el("td"); td.appendChild(badge(LStatus(l))); return td;})());
+      tr.appendChild((function(){var td=el("td"); td.appendChild(el("span","lplat",LTemp(l))); return td;})());
+      tr.appendChild(el("td","laction",LAction(l)||"—"));
+
+      var tdl=el("td"); var rl=el("div","rowlinks");
+      if(nonEmpty(LPost(l))) rl.appendChild(linkBtn("Post",LPost(l)));
+      if(nonEmpty(LProfile(l))) rl.appendChild(linkBtn("Profile",LProfile(l)));
+      if(nonEmpty(LProduct(l))) rl.appendChild(linkBtn("Site",LProduct(l)));
+      if(!rl.children.length) rl.appendChild(el("span","lplat","—"));
+      tdl.appendChild(rl); tr.appendChild(tdl);
+
+      tr.addEventListener("click",function(){openDrawer(l);});
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ============ DRAWER ============ */
+  var lastFocus=null;
+  function openDrawer(l){
+    lastFocus=document.activeElement;
+    $("dr-title").textContent=LName(l);
+    var sub=$("dr-sub"); sub.textContent="";
+    if(nonEmpty(LHandle(l))) sub.appendChild(el("span",null,LHandle(l)));
+    sub.appendChild(badge(LStatus(l)));
+    sub.appendChild(el("span","badge b-"+LTemp(l),LTemp(l)));
+
+    var body=$("dr-body"); body.textContent="";
+
+    var grid=el("div","dr-fields");
+    function fld(k,v,wide,isLink){
+      if(!nonEmpty(v)) return;
+      var f=el("div","f"+(wide?" wide":""));
+      f.appendChild(el("div","k",k));
+      var vv=el("div","v");
+      if(isLink){ var a=el("a",null,v); a.href=v; a.target="_blank"; a.rel="noopener"; vv.appendChild(a); }
+      else{ vv.textContent=v; }
+      f.appendChild(vv); grid.appendChild(f);
+    }
+    fld("Platform",LPlatform(l));
+    fld("Origin",LOrigin(l));
+    fld("Temp",LTemp(l));
+    fld("Status",statusLabel(LStatus(l)));
+    if(LValue(l)) fld("Deal value",money(LValue(l)));
+    fld("Product",LProduct(l),true,true);
+    fld("Post",LPost(l),true,true);
+    fld("Profile",LProfile(l),true,true);
+    if(grid.children.length) body.appendChild(grid);
+
+    var links=el("div","dr-links");
+    if(nonEmpty(LPost(l))) links.appendChild(linkBtn("Post",LPost(l)));
+    if(nonEmpty(LProfile(l))) links.appendChild(linkBtn("Profile",LProfile(l)));
+    if(nonEmpty(LProduct(l))) links.appendChild(linkBtn("Site",LProduct(l)));
+    if(links.children.length){
+      var ls=el("div","dr-sec"); ls.appendChild(el("h4",null,"Quick links"));
+      ls.appendChild(links); body.appendChild(ls);
+    }
+
+    var tags=LTags(l);
+    if(tags.length){
+      var ts=el("div","dr-sec"); ts.appendChild(el("h4",null,"Tags"));
+      var tw=el("div","tags");
+      tags.forEach(function(tg){ tw.appendChild(el("span","tag",tg)); });
+      ts.appendChild(tw); body.appendChild(ts);
+    }
+
+    if(nonEmpty(LNotes(l))){
+      var ns=el("div","dr-sec"); ns.appendChild(el("h4",null,"Notes"));
+      ns.appendChild(el("div","notes",LNotes(l))); body.appendChild(ns);
+    }
+
+    var th=LThread(l);
+    if(th.length){
+      var ths=el("div","dr-sec"); ths.appendChild(el("h4",null,"Thread"));
+      var tw2=el("div","thread");
+      th.forEach(function(m){
+        var dir=MsgDir(m);
+        var bub=el("div","bub "+dir);
+        var meta=el("div","bmeta");
+        var chan=MsgChan(m), date=MsgDate(m);
+        meta.appendChild(el("span",null,(dir==="out"?"OUT":"IN")+(nonEmpty(chan)?" · "+chan:"")));
+        if(nonEmpty(date)) meta.appendChild(el("span",null,String(date)));
+        bub.appendChild(meta);
+        var txt=MsgText(m);
+        bub.appendChild(el("div","btxt",isDraft(txt)?draftText(txt):txt));
+        if(isDraft(txt)){ var cb=copyBtn("⧉ Copy DM",draftText(txt),"copy"); cb.classList.add("drcopy"); bub.appendChild(cb); }
+        tw2.appendChild(bub);
+      });
+      ths.appendChild(tw2); body.appendChild(ths);
+    }
+
+    var hint=el("div","dr-hint");
+    hint.innerHTML="Changes are filed by <b>Claude</b> — tell it in chat, or use <b>Intake</b> below.";
+    body.appendChild(hint);
+
+    $("scrim").classList.add("open");
+    $("drawer").classList.add("open");
+    document.body.style.overflow="hidden";
+    $("dr-x").focus();
+  }
+  function closeDrawer(){
+    $("scrim").classList.remove("open");
+    $("drawer").classList.remove("open");
+    document.body.style.overflow="";
+    if(lastFocus && lastFocus.focus) try{lastFocus.focus();}catch(e){}
+  }
+
+  /* ============ PLAYBOOK ============ */
+  var PB_SEARCH="";
+  function slug(s){return String(s||"sec").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"sec";}
+  function renderPlaybook(playbook){
+    var nav=$("pbnav"), list=$("pblist");
+    nav.textContent=""; list.textContent="";
+    if(!playbook || !playbook.length){
+      $("pbcount").textContent="";
+      list.appendChild(el("div","empty","No playbook sections."));
+      return;
+    }
+    $("pbcount").textContent=playbook.length+" sections";
+    playbook.forEach(function(sec,i){
+      var id="pb-"+(sec.id?slug(sec.id):slug(sec.title)||("s"+i));
+      var a=el("a"); a.href="#"+id; a.dataset.target=id;
+      a.appendChild(el("span","ic",sec.icon||"§"));
+      a.appendChild(el("span",null,sec.title||("Section "+(i+1))));
+      a.addEventListener("click",function(ev){
+        ev.preventDefault();
+        var d=$(id);
+        if(d){ d.open=true; d.scrollIntoView({behavior:"smooth",block:"start"}); flashHL(d); setActiveNav(id); }
+      });
+      nav.appendChild(a);
+
+      var det=document.createElement("details");
+      det.className="pb-sec"; det.id=id;
+      det.dataset.text=String(sec.text||"").toLowerCase();
+      det.dataset.title=String(sec.title||"").toLowerCase();
+      var sum=document.createElement("summary");
+      sum.appendChild(el("span","ic",sec.icon||"§"));
+      sum.appendChild(el("span",null,sec.title||("Section "+(i+1))));
+      sum.appendChild(el("span","arw","▸"));
+      det.appendChild(sum);
+      var bod=el("div","pb-body");
+      bod.innerHTML=sanitizePlaybookHtml(sec.html||"");
+      det.appendChild(bod);
+      list.appendChild(det);
+    });
+  }
+  // whitelist-scrub: parse then strip anything not on the allow list (defense in depth)
+  function sanitizePlaybookHtml(html){
+    var ALLOW={H3:1,H4:1,H5:1,P:1,UL:1,OL:1,LI:1,STRONG:1,B:1,EM:1,I:1,CODE:1,PRE:1,A:1,TABLE:1,THEAD:1,TBODY:1,TR:1,TH:1,TD:1,BR:1,DIV:1,SPAN:1};
+    var tmp=document.createElement("div"); tmp.innerHTML=html||"";
+    (function walk(node){
+      var kids=Array.prototype.slice.call(node.childNodes);
+      kids.forEach(function(n){
+        if(n.nodeType===1){
+          var tag=n.tagName;
+          if(!ALLOW[tag]){ node.replaceChild(document.createTextNode(n.textContent||""),n); return; }
+          Array.prototype.slice.call(n.attributes).forEach(function(at){
+            var an=at.name.toLowerCase();
+            if(an.indexOf("on")===0){ n.removeAttribute(at.name); return; }
+            if(tag==="A"&&an==="href"){
+              var v=(at.value||"").trim();
+              if(/^\s*javascript:/i.test(v)||/^\s*data:/i.test(v)){ n.removeAttribute("href"); }
+              else{ n.setAttribute("target","_blank"); n.setAttribute("rel","noopener"); }
+              return;
+            }
+            if(an!=="href"&&an!=="colspan"&&an!=="rowspan"){ n.removeAttribute(at.name); }
+          });
+          walk(n);
+        }else if(n.nodeType===8){ node.removeChild(n); }
+      });
+    })(tmp);
+    return tmp.innerHTML;
+  }
+  function flashHL(d){ d.classList.add("hl"); setTimeout(function(){d.classList.remove("hl");},1200); }
+  function setActiveNav(id){
+    Array.prototype.forEach.call($("pbnav").children,function(a){ a.classList.toggle("on",a.dataset.target===id); });
+  }
+  function clearMarks(root){
+    var marks=root.querySelectorAll("mark");
+    Array.prototype.forEach.call(marks,function(m){
+      var p=m.parentNode; p.replaceChild(document.createTextNode(m.textContent),m); p.normalize();
+    });
+  }
+  function highlightMatch(det,q){
+    if(!q) return;
+    var bod=det.querySelector(".pb-body");
+    var re=new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");
+    var walker=document.createTreeWalker(bod,NodeFilter.SHOW_TEXT,null);
+    var nodes=[],n;
+    while((n=walker.nextNode())){ re.lastIndex=0; if(re.test(n.nodeValue)) nodes.push(n); }
+    nodes.forEach(function(node){
+      var frag=document.createDocumentFragment();
+      var parts=node.nodeValue.split(re);
+      parts.forEach(function(part){
+        if(part.toLowerCase()===q.toLowerCase()){ frag.appendChild(el("mark",null,part)); }
+        else if(part){ frag.appendChild(document.createTextNode(part)); }
+      });
+      node.parentNode.replaceChild(frag,node);
+    });
+  }
+  function runPlaybookSearch(){
+    var q=PB_SEARCH.trim().toLowerCase();
+    var secs=$("pblist").querySelectorAll(".pb-sec");
+    Array.prototype.forEach.call(secs,function(det){
+      clearMarks(det);
+      if(!q){ det.classList.remove("hidden"); det.open=false; return; }
+      var hay=(det.dataset.text||"")+" "+(det.dataset.title||"");
+      var hit=hay.indexOf(q)>=0;
+      det.classList.toggle("hidden",!hit);
+      if(hit){ det.open=true; highlightMatch(det,q); }
+    });
+  }
+
+  /* ============ INTAKE ============ */
+  var DRAFT_KEY="ceo_intake_draft";
+  function intakeFields(){ return ["platform","handle","product_url","post_url","status","temp","notes"]; }
+  function intakeEl(name){
+    var map={platform:"i_platform",handle:"i_handle",product_url:"i_product",post_url:"i_post",status:"i_status",temp:"i_temp",notes:"i_notes"};
+    return $(map[name]);
+  }
+  function saveDraft(){
+    var d={}; intakeFields().forEach(function(f){ d[f]=intakeEl(f).value; });
+    try{ localStorage.setItem(DRAFT_KEY,JSON.stringify(d)); }catch(e){}
+  }
+  function loadDraft(){
+    try{
+      var d=JSON.parse(localStorage.getItem(DRAFT_KEY)||"null");
+      if(d) intakeFields().forEach(function(f){ if(d[f]!=null) intakeEl(f).value=d[f]; });
+    }catch(e){}
+  }
+  function clearDraft(){ try{localStorage.removeItem(DRAFT_KEY);}catch(e){} }
+  function structuredBlock(){
+    var lbl={platform:"Platform",handle:"Handle",product_url:"Product URL",post_url:"Post URL",status:"Status",temp:"Temp",notes:"Notes"};
+    var lines=["=== CEO INTAKE ==="];
+    intakeFields().forEach(function(f){ var v=intakeEl(f).value.trim(); if(v) lines.push(lbl[f]+": "+v); });
+    return lines.join("\n");
+  }
+  function subjectName(){
+    var h=$("i_handle").value.trim();
+    if(h) return h;
+    var n=$("i_notes").value.trim().split(/\s+/).slice(0,4).join(" ");
+    return n||"unknown";
+  }
+  function setIntakeMsg(msg,isErr){ var m=$("intakemsg"); m.textContent=msg; m.classList.toggle("err",!!isErr); }
+  function buildFD(includeFile,note){
+    var fd=new FormData();
+    fd.append("access_key",WEB3);
+    fd.append("subject","CEO INTAKE: "+subjectName());
+    fd.append("from_name","Throughline CEO Dashboard");
+    intakeFields().forEach(function(f){ fd.append(f,intakeEl(f).value); });
+    fd.append("botcheck","");
+    if(note) fd.append("screenshot_note",note);
+    if(includeFile){ var fi=$("i_file"); if(fi.files&&fi.files[0]) fd.append("attachment",fi.files[0]); }
+    return fd;
+  }
+  function postWeb3(fd){
+    return fetch("https://api.web3forms.com/submit",{method:"POST",body:fd})
+      .then(function(r){return r.json().catch(function(){return {success:r.ok};});});
+  }
+  function submitIntake(ev){
+    ev.preventDefault();
+    if($("intake").querySelector('[name=botcheck]').checked) return; // honeypot
+    var btn=$("intakesubmit"); btn.disabled=true; setIntakeMsg("Filing…",false);
+    var fi=$("i_file");
+    var file=fi.files&&fi.files[0];
+    var tooBig=file && file.size>4.5*1024*1024;
+
+    if(tooBig){
+      postWeb3(buildFD(false,"screenshot too big — paste it in chat")).then(function(res){
+        if(res&&res.success){ setIntakeMsg("Filed — screenshot too big, paste it in chat.",true); clearDraft(); $("intake").reset(); }
+        else{ setIntakeMsg("Could not file. Paste it straight to Claude in chat.",true); }
+      }).catch(function(){ setIntakeMsg("Could not file. Paste it straight to Claude in chat.",true); })
+        .then(function(){ btn.disabled=false; });
+      return;
+    }
+
+    postWeb3(buildFD(true,null))
+      .then(function(res){
+        if(res && res.success){
+          setIntakeMsg("Filed — Claude will add it to the board next time you mention it.",false);
+          clearDraft(); $("intake").reset(); btn.disabled=false;
+        }else{ throw new Error("submit failed"); }
+      })
+      .catch(function(){
+        // retry text-only (file may have been the problem)
+        if(file){
+          postWeb3(buildFD(false,"screenshot too big — paste it in chat")).then(function(res){
+            if(res&&res.success){ setIntakeMsg("Filed (text only) — screenshot too big, paste it in chat.",true); clearDraft(); $("intake").reset(); }
+            else{ setIntakeMsg("Could not file. Paste it straight to Claude in chat.",true); }
+          }).catch(function(){ setIntakeMsg("Could not file. Paste it straight to Claude in chat.",true); })
+            .then(function(){ btn.disabled=false; });
+        }else{ setIntakeMsg("Could not file. Paste it straight to Claude in chat.",true); btn.disabled=false; }
+      });
+  }
+
+  /* ============ MASTER RENDER ============ */
+  window.__renderCEO=function(data){
+    DATA=data||{};
+    DATA.leads=Array.isArray(DATA.leads)?DATA.leads:[];
+    DATA.playbook=Array.isArray(DATA.playbook)?DATA.playbook:[];
+    renderChips(DATA.leads,DATA.meta||{});
+    renderQueue(DATA.leads);
+    renderFilterChips(DATA.leads);
+    renderLeadRows(DATA.leads);
+    renderPlaybook(DATA.playbook);
+    $("gate").style.display="none";
+    $("app").classList.add("live");
+  };
+
+  /* ============ AUTH / FETCH ============ */
+  var PW_KEY="ceo_pw";
+  function fetchDashboard(pw){
+    return fetch("/api/ceo",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({password:pw})
+    }).then(function(r){
+      if(r.status===401) return {__status:401};
+      if(!r.ok) return r.json().catch(function(){return {__status:r.status,ok:false};});
+      return r.json();
+    });
+  }
+  function doAuth(pw,fromStored){
+    return fetchDashboard(pw).then(function(res){
+      if(res && res.__status===401){
+        if(fromStored){ try{sessionStorage.removeItem(PW_KEY);}catch(e){} }
+        authFail(); return false;
+      }
+      if(res && res.ok){
+        try{ sessionStorage.setItem(PW_KEY,pw); }catch(e){}
+        window.__renderCEO(res); return true;
+      }
+      authFail("Unexpected server response."); return false;
+    }).catch(function(){
+      $("goffline").hidden=false; $("gerr").textContent="";
+      return false;
+    });
+  }
+  function authFail(msg){
+    var inp=$("gpw"), err=$("gerr");
+    inp.classList.add("bad","shake");
+    err.textContent=msg||"Wrong password.";
+    setTimeout(function(){inp.classList.remove("shake");},550);
+    inp.select();
+  }
+
+  /* ============ WIRE-UP ============ */
+  function init(){
+    $("gform").addEventListener("submit",function(e){
+      e.preventDefault();
+      $("gerr").textContent=""; $("gpw").classList.remove("bad");
+      var pw=$("gpw").value;
+      if(!pw){ authFail("Enter the access key."); return; }
+      doAuth(pw,false);
+    });
+    $("gpw").addEventListener("input",function(){ $("gpw").classList.remove("bad"); $("gerr").textContent=""; });
+
+    $("lockbtn").addEventListener("click",function(){
+      try{ sessionStorage.removeItem(PW_KEY); }catch(e){}
+      location.reload();
+    });
+
+    $("dr-x").addEventListener("click",closeDrawer);
+    $("scrim").addEventListener("click",closeDrawer);
+    document.addEventListener("keydown",function(e){
+      if(e.key==="Escape" && $("drawer").classList.contains("open")) closeDrawer();
+    });
+
+    $("leadsearch").addEventListener("input",function(e){
+      LEAD_SEARCH=e.target.value.trim().toLowerCase();
+      if(DATA) renderLeadRows(DATA.leads);
+    });
+    $("pbsearch").addEventListener("input",function(e){ PB_SEARCH=e.target.value; runPlaybookSearch(); });
+
+    $("intake").addEventListener("submit",submitIntake);
+    $("copyblock").addEventListener("click",function(){ copyText(structuredBlock(),"Block copied — paste to Claude"); });
+    intakeFields().forEach(function(f){
+      var e=intakeEl(f);
+      e.addEventListener("input",saveDraft);
+      e.addEventListener("change",saveDraft);
+    });
+    loadDraft();
+
+    var stored=null;
+    try{ stored=sessionStorage.getItem(PW_KEY); }catch(e){}
+    if(stored){ doAuth(stored,true).then(function(ok){ if(!ok){ $("gpw").focus(); } }); }
+    else{ $("gpw").focus(); }
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init);
+  else init();
+})();
+</script>
+</body>
+</html>
