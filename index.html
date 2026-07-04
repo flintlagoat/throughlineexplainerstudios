@@ -553,9 +553,17 @@
 <!-- welcome veil: opaque overlay in the exact page background so the fade reads as the page
      developing out of the dark. Once per browser session; skipped for reduced-motion. -->
 <div id="tl-welcome" role="status" aria-label="Loading" style="display:none;position:fixed;inset:0;z-index:99999;background:#07080d;align-items:center;justify-content:center;flex-direction:column;gap:18px">
-  <img src="/logo-landscape.svg" alt="Throughline" style="width:min(300px,60vw);animation:tlwPop .7s cubic-bezier(.4,0,.2,1) both" onerror="this.style.display='none'">
+  <!-- the logo IS the loader: the yellow node starts at the left end of the throughline and
+       slides along it as progress; 100% = the node arriving at its home spot in the logo -->
+  <svg viewBox="0 0 1200 300" style="width:min(300px,60vw);animation:tlwPop .7s cubic-bezier(.4,0,.2,1) both" aria-hidden="true">
+    <g transform="translate(70,60) scale(5.625)">
+      <rect x="7" y="7" width="18" height="18" rx="4" fill="none" stroke="#00D8FF" stroke-width="2.2"/>
+      <line x1="3" y1="16" x2="29" y2="16" stroke="#00D8FF" stroke-width="2.2" stroke-linecap="round"/>
+      <circle id="tlw-dot" cx="3" cy="16" r="2.6" fill="#FFE500"/>
+    </g>
+    <text x="300" y="190" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="700" fill="#F4F6FB" letter-spacing="1">Throughline</text>
+  </svg>
   <div class="mono" style="font-size:11px;letter-spacing:.22em;color:#8a97a5;animation:tlwFade .8s .25s both">B2B SOFTWARE EXPLAINERS</div>
-  <div style="width:220px;height:2px;background:rgba(255,255,255,.08);animation:tlwFade .4s .35s both"><div id="tl-welcome-bar" style="width:0;height:100%;background:linear-gradient(90deg,#00D8FF,#FFE500);transition:width 1.5s cubic-bezier(.4,0,.2,1)"></div></div>
 </div>
 <style>@keyframes tlwPop{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:none}}@keyframes tlwFade{from{opacity:0}to{opacity:1}}</style>
 <script>
@@ -566,17 +574,33 @@
     sessionStorage.setItem('tl_welcomed','1');
     var ov=document.getElementById('tl-welcome');
     ov.style.display='flex';
-    requestAnimationFrame(function(){document.getElementById('tl-welcome-bar').style.width='82%';});
+    /* the dot's run: line start x=3 → its home spot x=22. rAF tween on the cx ATTRIBUTE —
+       CSS transforms on SVG geometry are unreliable across engines, attribute tweens aren't. */
+    var dot=document.getElementById('tlw-dot'),tw=0;
+    function tweenDot(to,dur,ease){
+      cancelAnimationFrame(tw);
+      var from=parseFloat(dot.getAttribute('cx')),t0=0;
+      function step(ts){
+        if(!t0)t0=ts;
+        var p=Math.min(1,(ts-t0)/dur);
+        dot.setAttribute('cx',(from+(to-from)*ease(p)).toFixed(3));
+        if(p<1)tw=requestAnimationFrame(step);
+      }
+      tw=requestAnimationFrame(step);
+    }
+    function easeInOut(p){return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2}
+    function easeOut(p){return 1-Math.pow(1-p,3)}
+    tweenDot(18.6,1500,easeInOut); /* glide to ~82% while the page loads */
     function hide(){
       if(!ov||ov.dataset.done)return;
       ov.dataset.done='1';
-      document.getElementById('tl-welcome-bar').style.width='100%';
+      tweenDot(22,450,easeOut); /* arrive home — the logo completes */
       setTimeout(function(){
         ov.style.transition='opacity .8s ease';
         ov.style.opacity='0';
         ov.style.pointerEvents='none';
-        setTimeout(function(){ov.style.display='none';},820);
-      },180);
+        setTimeout(function(){ov.style.display='none';dot.setAttribute('cx','22');},820);
+      },320);
     }
     addEventListener('load',function(){setTimeout(hide,1400);});
     setTimeout(hide,2600); /* hard fallback: the veil can never hang */
