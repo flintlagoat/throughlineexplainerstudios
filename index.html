@@ -553,6 +553,19 @@
 <!-- welcome veil: opaque overlay in the exact page background so the fade reads as the page
      developing out of the dark. Once per browser session; skipped for reduced-motion. -->
 <div id="tl-welcome" role="status" aria-label="Loading" style="display:none;position:fixed;inset:0;z-index:99999;background:#07080d;align-items:center;justify-content:center;flex-direction:column;gap:18px">
+  <!-- blueprint grid, IDENTICAL geometry to body::before (34px, cyan .05, anchored at the viewport
+       origin) so when the veil fades the grid stays put and the page develops out of it seamlessly.
+       Fades in with the veil. -->
+  <div style="position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,216,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,.05) 1px,transparent 1px);background-size:34px 34px;opacity:0;animation:tlwFade 1.1s .1s forwards"></div>
+  <!-- static stars: fixed positions, no per-frame entities (real particles would delay first paint),
+       just a fixed constellation that fades up. Kept out of the center band where the logo sits. -->
+  <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;animation:tlwFade 1.5s .3s forwards" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g fill="#fff">
+      <circle cx="120" cy="90" r="1.4" opacity=".45"/><circle cx="300" cy="150" r="1" opacity=".28"/><circle cx="520" cy="80" r="1.5" fill="#8fdcff" opacity=".5"/><circle cx="720" cy="130" r="1" opacity=".3"/><circle cx="1180" cy="90" r="1.3" opacity=".36"/><circle cx="1400" cy="150" r="1.6" fill="#8fdcff" opacity=".5"/><circle cx="1600" cy="90" r="1" opacity=".28"/><circle cx="1780" cy="180" r="1.4" opacity=".42"/><circle cx="1860" cy="60" r="1" opacity=".22"/><circle cx="90" cy="300" r="1.5" opacity=".45"/>
+      <circle cx="240" cy="430" r="1" opacity=".28"/><circle cx="1660" cy="340" r="1.3" fill="#8fdcff" opacity=".38"/><circle cx="1830" cy="470" r="1.5" opacity=".5"/><circle cx="60" cy="570" r="1" opacity=".25"/><circle cx="1890" cy="620" r="1.2" opacity=".3"/><circle cx="140" cy="760" r="1.4" opacity=".42"/><circle cx="360" cy="880" r="1" opacity=".26"/><circle cx="560" cy="980" r="1.6" fill="#8fdcff" opacity=".46"/><circle cx="760" cy="930" r="1" opacity=".3"/><circle cx="980" cy="1010" r="1.2" opacity=".32"/>
+      <circle cx="1200" cy="950" r="1.5" opacity=".42"/><circle cx="1440" cy="890" r="1" opacity=".25"/><circle cx="1640" cy="970" r="1.6" fill="#8fdcff" opacity=".5"/><circle cx="1830" cy="850" r="1.2" opacity=".3"/><circle cx="1780" cy="1020" r="1" opacity=".24"/><circle cx="430" cy="300" r="1" opacity=".22"/><circle cx="1520" cy="540" r="1" opacity=".2"/><circle cx="300" cy="650" r="1.1" opacity=".26"/><circle cx="1560" cy="730" r="1.3" opacity=".34"/><circle cx="80" cy="120" r="1" opacity=".3"/>
+    </g>
+  </svg>
   <!-- the logo IS the loader: the yellow node starts at the left end of the throughline and
        slides along it as progress; 100% = the node arriving at its home spot in the logo -->
   <svg viewBox="0 0 1200 300" style="width:min(300px,60vw);animation:tlwPop .7s cubic-bezier(.4,0,.2,1) both" aria-hidden="true">
@@ -980,9 +993,9 @@
 <script>
 /* ============ data ============ */
 var VOICES = [
-  {id:'d0sfnCADBKk', name:'Relay', who:'Priya', role:'Relay', brand:'#14B8A6', dur:'00:43', q:'Our first-response time went from hours to minutes, overnight.'},
-  {id:'unC0wZjMUZ4', name:'Quarry', who:'Jordan', role:'Quarry', brand:'#10B981', dur:'00:43', q:"We finally know what to build next instead of guessing."},
-  {id:'JsMYnMEMyYs', name:'Docket', who:'Sam', role:'Docket', brand:'#F59E0B', dur:'00:37', q:'Nothing agreed in a meeting disappears on us anymore.'}
+  {id:'Pc5KEQND76U', name:'Relay', who:'Priya', role:'Relay', brand:'#14B8A6', dur:'00:43', q:'Our first-response time went from hours to minutes, overnight.'},
+  {id:'fKd0cpaUGAQ', name:'Quarry', who:'Jordan', role:'Quarry', brand:'#10B981', dur:'00:43', q:"We finally know what to build next instead of guessing."},
+  {id:'RjAHyvIsz7s', name:'Docket', who:'Sam', role:'Docket', brand:'#F59E0B', dur:'00:37', q:'Nothing agreed in a meeting disappears on us anymore.'}
 ];
 var FAQ = [
   {q:"Can't I just film a screen recording with a voiceover?", a:"You can, and it'll look like exactly that. A screen recording shows your UI; it doesn't sell the idea behind it. The job of an explainer isn't to tour the buttons — it's to make someone want the outcome before they ever see a button. That's a script-and-design problem, not a Loom."},
