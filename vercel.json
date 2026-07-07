@@ -3,6 +3,7 @@
     { "source": "/calculator", "destination": "/calculator.html" },
     { "source": "/ceodashboard", "destination": "/ceodashboard.html" },
     { "source": "/generate", "destination": "/generate.html" },
+    { "source": "/insights", "destination": "/insights/index.html" },
     { "source": "/watch", "destination": "/watch.html" }
   ]
 }
