@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your explainer — Throughline</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07080d; --panel:#0a1016; --panel2:#0d141c; --well:#060709;
+    --line:#16323a; --ink:#F4F6FB; --label:#5DCBE0; --body:#9AA3B2; --dim:#8593a0;
+    --cyan:#00D8FF; --yellow:#FFE500; --red:#FF3B30; --green:#3ddc84; --grid:rgba(0,216,255,.05);
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:34px 34px}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+  header{position:sticky;top:0;z-index:50;background:rgba(7,8,13,.95);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand b{font-weight:800;font-size:17px;color:var(--ink);text-transform:uppercase}
+  .brand small{font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.18em;color:var(--label);text-transform:uppercase;display:block;line-height:1.2}
+  h1{font-weight:800;font-size:clamp(22px,4vw,34px);line-height:1.08;letter-spacing:-.02em;color:var(--ink);text-transform:uppercase}
+  .kicker{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--label)}
+  .panel{border:1px solid var(--line);background:var(--panel);margin:26px 0}
+  .panel .bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.12em;color:var(--label);text-transform:uppercase}
+  .rec{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:blink 1.4s steps(1) infinite}
+  @keyframes blink{50%{opacity:.25}}
+  .stages{padding:26px 22px;display:grid;gap:0}
+  .stg{display:flex;align-items:center;gap:14px;padding:10px 0;font-family:'IBM Plex Mono';font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+  .stg .dot{width:12px;height:12px;border:2px solid var(--line);flex-shrink:0;transition:.3s}
+  .stg.done{color:var(--body)}
+  .stg.done .dot{background:var(--green);border-color:var(--green)}
+  .stg.now{color:var(--ink)}
+  .stg.now .dot{border-color:var(--cyan);animation:pulse 1.1s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 5px rgba(0,216,255,.18)}}
+  .qnote{padding:0 22px 22px;font-size:13.5px;color:var(--dim)}
+  .qnote b{color:var(--body)}
+  .video{aspect-ratio:16/9;background:#000}
+  .video iframe{width:100%;height:100%;border:0;display:block}
+  .actions{padding:18px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'IBM Plex Mono';font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--yellow);color:#0a0a05;padding:13px 22px;border:1px solid var(--yellow);cursor:pointer;transition:.18s var(--ease)}
+  .btn:hover{background:#fff14d;transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
+  .sub{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);letter-spacing:.06em;width:100%}
+  .tools{border-top:1px solid var(--line);padding:18px}
+  .tools h3{font-size:13px;color:var(--ink);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'IBM Plex Mono'}
+  .restyles{display:flex;gap:8px;flex-wrap:wrap}
+  .restyles button{border:1px solid var(--line);background:var(--well);color:var(--body);font-family:'IBM Plex Mono';font-size:11.5px;padding:9px 12px;cursor:pointer;letter-spacing:.04em}
+  .restyles button:hover{border-color:var(--cyan);color:var(--cyan)}
+  textarea{width:100%;min-height:130px;background:var(--well);border:1px solid var(--line);color:var(--ink);font-family:'IBM Plex Mono';font-size:13px;padding:12px;line-height:1.7;margin-top:8px}
+  textarea:focus{outline:none;border-color:var(--cyan)}
+  .dl{display:flex;flex-direction:column;gap:10px;padding:20px}
+  .dl a{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--well);padding:14px 16px;font-family:'IBM Plex Mono';font-size:13px;color:var(--ink);letter-spacing:.04em;transition:.15s}
+  .dl a:hover{border-color:var(--cyan)}
+  .dl a span{color:var(--cyan)}
+  .err{margin:16px 0;padding:13px 15px;border:1px solid var(--red);color:#ffb3ae;font-family:'IBM Plex Mono';font-size:12.5px;display:none}
+  .err.on{display:block}
+  .hide{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="/"><span><b>Throughline</b><small>Explainer Generator</small></span></a>
+  <a class="mono" style="font-size:12px;color:var(--dim)" href="/generate">+ new video</a>
+</nav></div></header>
+
+<main class="wrap">
+  <div style="padding:38px 0 4px">
+    <div class="kicker" id="kick">GENERATOR // BUILDING</div>
+    <h1 id="title" style="margin-top:12px">Building your explainer…</h1>
+    <p id="subtitle" style="margin-top:10px;max-width:60ch">This page updates itself — leave it open. Queue time varies with load, like any AI video tool; the build itself takes a few minutes.</p>
+  </div>
+
+  <div class="err" id="err"></div>
+
+  <!-- BUILDING -->
+  <div class="panel" id="buildPanel">
+    <div class="bar"><span class="rec"></span> LIVE BUILD · <span id="jobid" style="letter-spacing:.06em"></span></div>
+    <div class="stages" id="stages"></div>
+    <div class="qnote"><b>You don't need to watch this.</b> Your Stripe receipt links back here, and this page keeps polling until your preview is live.</div>
+  </div>
+
+  <!-- PREVIEW READY -->
+  <div class="panel hide" id="previewPanel">
+    <div class="bar">PREVIEW · WATERMARKED</div>
+    <div class="video"><iframe id="yt" title="Your explainer preview" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    <div class="actions">
+      <button class="btn" id="unlockBtn">Unlock final files</button>
+      <div class="sub">Clean full-res files, no watermark, commercial license. You keep everything you've paid for either way.</div>
+    </div>
+    <div class="tools hide" id="restyleTool">
+      <h3>Free restyle — <span id="restylesLeft"></span> left</h3>
+      <p style="font-size:13.5px;margin-bottom:10px">Same script and voiceover, a completely different look:</p>
+      <div class="restyles" id="restyles"></div>
+    </div>
+    <div class="tools hide" id="tweakTool">
+      <h3>Script tweak — <span id="tweaksLeft"></span> left</h3>
+      <p style="font-size:13.5px">Edit the narration below and we re-voice + re-animate around it:</p>
+      <textarea id="scriptBox"></textarea>
+      <div style="margin-top:10px"><button class="btn ghost" id="tweakBtn">Re-voice with my edits</button></div>
+    </div>
+  </div>
+
+  <!-- FINAL READY -->
+  <div class="panel hide" id="finalPanel">
+    <div class="bar" style="color:var(--green)">FINAL FILES · READY</div>
+    <div class="dl" id="downloads"></div>
+    <div class="qnote">Links stay live — bookmark this page. Want a different look later or a done-for-you version? <a href="/#offer" style="color:var(--cyan)">Studio starts at $100.</a></div>
+  </div>
+
+  <!-- FAILED -->
+  <div class="panel hide" id="failPanel">
+    <div class="bar" style="color:var(--red)">BUILD ISSUE</div>
+    <div style="padding:22px">
+      <p style="color:var(--ink);font-weight:600;margin-bottom:8px">This build hit a snag on our side.</p>
+      <p style="font-size:14.5px">That's on us, not you. We've been pinged automatically — we'll either rebuild it or refund your preview fee, usually within a few hours. Questions: <a href="mailto:hello@throughlineexplainers.com" style="color:var(--cyan)">hello@throughlineexplainers.com</a></p>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var qs = new URLSearchParams(location.search);
+  var jobId = qs.get('job') || '';
+  var session = qs.get('session') || '';
+  var unlockSession = qs.get('unlock_session') || '';
+  var $ = function(id){ return document.getElementById(id); };
+  if (!jobId){ $('title').textContent='No job found.'; $('subtitle').textContent='This page needs a job link — check your receipt email or generate a new video.'; $('buildPanel').classList.add('hide'); return; }
+  $('jobid').textContent = jobId;
+
+  var STAGES = [
+    ['queued','QUEUED'],
+    ['reading_brand','READING YOUR BRAND'],
+    ['writing_script','WRITING THE SCRIPT'],
+    ['voicing','VOICING'],
+    ['animating','ANIMATING'],
+    ['verifying','VERIFYING'],
+    ['uploading','UPLOADING']
+  ];
+  var ALT = { restyling:'RESTYLING — NEW LOOK, SAME SCRIPT', revoicing:'RE-VOICING YOUR EDITS', delivering:'PREPARING YOUR FILES' };
+  var stEl = $('stages');
+  STAGES.forEach(function(s){
+    var d=document.createElement('div'); d.className='stg'; d.id='stg_'+s[0];
+    d.innerHTML='<span class="dot"></span> '+s[1];
+    stEl.appendChild(d);
+  });
+
+  var ARCH_NAMES = {blueprint_board:'Blueprint',flat_motion_explainer:'Flat Motion',documentary_slate:'Documentary',notebook_sketch:'Notebook',tech_terminal:'Terminal',vintage_press:'Vintage Press',editorial_magazine:'Editorial',chalkboard:'Chalkboard'};
+  var current=null, timer=null, ytSet=false;
+
+  function showErr(m){ var e=$('err'); e.textContent=m; e.classList.add('on'); }
+
+  function render(j){
+    current=j;
+    var st=j.status;
+    $('buildPanel').classList.toggle('hide', !(st==='queued'||st==='building'||st==='delivering'));
+    $('previewPanel').classList.toggle('hide', st!=='preview_ready');
+    $('finalPanel').classList.toggle('hide', st!=='final_ready');
+    $('failPanel').classList.toggle('hide', st!=='failed');
+
+    if (st==='queued'||st==='building'||st==='delivering'){
+      $('kick').textContent='GENERATOR // BUILDING';
+      $('title').textContent = ALT[j.stage] ? ALT[j.stage].split(' — ')[0].toLowerCase().replace(/^./,function(c){return c.toUpperCase();})+'…' : 'Building your explainer…';
+      var reached=true;
+      STAGES.forEach(function(s){
+        var el=$('stg_'+s[0]);
+        el.className='stg';
+        if (s[0]===j.stage){ el.className='stg now'; reached=false; }
+        else if (reached) el.className='stg done';
+      });
+      if (ALT[j.stage]){ STAGES.forEach(function(s){ $('stg_'+s[0]).className='stg done'; }); }
+    }
+    if (st==='preview_ready'){
+      $('kick').textContent='GENERATOR // PREVIEW READY';
+      $('title').textContent = (j.productName||'Your product') + ' — preview';
+      $('subtitle').textContent = 'Watermarked and shrunk on purpose. The finals are clean, full-res, and yours.';
+      if (!ytSet && j.preview && j.preview.youtubeId){
+        $('yt').src = 'https://www.youtube-nocookie.com/embed/' + j.preview.youtubeId + '?rel=0';
+        ytSet=true;
+      }
+      $('unlockBtn').textContent = 'Unlock final files — $' + Math.round((j.unlockCents||2000)/100);
+      if (j.restylesLeft>0){
+        $('restyleTool').classList.remove('hide');
+        $('restylesLeft').textContent=j.restylesLeft;
+        var rs=$('restyles'); rs.innerHTML='';
+        Object.keys(ARCH_NAMES).forEach(function(k){
+          if (k===j.archetype) return;
+          var b=document.createElement('button'); b.textContent=ARCH_NAMES[k];
+          b.addEventListener('click',function(){ act({id:jobId, action:'restyle', archetype:k}, b); });
+          rs.appendChild(b);
+        });
+      } else $('restyleTool').classList.add('hide');
+      if (j.tweaksLeft>0){
+        $('tweakTool').classList.remove('hide');
+        $('tweaksLeft').textContent=j.tweaksLeft;
+        if (j.script && !$('scriptBox').value) $('scriptBox').value=j.script;
+      } else $('tweakTool').classList.add('hide');
+    }
+    if (st==='final_ready'){
+      $('kick').textContent='GENERATOR // DELIVERED';
+      $('title').textContent=(j.productName||'Your explainer')+' — final files';
+      $('subtitle').textContent='Clean, full-res, no watermark. Use them everywhere.';
+      var dl=$('downloads'); dl.innerHTML='';
+      (j.finals||[]).forEach(function(f){
+        var a=document.createElement('a'); a.href=f.url; a.setAttribute('download','');
+        a.innerHTML=(j.productName||'explainer')+' — '+f.aspect+' <span>↓ download MP4</span>';
+        dl.appendChild(a);
+      });
+    }
+    if (st==='failed'){
+      $('kick').textContent='GENERATOR // ISSUE';
+      $('title').textContent='This one\'s on us.';
+      $('subtitle').textContent='';
+    }
+  }
+
+  function act(body, btn){
+    if (btn){ btn.disabled=true; btn.textContent='…'; }
+    fetch('/api/job',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){return r.json();})
+      .then(function(j){ if (j.status){ ytSet=false; render(j); poll(); } else showErr(j.error==='no_restyles_left'?'No free restyles left on this tier.':'That didn\'t go through — try again.'); })
+      .catch(function(){ showErr('That didn\'t go through — try again.'); });
+  }
+
+  $('unlockBtn').addEventListener('click',function(){
+    var b=$('unlockBtn'); b.disabled=true; b.textContent='…';
+    fetch('/api/unlock',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:jobId})})
+      .then(function(r){return r.json();})
+      .then(function(j){ if (j.url) location.href=j.url; else { b.disabled=false; render(current); showErr('Checkout didn\'t open — try again.'); } })
+      .catch(function(){ b.disabled=false; showErr('Checkout didn\'t open — try again.'); });
+  });
+  $('tweakBtn').addEventListener('click',function(){
+    var s=$('scriptBox').value.trim();
+    if (s.split(/\s+/).length<30){ showErr('Keep at least ~30 words of script so there\'s a video to build.'); return; }
+    act({id:jobId, action:'tweak', script:s}, $('tweakBtn'));
+  });
+
+  var extra = session ? ('&session='+encodeURIComponent(session)) : (unlockSession ? ('&unlock_session='+encodeURIComponent(unlockSession)) : '');
+  function poll(){
+    clearTimeout(timer);
+    fetch('/api/job?id='+encodeURIComponent(jobId)+extra)
+      .then(function(r){ if(r.status===404) throw new Error('not_found'); return r.json(); })
+      .then(function(j){
+        extra=''; // payment verified on first hit; drop the params after
+        render(j);
+        if (j.status==='queued'||j.status==='building'||j.status==='delivering') timer=setTimeout(poll, 5000);
+        else timer=setTimeout(poll, 30000); // gentle keep-alive for state flips (unlock etc.)
+      })
+      .catch(function(e){
+        if (String(e.message)==='not_found'){ $('title').textContent='Job not found.'; $('subtitle').textContent='Double-check the link from your receipt.'; $('buildPanel').classList.add('hide'); return; }
+        timer=setTimeout(poll, 8000);
+      });
+  }
+  poll();
+})();
+</script>
+</body>
+</html>

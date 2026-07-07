@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generate your explainer — Throughline</title>
+<meta name="description" content="Paste your URL, pick a style, and generate a brand-matched explainer video preview. From $5, pay only what you use.">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,18..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07080d; --band:#0a0c12; --panel:#0a1016; --panel2:#0d141c; --well:#060709;
+    --line:#16323a; --ink:#F4F6FB; --label:#5DCBE0; --body:#9AA3B2; --dim:#8593a0;
+    --cyan:#00D8FF; --yellow:#FFE500; --red:#FF3B30; --grid:rgba(0,216,255,.05);
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--body);font-family:'Archivo',system-ui,sans-serif;font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:34px 34px}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+  header{position:sticky;top:0;z-index:50;background:rgba(7,8,13,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand b{font-weight:800;font-size:17px;color:var(--ink);text-transform:uppercase;letter-spacing:.015em}
+  .brand small{font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.18em;color:var(--label);text-transform:uppercase;display:block;line-height:1.2}
+  .navback{font-family:'IBM Plex Mono';font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--body)}
+  .navback:hover{color:var(--cyan)}
+  h1{font-weight:800;font-size:clamp(26px,4.5vw,40px);line-height:1.05;letter-spacing:-.02em;color:var(--ink);text-transform:uppercase}
+  .punch{color:var(--yellow)}
+  .kicker{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--label)}
+  .step{margin:34px 0;border:1px solid var(--line);background:var(--panel)}
+  .step .head{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .step .head .n{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.2em;color:var(--cyan)}
+  .step .head h2{font-size:16px;color:var(--ink);text-transform:uppercase;letter-spacing:.02em;font-weight:700}
+  .step .head .hint{margin-left:auto;font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.08em;color:var(--dim)}
+  .step .bodyp{padding:20px 18px}
+  input[type=text],input[type=email],input[type=url],textarea{width:100%;background:var(--well);border:1px solid var(--line);color:var(--ink);font-family:'IBM Plex Mono';font-size:14px;padding:12px 13px;letter-spacing:.02em}
+  input:focus,textarea:focus{outline:none;border-color:var(--cyan)}
+  label.f{display:block;font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:16px 0 7px}
+  .row{display:flex;gap:10px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'IBM Plex Mono';font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--yellow);color:#0a0a05;padding:12px 20px;border:1px solid var(--yellow);cursor:pointer;transition:.18s var(--ease);min-height:44px}
+  .btn:hover{background:#fff14d;transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+  .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+  .found{display:none;margin-top:16px;border:1px solid var(--line);background:var(--panel2);padding:14px}
+  .found.on{display:block}
+  .found .fname{font-family:'IBM Plex Mono';font-size:12px;color:var(--label);letter-spacing:.1em;margin-bottom:10px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chips button{width:34px;height:34px;border:2px solid rgba(255,255,255,.15);cursor:pointer;transition:transform .15s}
+  .chips button:hover{transform:scale(1.1)}
+  .chips button.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--cyan)}
+  .chips .hex{margin-left:8px}
+  .chips input{width:110px}
+  /* archetype grid */
+  .styles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:760px){.styles{grid-template-columns:repeat(2,1fr)}}
+  .style{border:1px solid var(--line);background:var(--well);cursor:pointer;transition:.15s var(--ease);position:relative;overflow:hidden}
+  .style:hover{transform:translateY(-2px)}
+  .style.sel{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan)}
+  .style .swatch{height:74px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:30px;letter-spacing:-.02em}
+  .style .nm{padding:8px 10px;border-top:1px solid var(--line)}
+  .style .nm b{display:block;font-size:12.5px;color:var(--ink);font-weight:700;letter-spacing:.02em}
+  .style .nm span{font-family:'IBM Plex Mono';font-size:9.5px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+  .style .sel-tick{position:absolute;top:6px;right:6px;width:18px;height:18px;background:var(--cyan);color:#001318;display:none;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+  .style.sel .sel-tick{display:flex}
+  /* asset slider */
+  .mixwrap{margin-top:6px}
+  .mix{width:100%;appearance:none;height:4px;background:linear-gradient(90deg,var(--cyan),var(--yellow));outline:none}
+  .mix::-webkit-slider-thumb{appearance:none;width:22px;height:22px;background:var(--ink);border:3px solid var(--cyan);cursor:pointer;border-radius:50%}
+  .mixlabels{display:flex;justify-content:space-between;font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+  .mixdesc{margin-top:12px;padding:12px 14px;border-left:2px solid var(--cyan);background:var(--panel2);font-size:14px;color:var(--body)}
+  .mixdesc b{color:var(--ink)}
+  .ups{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .up{border:1px dashed var(--line);padding:10px 14px;font-family:'IBM Plex Mono';font-size:11.5px;letter-spacing:.06em;color:var(--dim);cursor:pointer;transition:.15s}
+  .up:hover{border-color:var(--cyan);color:var(--cyan)}
+  .up.done{border-style:solid;border-color:var(--cyan);color:var(--label)}
+  /* tiers */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:760px){.tiers{grid-template-columns:1fr}}
+  .tier{border:1px solid var(--line);background:var(--well);cursor:pointer;padding:18px 16px;transition:.15s var(--ease);position:relative}
+  .tier:hover{transform:translateY(-2px)}
+  .tier.sel{border-color:var(--yellow);box-shadow:0 0 0 1px var(--yellow)}
+  .tier .tn{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--label)}
+  .tier .pr{margin:8px 0 2px;color:var(--ink);font-weight:800;font-size:30px}
+  .tier .pr small{font-size:13px;color:var(--dim);font-weight:400}
+  .tier .unl{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--dim);letter-spacing:.06em;margin-bottom:12px}
+  .tier ul{list-style:none;font-size:13.5px;color:var(--body)}
+  .tier li{padding:4px 0 4px 18px;position:relative}
+  .tier li::before{content:"→";position:absolute;left:0;color:var(--cyan);font-family:'IBM Plex Mono';font-size:11px;top:6px}
+  .tier li b{color:var(--ink);font-weight:600}
+  .tier .best{position:absolute;top:-1px;right:-1px;background:var(--yellow);color:#0a0a05;font-family:'IBM Plex Mono';font-size:9px;font-weight:700;letter-spacing:.14em;padding:4px 8px}
+  .aspects{display:none;margin-top:14px;gap:10px}
+  .aspects.on{display:flex}
+  .aspects button{flex:1;border:1px solid var(--line);background:var(--well);color:var(--body);font-family:'IBM Plex Mono';font-size:12px;padding:10px;cursor:pointer;letter-spacing:.06em}
+  .aspects button.sel{border-color:var(--cyan);color:var(--cyan)}
+  .gen{margin:36px 0 80px;text-align:center}
+  .gen .btn{font-size:15px;padding:16px 34px}
+  .gen .note{margin-top:12px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.08em;color:var(--dim)}
+  .err{display:none;margin:14px 0;padding:12px 14px;border:1px solid var(--red);color:#ffb3ae;font-family:'IBM Plex Mono';font-size:12.5px}
+  .err.on{display:block}
+  .offline{display:none;margin:14px 0;padding:14px;border:1px solid var(--line);background:var(--panel2);font-size:14px}
+  .offline.on{display:block}
+  .ldr{display:inline-block;width:14px;height:14px;border:2px solid var(--cyan);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <a class="brand" href="/"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" stroke="#00D8FF" stroke-width="2"/><path d="M7 12h10M12 7v10" stroke="#FFE500" stroke-width="2"/></svg>
+    <span><b>Throughline</b><small>Explainer Generator</small></span></a>
+  <a class="navback" href="/">← Back to site</a>
+</nav></div></header>
+
+<main class="wrap">
+  <div style="padding:44px 0 8px">
+    <div class="kicker">GENERATOR // INTAKE</div>
+    <h1 style="margin-top:14px">Your explainer, <span class="punch">from your URL.</span></h1>
+    <p style="margin-top:14px;max-width:58ch">Paste your site. We read your brand, write the script, voice it, and animate a watermarked preview. You only pay for the final files if you love it.</p>
+  </div>
+
+  <div class="offline" id="offline"><b style="color:var(--ink)">The generator is briefly offline.</b> We're doing maintenance on the queue — email <a href="mailto:hello@throughlineexplainers.com" style="color:var(--cyan)">hello@throughlineexplainers.com</a> and we'll build yours by hand today.</div>
+
+  <!-- 01 · SITE -->
+  <section class="step" id="s1">
+    <div class="head"><span class="n">01</span><h2>Your product</h2><span class="hint">we read the brand for you</span></div>
+    <div class="bodyp">
+      <div class="row">
+        <input type="url" id="url" placeholder="https://yourproduct.com" autocomplete="url" inputmode="url">
+        <button class="btn ghost" id="readBtn" style="white-space:nowrap">Read my site</button>
+      </div>
+      <div class="found" id="found">
+        <div class="fname" id="foundName">// reading…</div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <label class="f">Product name <span style="color:var(--dim)">(optional — we detect it)</span></label>
+      <input type="text" id="pname" placeholder="Acme">
+      <label class="f">One-liner <span style="color:var(--dim)">(optional — sharpen what we lead with)</span></label>
+      <input type="text" id="oneliner" placeholder="What it does, in one sentence">
+    </div>
+  </section>
+
+  <!-- 02 · STYLE -->
+  <section class="step" id="s2">
+    <div class="head"><span class="n">02</span><h2>Pick a look</h2><span class="hint">8 styles, one engine — restyles available after</span></div>
+    <div class="bodyp"><div class="styles" id="styles"></div></div>
+  </section>
+
+  <!-- 03 · ASSETS -->
+  <section class="step" id="s3">
+    <div class="head"><span class="n">03</span><h2>Asset mix</h2><span class="hint">what's on screen</span></div>
+    <div class="bodyp">
+      <div class="mixwrap">
+        <input type="range" class="mix" id="mix" min="0" max="100" value="65">
+        <div class="mixlabels"><span>Illustrated</span><span>Balanced</span><span>Product-real</span></div>
+        <div class="mixdesc" id="mixdesc"></div>
+      </div>
+      <div class="ups">
+        <label class="up" id="upLogo">+ your logo <input type="file" accept="image/*" hidden></label>
+        <label class="up" id="upShot1">+ screenshot <input type="file" accept="image/*" hidden></label>
+        <label class="up" id="upShot2">+ screenshot <input type="file" accept="image/*" hidden></label>
+        <label class="up" id="upShot3">+ screenshot <input type="file" accept="image/*" hidden></label>
+      </div>
+      <p style="margin-top:12px;font-size:13px;color:var(--dim)">No uploads? We pull real shots straight from your site automatically.</p>
+    </div>
+  </section>
+
+  <!-- 04 · TIER -->
+  <section class="step" id="s4">
+    <div class="head"><span class="n">04</span><h2>Choose your build</h2><span class="hint">preview first · unlock only if you love it</span></div>
+    <div class="bodyp">
+      <div class="tiers" id="tiers">
+        <div class="tier" data-tier="standard">
+          <div class="tn">Standard</div><div class="pr">$5<small> preview</small></div>
+          <div class="unl">final files +$20 · $25 all-in</div>
+          <ul><li><b>~40s</b> explainer</li><li><b>16:9</b> widescreen</li><li>assets auto-pulled from your site</li><li>full HD, no watermark on unlock</li></ul>
+        </div>
+        <div class="tier sel" data-tier="pro">
+          <div class="best">MOST PICKED</div>
+          <div class="tn">Pro</div><div class="pr">$7<small> preview</small></div>
+          <div class="unl">final files +$25 · $32 all-in</div>
+          <ul><li><b>~60s</b> explainer</li><li><b>2 aspect ratios</b> — pick your second</li><li>your uploads featured first</li><li><b>1 free restyle</b> (any of the 8 looks)</li><li><b>1 script tweak</b> + re-voice</li></ul>
+          <div class="aspects on" id="aspects"><button data-a="9:16" class="sel">+ 9:16 vertical</button><button data-a="1:1">+ 1:1 square</button></div>
+        </div>
+        <div class="tier" data-tier="max">
+          <div class="tn">Max</div><div class="pr">$10<small> preview</small></div>
+          <div class="unl">final files +$35 · $45 all-in</div>
+          <ul><li><b>~75s</b> full-story explainer</li><li><b>all 3 aspect ratios</b></li><li><b>custom-built assets</b> for your product</li><li><b>2 free restyles</b> + 1 script tweak</li><li><b>front of the queue</b></li></ul>
+        </div>
+      </div>
+      <label class="f">Email <span style="color:var(--dim)">(receipt + your preview link)</span></label>
+      <input type="email" id="email" placeholder="you@company.com" autocomplete="email">
+    </div>
+  </section>
+
+  <div class="err" id="err"></div>
+  <div class="gen">
+    <button class="btn" id="go">Generate my preview →</button>
+    <div class="note" id="gonote">$7 now · watermarked preview · pay for finals only if you love it</div>
+  </div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var S = {
+    tier:'pro', archetype:'blueprint_board', assetMix:65, aspectPick:'9:16',
+    palette:null, uploads:[], busy:false
+  };
+  var ARCH = [
+    {id:'blueprint_board', nm:'Blueprint', tag:'schematic · technical', bg:'#0b1622', fg:'#00D8FF', font:"'Archivo',sans-serif"},
+    {id:'flat_motion_explainer', nm:'Flat Motion', tag:'crisp · modern', bg:'#101223', fg:'#FF6B4A', font:"'Archivo',sans-serif"},
+    {id:'documentary_slate', nm:'Documentary', tag:'cinematic · serif', bg:'#0a0a0a', fg:'#E8E2D6', font:"'Newsreader',serif"},
+    {id:'notebook_sketch', nm:'Notebook', tag:'hand-drawn · warm', bg:'#F5EFE2', fg:'#2b2b2b', font:"'Newsreader',serif"},
+    {id:'tech_terminal', nm:'Terminal', tag:'console · mono', bg:'#050805', fg:'#39FF7A', font:"'IBM Plex Mono',monospace"},
+    {id:'vintage_press', nm:'Vintage Press', tag:'print · classic', bg:'#EDE4D0', fg:'#8C2F1B', font:"'Newsreader',serif"},
+    {id:'editorial_magazine', nm:'Editorial', tag:'bright · magazine', bg:'#FAF8F3', fg:'#1A1712', font:"'Newsreader',serif"},
+    {id:'chalkboard', nm:'Chalkboard', tag:'chalk · playful', bg:'#22312b', fg:'#F2F0E4', font:"'Newsreader',serif"}
+  ];
+  var TIER_META = {standard:{pv:5,note:'$5 now · watermarked preview · pay for finals only if you love it'},
+                   pro:{pv:7,note:'$7 now · watermarked preview · pay for finals only if you love it'},
+                   max:{pv:10,note:'$10 now · watermarked preview · custom assets · front of queue'}};
+  var $ = function(id){ return document.getElementById(id); };
+
+  // styles grid
+  var stEl = $('styles');
+  ARCH.forEach(function(a){
+    var d = document.createElement('div');
+    d.className = 'style' + (a.id===S.archetype?' sel':'');
+    d.setAttribute('role','button'); d.setAttribute('tabindex','0'); d.setAttribute('aria-label', a.nm+' style');
+    d.innerHTML = '<div class="swatch" style="background:'+a.bg+';color:'+a.fg+';font-family:'+a.font+'">Aa</div>'
+      + '<div class="nm"><b>'+a.nm+'</b><span>'+a.tag+'</span></div><div class="sel-tick">✓</div>';
+    var pick = function(){ S.archetype=a.id; [].forEach.call(stEl.children,function(c){c.classList.remove('sel');}); d.classList.add('sel'); };
+    d.addEventListener('click',pick);
+    d.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();} });
+    stEl.appendChild(d);
+  });
+
+  // asset mix
+  var mixDescFor = function(v){
+    if (v<34) return '<b>Illustrated.</b> Custom schematic scenes carry the story; one real shot grounds the hook. Great for pre-launch products or when your UI isn\'t the star.';
+    if (v<67) return '<b>Balanced.</b> Real product shots where they persuade, illustrated scenes where they explain. The default for most software.';
+    return '<b>Product-real.</b> Your actual product everywhere — device mock-ups, screens, walkthrough moments. Best when your UI already looks great.';
+  };
+  var mixEl=$('mix'), mixdesc=$('mixdesc');
+  mixdesc.innerHTML = mixDescFor(65);
+  mixEl.addEventListener('input',function(){ S.assetMix=+mixEl.value; mixdesc.innerHTML=mixDescFor(S.assetMix); });
+
+  // uploads
+  ['upLogo','upShot1','upShot2','upShot3'].forEach(function(id, idx){
+    var lab=$(id), inp=lab.querySelector('input');
+    inp.addEventListener('change',function(){
+      var f=inp.files && inp.files[0]; if(!f) return;
+      if (f.size>4*1024*1024){ showErr('That file is over 4MB — please use a smaller image.'); inp.value=''; return; }
+      lab.innerHTML = '<span class="ldr"></span> uploading…'; lab.classList.remove('done');
+      var name = (idx===0?'logo':'shot') + '-' + f.name.replace(/\.[^.]+$/,'');
+      fetch('/api/upload?name='+encodeURIComponent(name), {method:'POST', headers:{'Content-Type':f.type}, body:f})
+        .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+        .then(function(x){
+          if(!x.ok || !x.j.url){ throw new Error(x.j.error||'upload_failed'); }
+          S.uploads.push(x.j.url);
+          lab.classList.add('done'); lab.textContent = '✓ ' + f.name.slice(0,22);
+        })
+        .catch(function(){ lab.textContent = (idx===0?'+ your logo':'+ screenshot'); showErr('Upload didn\'t stick — you can skip it, we\'ll pull shots from your site.'); });
+    });
+  });
+
+  // palette read
+  var readBtn=$('readBtn');
+  readBtn.addEventListener('click', function(){
+    var url = $('url').value.trim();
+    if(!/^https?:\/\/.+\..+/.test(url) && !/^[^ ]+\.[^ ]{2,}/.test(url)){ showErr('Paste your site URL first (like https://yourproduct.com).'); return; }
+    hideErr();
+    readBtn.disabled = true; readBtn.innerHTML = '<span class="ldr"></span>';
+    $('found').classList.add('on'); $('foundName').textContent = '// reading '+url.replace(/^https?:\/\//,'')+' …';
+    fetch('/api/palette?url='+encodeURIComponent(url)).then(function(r){return r.json();}).then(function(j){
+      readBtn.disabled=false; readBtn.textContent='Read my site';
+      if(!j.ok || !(j.colors||[]).length){ $('foundName').textContent='// couldn\'t read a clear brand color — pick your primary below or just generate, we\'ll match it during the build'; renderChips(['#00D8FF','#FF6B4A','#39FF7A','#FFE500']); return; }
+      if(j.name && !$('pname').value) $('pname').value = j.name;
+      $('foundName').textContent = '// found ' + (j.name||'your brand') + ' — tap your primary color';
+      renderChips(j.colors);
+      S.palette = { primary: j.colors[0], secondary: j.colors[1]||undefined, accent: j.colors[2]||undefined };
+    }).catch(function(){ readBtn.disabled=false; readBtn.textContent='Read my site'; $('foundName').textContent='// read failed — no worries, we\'ll match your brand during the build'; });
+  });
+  function renderChips(colors){
+    var el=$('chips'); el.innerHTML='';
+    colors.slice(0,5).forEach(function(c,i){
+      var b=document.createElement('button');
+      b.style.background=c; b.title=c; if(i===0) b.classList.add('sel');
+      b.addEventListener('click',function(){
+        [].forEach.call(el.querySelectorAll('button'),function(x){x.classList.remove('sel');});
+        b.classList.add('sel'); S.palette = S.palette||{}; S.palette.primary=c; hx.value=c;
+      });
+      el.appendChild(b);
+    });
+    var hx=document.createElement('input'); hx.type='text'; hx.className='hex mono'; hx.placeholder='#hex'; hx.value=(colors[0]||'');
+    hx.addEventListener('change',function(){ if(/^#?[0-9a-fA-F]{6}$/.test(hx.value.trim())){ S.palette=S.palette||{}; S.palette.primary=(hx.value[0]==='#'?'':'#')+hx.value.trim().replace('#',''); } });
+    el.appendChild(hx);
+  }
+
+  // tiers
+  var tiersEl=$('tiers');
+  [].forEach.call(tiersEl.querySelectorAll('.tier'),function(t){
+    t.addEventListener('click',function(e){
+      if (e.target.closest('.aspects')) return;
+      [].forEach.call(tiersEl.querySelectorAll('.tier'),function(x){x.classList.remove('sel');});
+      t.classList.add('sel'); S.tier=t.getAttribute('data-tier');
+      $('aspects').classList.toggle('on', S.tier==='pro');
+      $('gonote').textContent = TIER_META[S.tier].note;
+      $('go').textContent = 'Generate my preview — $'+TIER_META[S.tier].pv+' →';
+    });
+  });
+  [].forEach.call(document.querySelectorAll('#aspects button'),function(b){
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      [].forEach.call(document.querySelectorAll('#aspects button'),function(x){x.classList.remove('sel');});
+      b.classList.add('sel'); S.aspectPick=b.getAttribute('data-a');
+    });
+  });
+  $('go').textContent = 'Generate my preview — $7 →';
+
+  // errors / offline
+  function showErr(m){ var e=$('err'); e.textContent=m; e.classList.add('on'); }
+  function hideErr(){ $('err').classList.remove('on'); }
+  if (/[?&]canceled=1/.test(location.search)) showErr('Checkout canceled — your setup is still here whenever you\'re ready.');
+
+  // generate
+  $('go').addEventListener('click', function(){
+    if (S.busy) return;
+    hideErr();
+    var url=$('url').value.trim();
+    if(!/^https?:\/\//.test(url)) url = 'https://'+url;
+    if(!/^https?:\/\/[^ ]+\.[^ ]{2,}/.test(url)){ showErr('Paste your product URL first — it\'s how we read your brand.'); return; }
+    var email=$('email').value.trim();
+    if(!/.+@.+\..+/.test(email)){ showErr('Add your email so we can send your preview link.'); return; }
+    S.busy=true; var go=$('go'); go.disabled=true; go.innerHTML='<span class="ldr"></span> setting up…';
+    fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      tier:S.tier, url:url, email:email,
+      name:$('pname').value.trim(), oneLiner:$('oneliner').value.trim(),
+      palette:S.palette, archetype:S.archetype, assetMix:S.assetMix,
+      aspectPick:S.aspectPick, uploads:S.uploads
+    })}).then(function(r){ return r.json().then(function(j){ return {st:r.status, j:j}; }); })
+    .then(function(x){
+      if (x.st===501){ $('offline').classList.add('on'); throw new Error('offline'); }
+      if (!x.j.url) throw new Error(x.j.error||'failed');
+      location.href = x.j.url;
+    })
+    .catch(function(e){
+      S.busy=false; go.disabled=false; go.textContent='Generate my preview — $'+TIER_META[S.tier].pv+' →';
+      if (e.message!=='offline') showErr('Something hiccuped setting up checkout — try again in a few seconds.');
+    });
+  });
+})();
+</script>
+</body>
+</html>

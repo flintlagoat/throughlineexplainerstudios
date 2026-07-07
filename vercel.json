@@ -1,6 +1,8 @@
 {
   "rewrites": [
     { "source": "/calculator", "destination": "/calculator.html" },
-    { "source": "/ceodashboard", "destination": "/ceodashboard.html" }
+    { "source": "/ceodashboard", "destination": "/ceodashboard.html" },
+    { "source": "/generate", "destination": "/generate.html" },
+    { "source": "/watch", "destination": "/watch.html" }
   ]
 }

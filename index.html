@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Throughline — B2B Software Explainer Video Studio</title>
-<meta name="description" content="Brand-matched B2B software explainer videos in ~75s. 500+ shipped. Scripted, animated to your exact colors, delivered in 16:9, 1:1 & 9:16. See the work.">
+<title>Throughline — Generate a Brand-Matched Explainer Video from $5</title>
+<meta name="description" content="Paste your URL, pick one of 8 styles, and generate a brand-matched software explainer video. Watermarked preview from $5 — pay for the final files only if you love it.">
 <link rel="canonical" href="https://throughlineexplainers.com/">
 <meta name="theme-color" content="#07080d">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -46,7 +46,7 @@
 {"@type":"Question","name":"Won't a custom animated video take forever and cost a fortune?","acceptedAnswer":{"@type":"Answer","text":"That's the old way: a studio, a storyboard, six weeks, five figures. We've shipped 500+ of these by building a real production engine. You get genuinely custom work, matched to your brand, in days instead of weeks."}},
 {"@type":"Question","name":"How is this different from the generic explainer mills?","acceptedAnswer":{"@type":"Answer","text":"Mills hand you a stock template with your logo in the corner. Every Throughline video is re-hued to your exact brand color and built with original schematic art for your specific product. It looks engineered for you, because it is."}},
 {"@type":"Question","name":"Where do I actually use it?","acceptedAnswer":{"@type":"Answer","text":"Above the fold on your homepage, in paid ads, in sales follow-ups, on product pages, in investor decks, and in onboarding. One 75-second asset, delivered in every aspect ratio, working everywhere your product has to explain itself without you in the room."}},
-{"@type":"Question","name":"What does a Throughline explainer cost?","acceptedAnswer":{"@type":"Answer","text":"Pricing is flat-rate and instant — fill the quick form and your price appears right away, with a small add-on per extra aspect ratio. It lands at a fraction of a traditional studio because we've built a real production engine instead of starting from a blank timeline every time."}},
+{"@type":"Question","name":"What does a Throughline explainer cost?","acceptedAnswer":{"@type":"Answer","text":"You generate a watermarked preview of your actual video for $5–$10 depending on tier, and only pay for the clean final files ($20–$35 more) if you love it. Prefer it done for you? The Studio tier is a flat $100 with script consultation, custom assets and revisions."}},
 {"@type":"Question","name":"How fast can I have it?","acceptedAnswer":{"@type":"Answer","text":"Standard delivery is 2 to 3 business days. Need it faster? The priority queue gets you final files in every aspect ratio overnight."}}]}
 </script>
 <style>
@@ -634,10 +634,11 @@
     <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav" onclick="toggleNav()">≡</button>
     <div class="navlinks" id="nav">
       <a href="#why">Why</a>
+      <a href="#looks">Styles</a>
       <a href="#voices">Results</a>
-      <a href="#process">Process</a>
+      <a href="#offer">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a href="#quote" class="cta">Get instant quote →</a>
+      <a href="/generate" class="cta">Generate yours — $5 →</a>
     </div>
   </nav>
 </header>
@@ -655,9 +656,9 @@
           <span><i>has 7 seconds.</i></span>
           <span><i class="punch">Right now it loses.</i></span>
         </h1>
-        <p class="lead">A brand-matched 75-second explainer video that makes a stranger <b>instantly get what your software does</b> — so they stay, sign up, and buy instead of bouncing.</p>
+        <p class="lead">A brand-matched explainer video that makes a stranger <b>instantly get what your software does</b> — so they stay, sign up, and buy instead of bouncing. Now self-serve: <b>paste your URL, watch it build itself.</b></p>
         <div class="hero-cta">
-          <a href="#quote" class="cta"><span class="cta-full">Get instant quote</span><span class="cta-short">Instant quote</span></a>
+          <a href="/generate" class="cta"><span class="cta-full">Generate your video — $5</span><span class="cta-short">Generate — $5</span></a>
           <span class="loss-group">
             <a href="#cost" class="cta ghost">Calculate your losses</a>
             <span class="loss-note" aria-hidden="true"><span class="la">←</span><span class="lt">worse than you'd think</span></span>
@@ -748,7 +749,7 @@
           <div class="big" id="o_year">$0</div>
           <div class="gauge"><i id="o_gauge"></i></div>
           <div class="sub"><b id="o_lost">0</b> visitors a month bounce confused → <b id="o_deals">0</b> trials/demos you never get. A clearer 75-second explainer typically lifts activation <b>30–40%</b> — and we can ship it <b>tomorrow</b>.</div>
-          <div class="foot-note" style="margin-top:16px"><a href="#quote" class="cta">Get instant quote →</a></div>
+          <div class="foot-note" style="margin-top:16px"><a href="/generate" class="cta">Generate yours — $5 →</a></div>
           <div class="foot-note">* Illustrative estimate from your inputs. No data leaves your browser.</div>
         </div>
       </div>
@@ -821,6 +822,131 @@
   </section>
 
   <!-- S04 VOICES -->
+  <!-- S03B — STYLE GALLERY (8 looks, one engine) -->
+  <style>
+    .lookstage{border:1px solid var(--line);background:var(--panel);overflow:hidden}
+    .lookbar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--label);text-transform:uppercase}
+    .lookview{aspect-ratio:16/9;position:relative;background:#0b1622;transition:background .35s var(--ease)}
+    .lookview video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+    .lookview video.on{display:block}
+    .lookposter{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:7% 8%;transition:.35s var(--ease)}
+    .lookposter .lk{font-family:'IBM Plex Mono',monospace;font-size:clamp(9px,1.2vw,12px);letter-spacing:.24em;text-transform:uppercase;opacity:.75;margin-bottom:12px}
+    .lookposter .lh{font-weight:800;font-size:clamp(22px,3.6vw,44px);line-height:1.03;letter-spacing:-.02em;text-transform:uppercase}
+    .lookposter .lb{margin-top:14px;width:44%;height:8px;opacity:.5}
+    .lookposter .lb+.lb{width:30%;margin-top:8px;opacity:.3}
+    .lookchips{display:grid;grid-template-columns:repeat(8,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line)}
+    @media(max-width:900px){.lookchips{grid-template-columns:repeat(4,1fr)}}
+    .lookchip{background:var(--bg);border:0;cursor:pointer;padding:10px 6px 9px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:.15s var(--ease)}
+    .lookchip .sw{width:100%;height:26px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+    .lookchip .nm{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+    .lookchip:hover .nm{color:var(--body)}
+    .lookchip.sel{background:var(--panel2)}
+    .lookchip.sel .nm{color:var(--cyan)}
+    /* asset mix */
+    .mixgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:34px;align-items:center;margin-top:36px;border-top:1px solid var(--line);padding-top:34px}
+    @media(max-width:900px){.mixgrid{grid-template-columns:1fr}}
+    .mixseg{display:flex;border:1px solid var(--line);margin:18px 0 14px}
+    .mixseg button{flex:1;background:var(--well);border:0;border-right:1px solid var(--line);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:12px 6px;cursor:pointer;transition:.15s}
+    .mixseg button:last-child{border-right:0}
+    .mixseg button.sel{background:var(--panel2);color:var(--cyan)}
+    .mixfig{border:1px solid var(--line);background:var(--well);position:relative;overflow:hidden}
+    .mixfig img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;transition:opacity .25s}
+    .mixfig .tag{position:absolute;top:10px;left:10px;background:rgba(7,8,13,.85);border:1px solid var(--line);color:var(--label);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px}
+  </style>
+  <section id="looks" style="border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="seclabel reveal"><span class="kicker">S03B — The Looks</span><span class="id">// 8 styles · one engine · same price</span></div>
+      <h2 class="reveal" style="font-size:clamp(26px,3.8vw,46px);margin-bottom:8px">Pick a look. <span class="punch">Or restyle later.</span></h2>
+      <p class="reveal" style="max-width:60ch;margin-bottom:28px">Every video is generated by the same engine in your exact brand colors — the <b style="color:var(--ink)">look</b> is a choice, not a rebuild. Tap through the eight styles:</p>
+      <div class="lookstage reveal">
+        <div class="lookbar"><span id="lookname">BLUEPRINT</span><span>REC ● SAME SCRIPT · SAME BRAND · DIFFERENT FILM</span></div>
+        <div class="lookview" id="lookview">
+          <div class="lookposter" id="lookposter"></div>
+          <video id="lookvideo" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="lookchips" id="lookchips" role="tablist" aria-label="Video styles"></div>
+      </div>
+
+      <!-- asset mix -->
+      <div class="mixgrid reveal">
+        <div>
+          <span class="kicker">REAL SHOTS ↔ ILLUSTRATION</span>
+          <h3 style="font-size:clamp(19px,2.4vw,26px);color:var(--ink);text-transform:uppercase;letter-spacing:-.01em;margin-top:12px">You control the asset mix.</h3>
+          <div class="mixseg" id="mixseg">
+            <button data-m="ill">Illustrated</button>
+            <button data-m="bal" class="sel">Balanced</button>
+            <button data-m="pro">Product-real</button>
+          </div>
+          <p id="mixcopy" style="font-size:14.5px"></p>
+          <p class="mono" style="margin-top:14px;font-size:11.5px;letter-spacing:.06em;color:var(--dim)">We pull real shots from your site automatically. Upload your own for best results — or have every asset custom-built for your product on the Max tier.</p>
+        </div>
+        <figure class="mixfig"><img id="miximg" src="/media/gen/mix-balanced.jpg" alt="Example frame at the balanced asset mix"><figcaption class="tag" id="mixtag">BALANCED</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function(){
+    var LOOKS=[
+      {id:'blueprint_board',nm:'Blueprint',bg:'#0b1622',fg:'#EAF6FF',ac:'#00D8FF',font:"'Archivo',sans-serif",k:'SCHEMATIC · TECHNICAL',h:'THE PLAN, DRAWN LIVE'},
+      {id:'flat_motion_explainer',nm:'Flat Motion',bg:'#101223',fg:'#F4F6FB',ac:'#FF6B4A',font:"'Archivo',sans-serif",k:'CRISP · MODERN',h:'BOLD SHAPES, FAST CUTS'},
+      {id:'documentary_slate',nm:'Documentary',bg:'#0a0a0a',fg:'#E8E2D6',ac:'#C8A96A',font:"'Newsreader',serif",k:'CINEMATIC · SERIF',h:'Told like a film'},
+      {id:'notebook_sketch',nm:'Notebook',bg:'#F5EFE2',fg:'#2b2b2b',ac:'#C24B2E',font:"'Newsreader',serif",k:'HAND-DRAWN · WARM',h:'Sketched by hand'},
+      {id:'tech_terminal',nm:'Terminal',bg:'#050805',fg:'#39FF7A',ac:'#39FF7A',font:"'IBM Plex Mono',monospace",k:'CONSOLE · MONO',h:'> RUN EXPLAINER_'},
+      {id:'vintage_press',nm:'Vintage Press',bg:'#EDE4D0',fg:'#2E2418',ac:'#8C2F1B',font:"'Newsreader',serif",k:'PRINT · CLASSIC',h:'Front-page treatment'},
+      {id:'editorial_magazine',nm:'Editorial',bg:'#FAF8F3',fg:'#1A1712',ac:'#D9822B',font:"'Newsreader',serif",k:'BRIGHT · MAGAZINE',h:'The glossy spread'},
+      {id:'chalkboard',nm:'Chalkboard',bg:'#22312b',fg:'#F2F0E4',ac:'#F2F0E4',font:"'Newsreader',serif",k:'CHALK · PLAYFUL',h:'Explained at the board'}
+    ];
+    var chipsEl=document.getElementById('lookchips'), poster=document.getElementById('lookposter'),
+        view=document.getElementById('lookview'), vid=document.getElementById('lookvideo'),
+        nameEl=document.getElementById('lookname');
+    function show(l){
+      nameEl.textContent=l.nm.toUpperCase();
+      view.style.background=l.bg;
+      poster.style.color=l.fg; poster.style.fontFamily=l.font;
+      poster.innerHTML='<div class="lk" style="color:'+l.ac+'">'+l.k+'</div><div class="lh">'+l.h+'</div><div class="lb" style="background:'+l.ac+'"></div><div class="lb" style="background:'+l.fg+'"></div>';
+      // auto-upgrade to a real loop when /media/styles/<id>.mp4 exists
+      vid.classList.remove('on'); vid.pause();
+      var src='/media/styles/'+l.id+'.mp4';
+      fetch(src,{method:'HEAD'}).then(function(r){
+        if(!r.ok) return;
+        vid.src=src; vid.classList.add('on'); vid.autoplay=true; vid.muted=true;
+        var kick=function(){ vid.play().catch(function(){}); };
+        vid.addEventListener('loadeddata', kick, {once:true});
+        kick();
+      }).catch(function(){});
+    }
+    LOOKS.forEach(function(l,i){
+      var b=document.createElement('button');
+      b.className='lookchip'+(i===0?' sel':''); b.setAttribute('role','tab'); b.setAttribute('aria-label',l.nm+' style');
+      b.innerHTML='<span class="sw" style="background:'+l.bg+';color:'+l.ac+';font-family:'+l.font+'">Aa</span><span class="nm">'+l.nm+'</span>';
+      b.addEventListener('click',function(){
+        [].forEach.call(chipsEl.children,function(c){c.classList.remove('sel');});
+        b.classList.add('sel'); show(l);
+      });
+      chipsEl.appendChild(b);
+    });
+    show(LOOKS[0]);
+    // strict-autoplay fallback: first real interaction kicks a stalled loop
+    var wake=function(){ if(vid.classList.contains('on') && vid.paused) vid.play().catch(function(){}); };
+    ['pointerdown','scroll','keydown','touchstart'].forEach(function(ev){ document.addEventListener(ev, wake, {once:true, passive:true}); });
+
+    var MIX={ill:{img:'/media/gen/mix-illustrated.jpg',tag:'ILLUSTRATED',copy:'Custom illustrated scenes carry the story; one real shot grounds the hook. Great pre-launch, or when your UI isn’t the star yet.'},
+              bal:{img:'/media/gen/mix-balanced.jpg',tag:'BALANCED',copy:'Real product shots where they persuade, illustrated scenes where they explain. The default for most software.'},
+              pro:{img:'/media/gen/mix-product.jpg',tag:'PRODUCT-REAL',copy:'Your actual product everywhere — device mock-ups, real screens, walkthrough moments. Best when your UI already looks great.'}};
+    var seg=document.getElementById('mixseg'), img=document.getElementById('miximg'),
+        tag=document.getElementById('mixtag'), copy=document.getElementById('mixcopy');
+    function setMix(k){ var m=MIX[k]; img.style.opacity=0; setTimeout(function(){ img.src=m.img; tag.textContent=m.tag; img.style.opacity=1; },180); copy.textContent=m.copy; }
+    copy.textContent=MIX.bal.copy;
+    [].forEach.call(seg.querySelectorAll('button'),function(b){
+      b.addEventListener('click',function(){
+        [].forEach.call(seg.querySelectorAll('button'),function(x){x.classList.remove('sel');});
+        b.classList.add('sel'); setMix(b.getAttribute('data-m'));
+      });
+    });
+  })();
+  </script>
+
   <section id="voices" style="border-top:1px solid var(--line);background:var(--band)">
     <div class="wrap">
       <div class="seclabel reveal"><span class="kicker">S04 — The Proof</span><span class="id">// real founders · real videos</span></div>
@@ -833,18 +959,19 @@
   <!-- S06 THE OFFER + GUARANTEE -->
   <section id="offer" style="border-top:1px solid var(--line);background:var(--band)">
     <div class="wrap">
-      <div class="seclabel reveal"><span class="kicker">S05 — The Offer</span><span class="id">// what you get · zero risk</span></div>
-      <h2 class="reveal" style="font-size:clamp(26px,3.8vw,46px);margin-bottom:8px">One brief. <span class="punch">Zero risk.</span> Live in days.</h2>
-      <p class="reveal" style="max-width:62ch;margin-bottom:22px">A brand-matched ~75-second explainer that makes your product instantly make sense. Flat, instant pricing, delivered in 2–3 days (overnight if you need it), and de-risked before a single frame is animated.</p>
-      <p class="reveal mono" style="max-width:64ch;margin-bottom:30px;font-size:clamp(14px,2.3vw,18px);line-height:1.55;letter-spacing:.01em;color:var(--body)">A traditional studio charges <s style="color:var(--dim)">$5,000–$15,000 over six weeks</s>. Yours is a flat <b style="color:var(--yellow);font-size:1.15em">$900</b>, in days — <b style="color:var(--ink)">a fraction of a full studio's cost.</b></p>
+      <div class="seclabel reveal"><span class="kicker">S05 — Pricing</span><span class="id">// preview first · pay if you love it</span></div>
+      <h2 class="reveal" style="font-size:clamp(26px,3.8vw,46px);margin-bottom:8px">See yours <span class="punch">before you pay for it.</span></h2>
+      <p class="reveal" style="max-width:62ch;margin-bottom:22px">Every tier works the same way: a few dollars generates a watermarked preview of <b style="color:var(--ink)">your actual video</b>. Love it? Unlock the clean files. Don't? Walk away — you're out the price of a coffee.</p>
+      <p class="reveal mono" style="max-width:64ch;margin-bottom:30px;font-size:clamp(14px,2.3vw,18px);line-height:1.55;letter-spacing:.01em;color:var(--body)">A traditional studio charges <s style="color:var(--dim)">$5,000–$15,000 over six weeks</s>. Generate yours from <b style="color:var(--yellow);font-size:1.15em">$5</b> — or have us do the whole thing for <b style="color:var(--yellow);font-size:1.15em">$100</b>.</p>
       <div class="offergrid reveal">
-        <div class="ocard"><div class="on">01</div><h3>Script-right guarantee</h3><p>We revise the script until you approve it — <b>before</b> we animate a single frame. You never pay to find out it missed.</p></div>
-        <div class="ocard"><div class="on">02</div><h3>Instant, no-commitment quote</h3><p>One short form — no sales call, no pressure — and your price appears on the spot. 16:9 included; only extra formats or priority cost more.</p></div>
-        <div class="ocard"><div class="on">03</div><h3>Built for everywhere it runs</h3><p>Delivered ready for your homepage, ads and socials. 16:9 included; 1:1 and 9:16 are flat add-ons you pick at checkout, never a surprise.</p></div>
+        <div class="ocard"><div class="on">STANDARD</div><h3>$5 preview <span style="color:var(--dim);font-weight:400">· +$20 finals</span></h3><p>~40s explainer in 16:9, assets auto-pulled from your site, full HD with no watermark on unlock. <b>$25 all-in.</b></p><p style="margin-top:12px"><a class="cta ghost" href="/generate">Generate →</a></p></div>
+        <div class="ocard" style="outline:1px solid var(--yellow);outline-offset:-1px"><div class="on" style="color:var(--yellow)">PRO — MOST PICKED</div><h3>$7 preview <span style="color:var(--dim);font-weight:400">· +$25 finals</span></h3><p>~60s, two aspect ratios, your uploads featured, <b>one free restyle</b> across the 8 looks and <b>one script tweak</b> with re-voice. <b>$32 all-in.</b></p><p style="margin-top:12px"><a class="cta" href="/generate">Generate →</a></p></div>
+        <div class="ocard"><div class="on">MAX</div><h3>$10 preview <span style="color:var(--dim);font-weight:400">· +$35 finals</span></h3><p>~75s full story, all 3 aspect ratios, <b>custom-built assets</b> for your product, two restyles, front of the queue. <b>$45 all-in.</b></p><p style="margin-top:12px"><a class="cta ghost" href="/generate">Generate →</a></p></div>
       </div>
-      <div class="reveal" style="margin-top:26px;display:flex;gap:18px;flex-wrap:wrap;align-items:center">
-        <a href="#quote" class="cta">Get instant quote →</a>
-        <span class="mono" style="font-size:12px;letter-spacing:.05em;color:var(--label);max-width:46ch">If a confusing homepage is costing you money every month, the explainer pays for itself before your next billing cycle.</span>
+      <div class="reveal" style="margin-top:14px;border:1px solid var(--line);background:var(--panel);padding:20px 22px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <div style="max-width:58ch"><div class="on mono" style="font-size:11px;color:var(--cyan);letter-spacing:.18em">STUDIO — DONE FOR YOU</div>
+        <p style="margin-top:8px;font-size:14.5px">Rather not touch a slider? For a flat <b style="color:var(--yellow)">$100</b> we run the whole build by hand: script consultation, custom assets, two revision rounds, human QA, all 3 aspect ratios.</p></div>
+        <a class="cta ghost" href="#" data-service="studio" style="white-space:nowrap">Book Studio — $100 →</a>
       </div>
     </div>
   </section>
@@ -852,9 +979,9 @@
   <!-- S05B START SMALLER -->
   <section id="starter" style="border-top:1px solid var(--line)">
     <div class="wrap">
-      <div class="seclabel reveal"><span class="kicker">S05B — Start Smaller</span><span class="id">// $49 gets you in the door</span></div>
-      <h2 class="reveal" style="font-size:clamp(26px,3.8vw,46px);margin-bottom:8px">Not ready for a video? <span class="punch">Start at $49.</span></h2>
-      <p class="reveal" style="max-width:62ch;margin-bottom:30px">Three smaller ways to fix a page that loses people. The audit credits in full toward anything else here, so if you upgrade later it costs you nothing.</p>
+      <div class="seclabel reveal"><span class="kicker">S05B — Beyond the video</span><span class="id">// fixes for the rest of the page</span></div>
+      <h2 class="reveal" style="font-size:clamp(22px,3vw,34px);margin-bottom:8px">The page around the video matters too.</h2>
+      <p class="reveal" style="max-width:62ch;margin-bottom:30px">Three hand-done services for the rest of your homepage. The audit credits in full toward anything else here, so if you upgrade later it costs you nothing.</p>
       <div class="offergrid reveal">
         <div class="ocard"><div class="on">A1</div><h3>Homepage Clarity Audit · $49</h3><p>A scored teardown of your page: the 7-second test, headline, CTAs, trust signals and visual hierarchy, ending in a prioritized fix list. In your inbox within 24 hours.</p><p style="margin-top:12px"><a class="cta ghost" href="#" data-service="audit">Get the audit →</a></p></div>
         <div class="ocard"><div class="on">A2</div><h3>Homepage Copy Rewrite · $150</h3><p>Your hero, headlines and CTAs rewritten line by line, each with a short note on why the new version earns attention. Paste-ready within 48 hours.</p><p style="margin-top:12px"><a class="cta ghost" href="#" data-service="copy">Order the rewrite →</a></p></div>
@@ -896,12 +1023,12 @@
         <span class="kicker" style="justify-content:center;margin-bottom:18px">FINAL FRAME</span>
         <h2>Stop making people<br>guess what you built.</h2>
         <p>Send your product link. You'll get the 75 seconds that finally explains it the way you do on your best sales call, matched to your brand, delivered in days. <b style="color:var(--ink)">500+ software teams have already stopped losing visitors to confusion.</b> Every day yours keeps failing the 7-second test is revenue you don't get back.</p>
-        <p class="mono" style="color:var(--label);letter-spacing:.08em;font-size:12.5px;margin-top:-12px">OVERNIGHT TURNAROUND · INSTANT FLAT PRICING · SCRIPT-RIGHT GUARANTEE</p>
+        <p class="mono" style="color:var(--label);letter-spacing:.08em;font-size:12.5px;margin-top:-12px">PREVIEW FIRST · FROM $5 · PAY ONLY IF YOU LOVE IT</p>
         <div class="hero-cta">
-          <a class="cta" href="#quote">Get instant quote →</a>
+          <a class="cta" href="/generate">Generate your video — $5 →</a>
           <a class="cta ghost" href="#voices">See the work first</a>
         </div>
-        <p class="mono" style="color:var(--dim);letter-spacing:.05em;font-size:11px;margin-top:14px">No sales call · instant price · you approve the script before we animate</p>
+        <p class="mono" style="color:var(--dim);letter-spacing:.05em;font-size:11px;margin-top:14px">No sales call · no forms beyond your URL · watermarked preview before any real money</p>
       </div>
     </div>
   </section>
@@ -976,7 +1103,7 @@
   </div>
 </footer>
 
-<div class="mobcta"><a class="cta" href="#quote">Get instant quote →</a></div>
+<div class="mobcta"><a class="cta" href="/generate">Generate yours — $5 →</a></div>
 
 <!-- always-running loss clock -->
 <div class="lossclock" id="lossclock">
@@ -986,7 +1113,7 @@
   <div class="lossclock-pop" id="lossPop" hidden>
     <p>You've been here <b id="lossTime2">0:00</b>. In that time, visitors hit homepages they didn't get and bounced — <b>~7 of 10 leave inside 15 seconds.</b> Every second is money walking out the door.</p>
     <p>One 75-second explainer makes your product click instantly. Standard delivery is <b>2–3 business days</b> — or jump the <b>priority queue</b> and you're live <b>overnight</b>.</p>
-    <a href="#quote" class="cta" id="lossCta">Get instant price →</a>
+    <a href="/generate" class="cta" id="lossCta">Generate yours — $5 →</a>
   </div>
 </div>
 

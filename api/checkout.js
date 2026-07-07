@@ -20,6 +20,8 @@ const SERVICES = {
              desc: 'Hero, headlines and CTAs rewritten line by line with the reasoning behind each change. Paste-ready within 48h.' },
   landing: { amount: 35000, name: 'Throughline — Landing Page Build',
              desc: 'Custom-coded, brand-matched landing page with copy included. Live-ready files within 48h.' },
+  studio:  { amount: 10000, name: 'Throughline — Studio explainer (done-for-you)',
+             desc: 'A brand-matched explainer built by hand: script consultation, custom assets, two revision rounds, human QA, delivered in 16:9, 1:1 and 9:16.' },
 };
 
 function dollars(cents) { return '$' + Math.round(cents / 100).toLocaleString('en-US'); }
