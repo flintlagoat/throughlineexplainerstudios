@@ -14,9 +14,23 @@ site's generate page shows a "briefly offline" state instead of breaking. Flip t
    `JOBS_API=https://throughlineexplainers.com`.
 4. **Stripe** — already wired (`STRIPE_SECRET_KEY`). No webhook needed: payment is verified
    server-side on the success redirect (`/api/job?session=`).
+5. **Blob token ON THE BOX (for downloads only)** — the box worker pushes the final clean MP4s
+   straight to Blob (they're 10-30MB, too big to route through a serverless function). Copy the
+   `BLOB_READ_WRITE_TOKEN` value from Vercel (Storage → your Blob store → `.env.local` tab, or
+   Settings → Env Vars) into `pipeline/.env` on the box as `BLOB_READ_WRITE_TOKEN=...`.
+   Previews work WITHOUT this; only the paid unlock/download step needs it.
 
-Worker on the box: `node pipeline/jobsWorker.mjs once` builds any pending job (the sweep calls
-this every cycle); `node pipeline/jobsWorker.mjs drain` loops until the queue is empty.
+Worker on the box: `node pipeline/jobsWorker.mjs once` builds the next pending job;
+`node pipeline/jobsWorker.mjs drain` loops until the queue is empty. For real customer UX run it
+often — either fold `jobsWorker drain` into the sweep each cycle, or (better) run a tight poll
+loop so previews land in minutes instead of up to a full cadence.
+
+STATUS 2026-07-06: end-to-end **verified working** — a seeded Linear job built a full brand-matched
+preview (youtu.be/nJXzdaFAg_c) autonomously: brand read → brief → real screenshot → script → VO →
+animate → 6 gates → upload. Fixes shipped during the test: worker always resolves a `brand.palette`
+(schema-required) from intake→/api/palette→default, and auto-generates a wordmark logo when the
+customer doesn't upload one (the `logo_present` gate). Live-Stripe key confirmed, so real checkouts
+charge real money — use `/api/seed` (WORKER_SECRET-gated) for no-charge test builds.
 
 Flow: /generate → POST /api/generate (job + Stripe) → pay → /watch?job=ID&session=… (verifies,
 queues) → worker claims → stages report live → preview_ready (watermarked YouTube embed) →
